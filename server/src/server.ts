@@ -9,7 +9,7 @@ class Server {
   public static async start(): Promise<void> {
     const app = expressApp();
     const server = createServer(app);
-    const io = new SocketIOServer(server);
+    const io = new SocketIOServer(server, { cors: { origin: '*' } });
 
     /** Loaders */
     expressLoader(app);
