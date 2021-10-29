@@ -35,7 +35,7 @@
     "eject": "react-scripts eject"
   },
   "lint-staged": {
-    "src/**/*.{ts, tsx}": [
+    "src/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ]
