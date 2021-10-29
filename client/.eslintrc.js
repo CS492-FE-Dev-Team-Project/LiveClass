@@ -1,4 +1,8 @@
 module.exports = {
+  env: {
+    es6: true,
+    browser: true
+  },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier'],
   extends: [
