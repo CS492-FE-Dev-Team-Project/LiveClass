@@ -28,6 +28,8 @@ function SocketProvider({
     const newSocket: Socket = io(url, options);
     setSocket(newSocket);
 
+    console.log('Socket Created');
+
     newSocket.on('connect', () => {
       setConnected(true);
     });
