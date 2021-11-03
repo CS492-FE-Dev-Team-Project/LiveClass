@@ -23,6 +23,7 @@ module.exports = {
     'no-shadow': 2,
     'react/prop-types': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.tsx'] }],
-    'jsx-a11y/no-noninteractive-element-interactions': 0
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
+    '@typescript-eslint/no-explicit-any': 'off'
   }
 };
