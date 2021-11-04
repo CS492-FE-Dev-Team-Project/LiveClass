@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from 'antd';
 import './App.css';
+import LobbyPage from './pages/lobbyPage-Ant';
 
 const App = (): React.ReactElement<any, any> => {
   return (
     <div className="App">
-      <Button type="primary">HI</Button>
+      <LobbyPage />
     </div>
   );
 };
