@@ -5,6 +5,9 @@
   "author": "JungInRhee <ysrheee@kaist.ac.kr>",
   "license": "MIT",
   "scripts": {
+    "prepare": "cp .env.example .env",
+    "up": "docker-compose up -d && docker logs -f -t cs492c-api-server",
+    "down": "docker-compose down",
     "start": "nodemon"
   },
   "lint-staged": {
