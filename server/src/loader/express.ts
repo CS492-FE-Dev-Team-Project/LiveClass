@@ -1,11 +1,11 @@
-import express, { Express } from 'express';
+import express from 'express';
 import cors from 'cors';
 import morgan, { StreamOptions } from 'morgan';
 
 import serverRoute from '../routes';
 import Logger from './logger';
 
-export default (app: Express) => {
+export default (app: express.Application) => {
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
