@@ -6,7 +6,7 @@ export type SocketContextInterface = {
   getConnected: () => boolean;
   getError: () => any;
   subscribeEvent: (event: string) => void;
-  getEventMsg: (event: string) => string;
+  getEventMsg: (event: string) => any;
 };
 
 export type SocketOptionType = Partial<SocketOptions & ManagerOptions>;
