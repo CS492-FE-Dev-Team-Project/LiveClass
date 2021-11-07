@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Box } from '@chakra-ui/react';
-import { ClassAddState } from './classAddModal';
+import { ClassAddModalState } from './classAddModal';
 
 interface initContentProps {
-  setModalState: (modalState: ClassAddState) => void;
+  setModalState: (modalState: ClassAddModalState) => void;
 }
 
 const initContent = ({ setModalState }: initContentProps) => {
@@ -13,7 +13,7 @@ const initContent = ({ setModalState }: initContentProps) => {
         w={200}
         h={200}
         onClick={() => {
-          setModalState(ClassAddState.JOIN);
+          setModalState(ClassAddModalState.JOIN);
         }}
       >
         Join
@@ -22,7 +22,7 @@ const initContent = ({ setModalState }: initContentProps) => {
         w={200}
         h={200}
         onClick={() => {
-          setModalState(ClassAddState.CREATE);
+          setModalState(ClassAddModalState.CREATE);
         }}
       >
         Create
