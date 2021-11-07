@@ -1,26 +1,17 @@
 import React from 'react';
-import {
-  Box,
-  ChakraProvider,
-  Heading,
-  Grid,
-  IconButton
-} from '@chakra-ui/react';
+import { IconButton, useDisclosure } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 
 import { AddIcon } from '@chakra-ui/icons';
-import ClassCard from '../components/classCard';
+import AddClassModal from '../components/lobbyPage/classAddModal';
+import LobbyHeader from '../components/lobbyPage/lobbyHeader';
+import LobbyContent from '../components/lobbyPage/lobbyContent';
 
-const LobbyHeader = ({ children }: React.PropsWithChildren<unknown>) => {
-  return (
-    <Box width="full" p={8} backgroundColor="green.400">
-      {children}
-    </Box>
-  );
-};
+import classData from '../data/classData';
+import ClassCard from '../components/lobbyPage/classCard';
 
 const LobbyPage = () => {
-  const numCol = useBreakpointValue({
+  const col = useBreakpointValue({
     base: '4',
     sm: '1',
     md: '2',
@@ -28,20 +19,25 @@ const LobbyPage = () => {
     xl: '4',
     '2xl': '5'
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <LobbyHeader>
-        <Heading color="gray.50">LiveClass</Heading>
-      </LobbyHeader>
-      <Grid templateColumns={`repeat(${numCol ?? 4}, 1fr)`} p={5} gap={8}>
-        <ClassCard src="https://bit.ly/2Z4KKcF" text="CS330" />
-        <ClassCard src="https://bit.ly/2Z4KKcF" text="CS330" />
-        <ClassCard src="https://bit.ly/2Z4KKcF" text="CS330" />
-        <ClassCard src="https://bit.ly/2Z4KKcF" text="CS330" />
-        <ClassCard src="https://bit.ly/2Z4KKcF" text="CS330" />
-        <ClassCard src="https://bit.ly/2Z4KKcF" text="CS330" />
-      </Grid>
+      <LobbyHeader backgroundColor="black" color="gray.50" title="LiveClass" />
+      <LobbyContent col={col}>
+        {classData.map(
+          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+            <ClassCard
+              key={id}
+              imgSrc={imgSrc}
+              title={title}
+              subTitle={subTitle}
+              color={color}
+              backgroundColor={backgroundColor}
+            />
+          )
+        )}
+      </LobbyContent>
       <IconButton
         position="fixed"
         right="100px"
@@ -50,7 +46,10 @@ const LobbyPage = () => {
         aria-label="Add Classroom"
         colorScheme="green"
         icon={<AddIcon />}
+        onClick={onOpen}
       />
+
+      <AddClassModal onClose={onClose} isOpen={isOpen} />
     </>
   );
 };
