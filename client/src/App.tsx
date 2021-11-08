@@ -1,11 +1,13 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
-import { Button } from 'antd';
-import './App.css';
+import LeftMenuPage from './pages/leftmenu-test';
 
 const App = (): React.ReactElement<any, any> => {
   return (
     <div className="App">
-      <Button type="primary">HI</Button>
+      <ChakraProvider>
+        <LeftMenuPage />
+      </ChakraProvider>
     </div>
   );
 };
