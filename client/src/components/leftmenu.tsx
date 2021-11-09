@@ -1,24 +1,20 @@
 import React from 'react';
+import { SettingsIcon, CloseIcon } from '@chakra-ui/icons';
 import {
   VStack,
   Stack,
   StackDivider,
-  Text,
   Button,
   Box,
-  Heading
+  Spacer
 } from '@chakra-ui/react';
-
-const LeftMenuItem = ({ text }: any) => {
-  return <span>{text}</span>;
-};
 
 const LeftMenu = ({ menus }: any) => {
   return (
     <Box minH="100vh" maxW="150px" bg="white" ml="2">
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
+        spacing={0}
         align="stretch"
       >
         {menus.map((menu: any) => (
@@ -30,6 +26,7 @@ const LeftMenu = ({ menus }: any) => {
                 fontWeight="bold"
                 fontSize="sm"
                 ml="2"
+                mt="2"
               >
                 {menu.tabTitle}
               </Box>
@@ -38,7 +35,6 @@ const LeftMenu = ({ menus }: any) => {
                   colorScheme="gray"
                   variant="ghost"
                   size="sm"
-                  spacing="0.0rem"
                   justifyContent="flex-start"
                 >
                   {tab.tabName}
@@ -48,6 +44,25 @@ const LeftMenu = ({ menus }: any) => {
           </Box>
         ))}
       </VStack>
+      <Spacer />
+      <Box>
+        <Button
+          size="sm"
+          w={75}
+          colorScheme="gray"
+          leftIcon={<SettingsIcon w={3} h={3} />}
+        >
+          Setting
+        </Button>
+        <Button
+          size="sm"
+          w={75}
+          colorScheme="red"
+          leftIcon={<CloseIcon w={3} h={3} />}
+        >
+          Quit
+        </Button>
+      </Box>
     </Box>
   );
 };
