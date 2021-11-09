@@ -25,7 +25,6 @@ const App = (): React.ReactElement<any, any> => {
   return (
     <div className="App">
       <Instructor />
-      <Participant />
     </div>
   );
 };
