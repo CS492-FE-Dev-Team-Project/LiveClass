@@ -2,51 +2,44 @@ import React, { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
-import { Socket } from 'socket.io-client';
+import { useSocket } from '../lib/socket';
 
 interface userInfo {
   name: string;
   studentNumber: number;
-  socket: Socket | null;
+  room: number;
 }
 
-interface newTime {
-  newtime: number;
+enum VideoState {
+  UNSTARTED = -1,
+  ENDED,
+  PLAYING,
+  PAUSED,
+  BUFFERING,
+  CUED = 5
 }
 
-// TS enum has error regarding eslint 'no-shadow' - 'typescript enum already declared in the upper scope'
-// enum VideoState {
-const VideoState = {
-  UNSTARTED: -1,
-  ENDED: 0,
-  PLAYING: 1,
-  PAUSED: 2,
-  BUFFERING: 3,
-  CUED: 5
-};
+const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
+  const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
+  const { socket, connected } = useSocket();
 
-const YouTubePlayer = ({ name, studentNumber, socket }: userInfo) => {
-  const [video, setVideo] = useState<any>(null); // youtube player - type?
-
-  // get socket by props
   useEffect(() => {
-    setInterval(() => console.log(socket?.id), 1000);
-
     // For testing #ifdef DBG
     console.log(`New connection! socket id = ${socket?.id}`);
 
     // For testing #ifdef DBG
-    socket?.on('InstructorTimeChange', (newtime: newTime) => {
-      console.log(`move video to new time : ${newtime}`);
-    });
+    // socket?.on('InstructorTimeChange', (newtime: newTime) => {
+    //   console.log(`move video to new time : ${newtime}`);
+    // });
 
-    // if (video != null && studentNumber !== -1) {
-    //   // If not instructor, sync video time
-    //   socket?.on('InstructorTimeChange', (newtime: newTime) => {
-    //     video?.seekTo(newtime);
-    //   });
-    // }
-  }, []);
+    // If not instructor, sync video time
+    if (studentNumber !== -1) {
+      socket?.on('InstructorTimeChange', (newtime: number) => {
+        video?.seekTo(newtime);
+      });
+    }
+    socket?.emit('JoinLecture', `{ "lectureId": ${room} }`);
+  }, [connected, video]);
 
   const onReady = (evt: any) => {
     const player = evt.target; // has player related functions
@@ -60,15 +53,17 @@ const YouTubePlayer = ({ name, studentNumber, socket }: userInfo) => {
   };
 
   const onStateChange = (evt: any) => {
-    console.log('state change! evt : ', evt);
+    console.log('state change! evt : ', evt); // #ifdef DBG
     const player = evt.target;
 
+    // When instructor changes video time : (onStateChange evt) pause-buffer-play
+    // For now, detect 'buffer' as a cue of video time change
     if (evt.data === VideoState.BUFFERING) {
       const JO = JSON.stringify({
         newtime: player.getCurrentTime()
       });
 
-      console.log('buffering!', JO);
+      console.log('buffering!', JO); // #ifdef DBG
 
       socket?.emit('InstructorTimeChange', JO);
     }
@@ -80,7 +75,7 @@ const YouTubePlayer = ({ name, studentNumber, socket }: userInfo) => {
     // width: '640',
 
     playerVars: {
-      autoplay: 0 as const,
+      autoplay: 1 as const,
       controls: studentNumber === -1 ? (1 as const) : (0 as const),
       disablekb: studentNumber === -1 ? (0 as const) : (1 as const)
     }
@@ -94,7 +89,6 @@ const YouTubePlayer = ({ name, studentNumber, socket }: userInfo) => {
       <YouTube
         videoId="dvgZkm1xWPE"
         opts={options}
-        // opts={{ playerVars: { autoplay: 1, controls: 0, disablekb: 1 } }}
         onReady={onReady}
         onStateChange={onStateChange}
       />

@@ -7,8 +7,8 @@ import { SocketProvider } from '../lib/socket';
 const YouTubePage = (): React.ReactElement<any, any> => {
   // For example
   const user = {
-    name: 'Kim',
-    studentNumber: -1, // -1
+    name: 'Park',
+    studentNumber: 123, // -1
     room: 10
   };
 
