@@ -1,10 +1,31 @@
-import { Server as SocketIOServer } from 'socket.io';
+import { Server as SocketIOServer, Socket } from 'socket.io';
+import Logger from '../loader/logger';
+
+const OnJoinLecture = (socket: Socket) => (request: string) => {
+  const { lectureId } = JSON.parse(request);
+  const lectureName = `Lecture_${lectureId}`;
+  socket.join(lectureName);
+  Logger.info(`A User Joined to ${lectureName}`);
+  socket.emit('JoinLecture', { lectureId, status: 200 });
+};
+
+const OnChatTextMessage = (socket: Socket) => (request: string) => {
+  const { lectureId, textMessage } = JSON.parse(request);
+  socket.emit('ChatTextMessage', {
+    time: new Date().toISOString(),
+    textMessage
+  });
+  socket.to(`Lecture_${lectureId}`).emit(textMessage);
+};
 
 export default (io: SocketIOServer) => {
-  io.on('connection', socket => {
-    io.emit('user', 'connected');
+  io.on('connection', (socket: Socket) => {
+    Logger.info('User connected');
     socket.on('disconnect', () => {
-      io.emit('user', 'disconnected');
+      socket.disconnect();
     });
+
+    socket.on('JoinLecture', OnJoinLecture(socket));
+    socket.on('ChatTextMessage', OnChatTextMessage(socket));
   });
 };
