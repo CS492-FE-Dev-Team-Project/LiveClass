@@ -73,6 +73,11 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
 
       socket?.emit('InstructorTimeChange', JO);
     } else if (evt.data === VideoState.PLAYING) {
+      // In case of changing video time while paused - update time when resume playing
+      const JO = JSON.stringify({
+        newtime: player.getCurrentTime()
+      });
+      socket?.emit('InstructorTimeChange', JO);
       socket?.emit('InstructorPlay');
     } else if (evt.data === VideoState.PAUSED) {
       socket?.emit('InstructorPause');
