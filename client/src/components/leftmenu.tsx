@@ -13,46 +13,40 @@ const LeftMenuItem = ({ text }: any) => {
   return <span>{text}</span>;
 };
 
-const LeftMenu = ({ classData, lectures }: any) => {
+const LeftMenu = ({ menus }: any) => {
   return (
-    <Box minH="100vh" maxW="150px" bg="gray.200">
+    <Box minH="100vh" maxW="150px" bg="white">
       <VStack
-        divider={<StackDivider borderColor="gray" />}
-        spacing={3}
+        divider={<StackDivider borderColor="gray.200" />}
+        spacing={2}
         align="stretch"
       >
-        <Box className="className">
-          <Stack spacing={0}>
-            <Heading as="h1" size="md">
-              {classData.name}
-            </Heading>
-            <Button colorScheme="teal" variant="ghost">
-              Notice
-            </Button>
-            <Button colorScheme="teal" variant="ghost">
-              Materials
-            </Button>
-          </Stack>
-        </Box>
-        <Box className="lectures">
-          <Stack spacing={0}>
-            <Heading as="h1" size="md">
-              Lectures
-            </Heading>
-            {lectures.map((lecture: any) => (
-              <Button colorScheme="teal" variant="ghost">
-                {lecture.date}
-              </Button>
-            ))}
-          </Stack>
-        </Box>
-        <Box className="classmates">
-          <Stack spacing={0}>
-            <Heading as="h1" size="md">
-              Classmates
-            </Heading>
-          </Stack>
-        </Box>
+        {menus.map((menu: any) => (
+          <Box>
+            <Stack spacing={0}>
+              <Box
+                letterSpacing="wide"
+                justifyContent="flex-start"
+                fontWeight="bold"
+                fontSize="sm"
+                ml="2"
+              >
+                {menu.tabTitle}
+              </Box>
+              {menu.tabContents.map((tab: any) => (
+                <Button
+                  colorScheme="gray"
+                  variant="ghost"
+                  size="sm"
+                  spacing="0.0rem"
+                  justifyContent="flex-start"
+                >
+                  {tab.tabName}
+                </Button>
+              ))}
+            </Stack>
+          </Box>
+        ))}
       </VStack>
     </Box>
   );

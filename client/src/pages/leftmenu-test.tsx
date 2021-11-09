@@ -2,21 +2,68 @@ import React from 'react';
 import LeftMenu from '../components/leftmenu';
 
 const LeftMenuPage = (): React.ReactElement<any, any> => {
-  // For example
-  const classData = {
-    classId: 1,
-    name: 'CS330'
-  };
-  const lectures = [
+  const menus = [
     {
-      lectureId: 1,
-      date: 'October 10'
+      tabTitle: 'CS330',
+      tabContents: [
+        {
+          tabName: 'Notice',
+          link: ''
+        },
+        {
+          tabName: 'Materials',
+          link: ''
+        }
+      ]
     },
     {
-      lectureId: 2,
-      date: 'October 17'
+      tabTitle: 'Playlist',
+      tabContents: [
+        {
+          tabName: 'Menu Item',
+          link: ''
+        },
+        {
+          tabName: 'Menu Item',
+          link: ''
+        }
+      ]
+    },
+    {
+      tabTitle: 'Participants',
+      tabContents: [
+        {
+          tabName: 'JungIn',
+          link: ''
+        },
+        {
+          tabName: 'JaeHo',
+          link: ''
+        },
+        {
+          tabName: 'HyunChul',
+          link: ''
+        },
+        {
+          tabName: 'Sanghyun',
+          link: ''
+        }
+      ]
+    },
+    {
+      tabTitle: 'Lectures',
+      tabContents: [
+        {
+          tabName: 'October 23',
+          link: ''
+        },
+        {
+          tabName: 'October 27',
+          link: ''
+        }
+      ]
     }
   ];
-  return <LeftMenu classData={classData} lectures={lectures} />;
+  return <LeftMenu menus={menus} />;
 };
 export default LeftMenuPage;
