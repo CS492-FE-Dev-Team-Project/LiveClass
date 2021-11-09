@@ -14,7 +14,8 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'linebreak-style': 2,
+    'linebreak-style': ['error', require('os').EOL === '\r\n' ? 'windows' : 'unix'],
+	  'prettier/prettier': ['error', { endOfLine: 'auto'} ],
     'import/prefer-default-export': 1,
     'import/extensions': 0,
     'no-use-before-define': 0,
