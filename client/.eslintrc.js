@@ -26,7 +26,6 @@ module.exports = {
     'react/jsx-filename-extension': [2, { extensions: ['.tsx'] }],
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     '@typescript-eslint/no-explicit-any': 'off',
-    'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': ['error']
+    'prettier/prettier': ['error', { endOfLine: 'auto' }] // CRLF 문제 해결
   }
 };
