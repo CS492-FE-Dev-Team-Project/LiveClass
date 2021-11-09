@@ -22,12 +22,16 @@ const OnChatTextMessage = (socket: Socket) => (request: string) => {
 const OnInstructorTimeChange = (socket: Socket) => (request: string) => {
   const { newtime } = JSON.parse(request);
   console.log('newTime: ', newtime);
-  // socket.emit('InstructorTimeChange', {
-  //   time: new Date().toISOString(),
-  //   textMessage
-  // });
 
   socket.to(`Lecture_10`).emit('InstructorTimeChange', `${newtime}`);
+  // socket.to(`Lecture_${lectureId}`).emit(newtime);
+};
+
+const OnInstructorPlayPause = (socket: Socket, isPlay: boolean) => () => {
+  // const { lectureId } = JSON.parse(request); // argument request: string
+  console.log(isPlay ? 'Instructor play' : 'Instructor pause');
+
+  socket.to(`Lecture_10`).emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
   // socket.to(`Lecture_${lectureId}`).emit(newtime);
 };
 
@@ -43,5 +47,7 @@ export default (io: SocketIOServer) => {
 
     // client/youtube.tsx
     socket.on('InstructorTimeChange', OnInstructorTimeChange(socket));
+    socket.on('InstructorPlay', OnInstructorPlayPause(socket, true));
+    socket.on('InstructorPause', OnInstructorPlayPause(socket, false));
   });
 };

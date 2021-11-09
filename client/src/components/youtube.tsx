@@ -37,6 +37,12 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
       socket?.on('InstructorTimeChange', (newtime: number) => {
         video?.seekTo(newtime);
       });
+      socket?.on('InstructorPlay', () => {
+        video?.playVideo();
+      });
+      socket?.on('InstructorPause', () => {
+        video?.pauseVideo();
+      });
     }
     socket?.emit('JoinLecture', `{ "lectureId": ${room} }`);
   }, [connected, video]);
@@ -66,6 +72,10 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
       console.log('buffering!', JO); // #ifdef DBG
 
       socket?.emit('InstructorTimeChange', JO);
+    } else if (evt.data === VideoState.PLAYING) {
+      socket?.emit('InstructorPlay');
+    } else if (evt.data === VideoState.PAUSED) {
+      socket?.emit('InstructorPause');
     }
   };
 
