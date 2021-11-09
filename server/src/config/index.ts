@@ -19,7 +19,10 @@ const connectionOptions: ConnectionOptions = {
 };
 
 export default {
-  env: process.env.NODE_ENV ?? 'DEV',
+  env: process.env.NODE_ENV ?? 'development',
   HTTP_PORT: Number(process.env.SERVER_PORT ?? 5000),
-  connectionOptions
+  connectionOptions,
+  logs: {
+    level: process.env.NODE_ENV === 'production' ? 'error' : 'silly'
+  }
 };
