@@ -15,7 +15,7 @@ const LeftMenuItem = ({ text }: any) => {
 
 const LeftMenu = ({ menus }: any) => {
   return (
-    <Box minH="100vh" maxW="150px" bg="white">
+    <Box minH="100vh" maxW="150px" bg="white" ml="2">
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
         spacing={2}
