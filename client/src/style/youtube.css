@@ -1,3 +1,37 @@
+#youtube-wrapper {
+  width: 1200px;
+  height: 500px;
+}
+
+/* cover hidden */
+/*
+#youtube-wrapper .video-cover {
+  visibility: collapse;
+  opacity: 0;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+*/
+
+/* When class 'coverVideo' is added to the wrapper, the video is hidden */
+#youtube-wrapper.coverVideo .video-container {
+  visibility: hidden;
+  opacity: 0;
+
+  /* -webkit-transition: all 0.1s;
+  transition: all 0.1s; */
+}
+
+/* cover shows up */
+#youtube-wrapper.coverVideo .video-cover {
+  /* visibility: visible; */
+  background-color: black;
+  opacity: 1;
+  height: 100%; /* Set appropriate size */
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
 .student#youtube-wrapper {
   pointer-events: none;
 }

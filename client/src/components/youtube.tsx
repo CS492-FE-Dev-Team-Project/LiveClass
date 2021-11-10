@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
+import { url } from 'inspector';
 import { useSocket } from '../lib/socket';
 
 interface userInfo {
@@ -22,6 +23,7 @@ enum VideoState {
 const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
   const { socket, connected } = useSocket();
+  const videoWrapper = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // For testing #ifdef DBG
@@ -81,6 +83,12 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
       socket?.emit('InstructorPlay');
     } else if (evt.data === VideoState.PAUSED) {
       socket?.emit('InstructorPause');
+
+      // Test - video cover
+      videoWrapper.current?.classList.add('coverVideo');
+      setTimeout(() => {
+        videoWrapper.current?.classList.remove('coverVideo');
+      }, 3000);
     }
   };
 
@@ -96,17 +104,29 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
     }
   };
 
+  // Use to set background image for video cover
+  const imgURL =
+    'https://hips.hearstapps.com/countryliving.cdnds.net/17/47/1511194376-cavachon-puppy-christmas.jpg';
+  const coverStyles = {
+    // backgroundImage: `url(${imgURL})`
+    // backgroundColor: 'black'
+  };
+
   return (
     <div
       className={studentNumber === -1 ? 'teacher' : 'student'}
       id="youtube-wrapper"
+      ref={videoWrapper}
     >
-      <YouTube
-        videoId="dvgZkm1xWPE"
-        opts={options}
-        onReady={onReady}
-        onStateChange={onStateChange}
-      />
+      <div className="video-cover" style={coverStyles} />
+      <div className="video-container">
+        <YouTube
+          videoId="j1_5ttGRzFs"
+          opts={options}
+          onReady={onReady}
+          onStateChange={onStateChange}
+        />
+      </div>
     </div>
   );
 };
