@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 import Chat from '../components/chat';
 
 const ChatTestPage = () => {
-  return <Chat />;
+  return <Chat header="" />;
 };
 
 export default ChatTestPage;

@@ -1,13 +1,13 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import './App.css';
-import LobbyPage from './pages/lobbyPage';
+import ChatTestPage from './pages/chatTestPage';
 
 const App = (): React.ReactElement<any, any> => {
   return (
     <div className="App">
       <ChakraProvider>
-        <LobbyPage />
+        <ChatTestPage />
       </ChakraProvider>
     </div>
   );
