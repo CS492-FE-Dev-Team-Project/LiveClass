@@ -8,16 +8,17 @@ interface ChatMessageProps {
   isMy: boolean;
 }
 
-interface MessageBoxProp {
+interface MessageProps {
   message: string;
   backgroundColor: string;
+  color: string;
 }
 
-const Message = ({ message, backgroundColor }: MessageBoxProp) => {
+const Message = ({ message, backgroundColor, color }: MessageProps) => {
   return (
     <Box
       backgroundColor={backgroundColor}
-      color="black"
+      color={color}
       marginBottom="auto"
       borderRadius="7px"
       fontSize="7px"
@@ -30,7 +31,7 @@ const Message = ({ message, backgroundColor }: MessageBoxProp) => {
 
 const Time = ({ time }: { time: string }) => {
   return (
-    <Box fontSize={5} marginTop="auto" width="fit-content" p={1}>
+    <Box fontSize={5} marginTop="auto" p={1}>
       {time}
     </Box>
   );
@@ -66,11 +67,19 @@ const ChatMessage = ({ userName, message, time, isMy }: ChatMessageProps) => {
         {isMy ? (
           <>
             <Time time={time} />
-            <Message message={message} backgroundColor="blue.100" />
+            <Message
+              message={message}
+              backgroundColor="blue.500"
+              color="gray.50"
+            />
           </>
         ) : (
           <>
-            <Message message={message} backgroundColor="gray.100" />
+            <Message
+              message={message}
+              backgroundColor="gray.100"
+              color="black"
+            />
             <Time time={time} />
           </>
         )}

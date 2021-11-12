@@ -6,14 +6,15 @@ import ChatInput from './chatInput';
 
 interface ChatProps {
   header: string;
+  hasHeader: boolean;
 }
 
-const Chat = ({ header }: ChatProps) => {
+const Chat = ({ header, hasHeader }: ChatProps) => {
   return (
-    <Box maxW={100} h="full" backgroundColor="gray.50">
-      {header.length > 0 && (
+    <Box maxW={200} h="full" backgroundColor="gray.50" position="relative">
+      {hasHeader && (
         <Box backgroundColor="gray.200">
-          <Heading size="sx">Header</Heading>
+          <Heading size="sx">{header}</Heading>
         </Box>
       )}
       <VStack spacing={0}>
