@@ -4,11 +4,11 @@ import { useBreakpointValue } from '@chakra-ui/media-query';
 
 import { AddIcon } from '@chakra-ui/icons';
 import AddClassModal from '../components/lobbyPage/classAddModal';
-import LobbyHeader from '../components/lobbyPage/lobbyHeader';
 import LobbyContent from '../components/lobbyPage/lobbyContent';
 
 import classData from '../data/classData';
 import ClassCard from '../components/lobbyPage/classCard';
+import Header from '../components/common/Header';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -23,7 +23,13 @@ const LobbyPage = () => {
 
   return (
     <>
-      <LobbyHeader backgroundColor="black" color="gray.50" title="LiveClass" />
+      <Header
+        backgroundColor="black"
+        color="gray.50"
+        headingText="LiveClass"
+        headingSize="lg"
+        p={8}
+      />
       <LobbyContent col={col}>
         {classData.map(
           ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (

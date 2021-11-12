@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, CloseButton, Flex } from '@chakra-ui/react';
+import { CloseButton, Flex } from '@chakra-ui/react';
 import ChatMessage from './chatMessage';
 import Messages from '../data/chatMessages';
 import ChatInput from './chatInput';
