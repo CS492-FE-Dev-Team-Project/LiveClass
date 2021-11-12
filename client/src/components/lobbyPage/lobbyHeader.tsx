@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/layout';
+import Header from '../common/Header';
 
 interface LobbyHeaderProps {
   backgroundColor: string;
@@ -9,9 +9,13 @@ interface LobbyHeaderProps {
 
 const LobbyHeader = ({ backgroundColor, color, title }: LobbyHeaderProps) => {
   return (
-    <Box width="full" p={8} backgroundColor={backgroundColor} color={color}>
-      <Heading>{title}</Heading>
-    </Box>
+    <Header
+      backgroundColor={backgroundColor}
+      color={color}
+      headingText={title}
+      headingSize="lg"
+      p={8}
+    />
   );
 };
 
