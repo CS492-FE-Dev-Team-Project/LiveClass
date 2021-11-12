@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, VStack, Heading } from '@chakra-ui/react';
+import { Box, VStack, Heading, CloseButton, Flex } from '@chakra-ui/react';
 import ChatMessage from './chatMessage';
 import Messages from '../data/chatMessages';
 import ChatInput from './chatInput';
@@ -11,13 +11,16 @@ interface ChatProps {
 
 const Chat = ({ header, hasHeader }: ChatProps) => {
   return (
-    <Box maxW={200} h="full" backgroundColor="gray.50" position="relative">
+    <Flex maxW={200} maxH="100vh" backgroundColor="gray.50" flexDir="column">
       {hasHeader && (
-        <Box backgroundColor="gray.200">
-          <Heading size="sx">{header}</Heading>
-        </Box>
+        <Flex backgroundColor="gray.200" flexDir="row">
+          <Heading size="sx" m={2}>
+            {header}
+          </Heading>
+          <CloseButton marginLeft="auto" size="sm" />
+        </Flex>
       )}
-      <VStack spacing={0}>
+      <Flex overflowY="auto" pb={3} pt={3} flexDir="column">
         {Messages.map(({ userName, message, time, id, isMy }) => (
           <ChatMessage
             key={id}
@@ -27,9 +30,9 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
             isMy={isMy}
           />
         ))}
-      </VStack>
+      </Flex>
       <ChatInput />
-    </Box>
+    </Flex>
   );
 };
 

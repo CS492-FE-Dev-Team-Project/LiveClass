@@ -4,14 +4,7 @@ import { ChatIcon, TimeIcon } from '@chakra-ui/icons';
 
 const ChatInput = () => {
   return (
-    <Flex
-      p="8px 6px"
-      w="full"
-      backgroundColor="white"
-      flexDir="column"
-      position="absolute"
-      b={0}
-    >
+    <Flex p="8px 6px" w="full" backgroundColor="white" flexDir="column">
       <Textarea
         placeholder="Chat"
         fontSize={8}

@@ -56,7 +56,7 @@ const Username = ({ userName }: { userName: string }) => {
 
 const ChatMessage = ({ userName, message, time, isMy }: ChatMessageProps) => {
   return (
-    <Box width="full" p={2} m={0}>
+    <Box width="full" p="4px 8px 0px" m={0}>
       {!isMy && <Username userName={userName} />}
       <Flex
         display="flex"

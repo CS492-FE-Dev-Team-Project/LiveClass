@@ -29,6 +29,62 @@ const Messages = [
       ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     time: '17:21',
     isMy: false
+  },
+  {
+    id: 6,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
+  },
+  {
+    id: 7,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
+  },
+  {
+    id: 8,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
+  },
+  {
+    id: 9,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
+  },
+  {
+    id: 10,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
+  },
+  {
+    id: 11,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
+  },
+  {
+    id: 12,
+    userName: 'JH',
+    message:
+      ' It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    time: '17:21',
+    isMy: false
   }
 ];
 
