@@ -1,17 +1,40 @@
 import React from 'react';
-import { Input } from '@chakra-ui/input';
-import { Box, HStack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/button';
+import { IconButton, Textarea, Flex } from '@chakra-ui/react';
+import { ChatIcon, TimeIcon } from '@chakra-ui/icons';
 
 const ChatInput = () => {
   return (
-    <Box p="10px 8px" backgroundColor="white">
-      <Input placeholder="Chat" size="xs" variant="flushed" />
-      <HStack>
-        <Button size="xs">Q</Button>
-        <Button size="xs">Send</Button>
-      </HStack>
-    </Box>
+    <Flex
+      p="8px 6px"
+      w="full"
+      backgroundColor="white"
+      flexDir="column"
+      position="absolute"
+      b={0}
+    >
+      <Textarea
+        placeholder="Chat"
+        fontSize={8}
+        rows={2}
+        m={0.5}
+        p="5px 5px"
+        resize="vertical"
+      />
+      <Flex justifyContent="right">
+        <IconButton
+          size="xs"
+          icon={<TimeIcon />}
+          aria-label="Timeline"
+          m={0.5}
+        />
+        <IconButton
+          size="xs"
+          icon={<ChatIcon />}
+          aria-label="Send Message"
+          m={0.5}
+        />
+      </Flex>
+    </Flex>
   );
 };
 
