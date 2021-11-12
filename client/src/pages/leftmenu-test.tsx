@@ -1,5 +1,5 @@
 import React from 'react';
-import LeftMenu from '../components/leftmenu';
+import LeftMenu from '../components/leftmenu/leftmenu';
 
 const LeftMenuPage = (): React.ReactElement<any, any> => {
   const menus = [
