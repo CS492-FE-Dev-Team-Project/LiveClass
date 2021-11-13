@@ -20,7 +20,6 @@ const OnChatTextMessage = (socket: Socket) => (request: string) => {
 
 const OnInstructorTimeChange = (socket: Socket) => (request: string) => {
   const { lectureId, newtime } = JSON.parse(request);
-  // console.log('newTime: ', newtime);
 
   socket.to(`Lecture_${lectureId}`).emit('InstructorTimeChange', `${newtime}`);
 };
@@ -28,7 +27,6 @@ const OnInstructorTimeChange = (socket: Socket) => (request: string) => {
 const OnInstructorPlayPause =
   (socket: Socket, isPlay: boolean) => (request: string) => {
     const { lectureId } = JSON.parse(request); // argument request: string
-    // console.log(isPlay ? 'Instructor play' : 'Instructor pause');
 
     socket
       .to(`Lecture_${lectureId}`)
