@@ -3,12 +3,16 @@ import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
 import { url } from 'inspector';
+import { EnumNumberBody } from '@babel/types';
 import { useSocket } from '../lib/socket';
 
+//
 interface userInfo {
   name: string;
   studentNumber: number;
   room: number;
+  width?: number;
+  height?: number;
 }
 
 enum VideoState {
@@ -20,7 +24,13 @@ enum VideoState {
   CUED = 5
 }
 
-const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
+const YouTubePlayer = ({
+  name,
+  studentNumber,
+  room,
+  width = 640,
+  height = 360
+}: userInfo) => {
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
   const { socket, connected } = useSocket();
   const videoWrapper = useRef<HTMLDivElement>(null);
@@ -33,6 +43,17 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
     // socket?.on('InstructorTimeChange', (newtime: newTime) => {
     //   console.log(`move video to new time : ${newtime}`);
     // });
+
+    // Set size
+    // if (videoWrapper.current) {
+    //   console.log(videoWrapper.current.style.width);
+    //   videoWrapper.current.style.width = width.toString();
+    //   videoWrapper.current.style.height = height.toString();
+    //   console.log(videoWrapper.current.style.width);
+    //   // not working
+    // }
+    // console.log(width, height);
+    video?.setSize(width, height);
 
     // If not instructor, sync video time
     if (studentNumber !== -1) {
@@ -88,7 +109,7 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
       videoWrapper.current?.classList.add('coverVideo');
       setTimeout(() => {
         videoWrapper.current?.classList.remove('coverVideo');
-      }, 3000);
+      }, 1000);
     }
   };
 
@@ -117,6 +138,10 @@ const YouTubePlayer = ({ name, studentNumber, room }: userInfo) => {
       className={studentNumber === -1 ? 'teacher' : 'student'}
       id="youtube-wrapper"
       ref={videoWrapper}
+      style={{
+        width,
+        height
+      }}
     >
       <div className="video-cover" style={coverStyles} />
       <div className="video-container">
