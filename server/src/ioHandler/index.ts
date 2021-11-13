@@ -1,5 +1,4 @@
 import { Server as SocketIOServer, Socket } from 'socket.io';
-import io from '../loader/io';
 import Logger from '../loader/logger';
 
 const OnJoinLecture = (socket: Socket) => (request: string) => {

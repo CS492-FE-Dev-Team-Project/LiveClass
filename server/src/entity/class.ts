@@ -5,13 +5,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany
+  OneToMany,
+  UpdateDateColumn
 } from 'typeorm';
 import ClassMember from './classMember';
+import Lecture from './lecture';
 
 @Entity()
-export default class User extends BaseEntity {
+export default class Class extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -22,10 +23,14 @@ export default class User extends BaseEntity {
   public updatedDate: Date;
 
   @Column('varchar')
-  public userName: string;
+  public className: string;
 
-  // TODO: add SSOAcounts
+  @Column()
+  public classCode: string;
 
-  @OneToMany(() => ClassMember, classMember => classMember.member)
-  public classes: ClassMember[];
+  @OneToMany(() => Lecture, lecture => lecture.class)
+  public lectures: Lecture[];
+
+  @OneToMany(() => ClassMember, classMember => classMember.class)
+  public members: ClassMember[];
 }

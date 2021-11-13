@@ -8,7 +8,8 @@
     "prepare": "cp .env.example .env",
     "up": "docker-compose up -d && docker logs -f -t cs492c-api-server",
     "down": "docker-compose down",
-    "start": "nodemon -L"
+    "start": "nodemon -L",
+    "build": "docker-compose build"
   },
   "lint-staged": {
     "src/**/*.ts": [
