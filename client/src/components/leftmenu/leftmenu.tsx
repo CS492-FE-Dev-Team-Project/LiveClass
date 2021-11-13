@@ -6,7 +6,7 @@ import LeftMenuButton from './leftmenubutton';
 
 const LeftMenu = ({ menus }: any) => {
   return (
-    <Box minH="100vh" maxW="150px" bg="white" ml="2">
+    <Box minH="100vh" maxW="150px" ml="2">
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
         spacing={0}
@@ -19,7 +19,7 @@ const LeftMenu = ({ menus }: any) => {
           />
         ))}
       </VStack>
-      <Box>
+      <Box position="absolute" bottom={3}>
         <LeftMenuButton
           name="Setting"
           color="gray"
