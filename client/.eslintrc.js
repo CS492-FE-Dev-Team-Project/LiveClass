@@ -25,7 +25,7 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     '@typescript-eslint/no-explicit-any': 'off',
     'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': ['error']
-    // https://stackoverflow.com/questions/63961803/eslint-says-all-enums-in-typescript-app-are-already-declared-in-the-upper-scope
+    '@typescript-eslint/no-shadow': ['error'], // https://stackoverflow.com/questions/63961803/eslint-says-all-enums-in-typescript-app-are-already-declared-in-the-upper-scope
+    'react/require-default-props': 'off' // https://stackoverflow.com/questions/63696724/eslint-problem-with-default-props-in-functional-component-typescript-react
   }
 };

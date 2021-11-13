@@ -3,28 +3,19 @@ import React from 'react';
 import './App.css';
 import ChatTestPage from './pages/chatTestPage';
 
-// import Instructor from './pages/youtubeTestPage_instructor'
-// import Participant from './pages/youtubeTestPage_participant'
+import YoutubeTestPage from './pages/youtubeTestPage_combined';
 
 const App = (): React.ReactElement<any, any> => {
   return (
-    <div className="App">
-      <ChakraProvider>
-        <ChatTestPage />
-      </ChakraProvider>
-    </div>
-  );
-
-  /* 
-  // YouTube component test page
     <>
-      <h1>Instructor</h1>
-      <div className="App">{Instructor}</div>
-      <h1>Participant</h1>
-      <div className="App">{Participant}</div>
+      {YoutubeTestPage}
+
+      <div className="App">
+        <ChakraProvider>
+          <ChatTestPage />
+        </ChakraProvider>
+      </div>
     </>
-  */
-
-
+  );
 };
 export default App;

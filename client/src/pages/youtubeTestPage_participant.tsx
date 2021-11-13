@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import YouTube from '../components/youtube';
 
 import { SocketProvider } from '../lib/socket';
 
 const YouTubePage = (): React.ReactElement<any, any> => {
-  // For example
+  // Participant example
   const user = {
     name: 'Park',
     studentNumber: 123, // -1
