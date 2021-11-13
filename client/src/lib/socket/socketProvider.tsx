@@ -28,13 +28,12 @@ function SocketProvider({
     const newSocket: Socket = io(url, options);
     setSocket(newSocket);
 
-    console.log('Socket Created');
-
     newSocket.on('connect', () => {
       setConnected(true);
     });
 
     newSocket.on('disconnect', () => {
+      newSocket.removeAllListeners();
       setConnected(false);
     });
 
@@ -46,7 +45,7 @@ function SocketProvider({
       setSocket(null);
       newSocket.disconnect();
     };
-  }, []);
+  }, [url, options]);
 
   const getSocket = () => socket;
   const getConnected = () => connected;

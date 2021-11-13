@@ -1,24 +1,36 @@
-import { createServer } from 'http';
-import expressApp from 'express';
+import { createServer, Server as httpServer } from 'http';
+import express from 'express';
 import { Server as SocketIOServer } from 'socket.io';
 
 import config from './config';
 import { expressLoader, ioLoader, ormLoader } from './loader';
+import Logger from './loader/logger';
 
 class Server {
+  private httpServer: httpServer;
+
+  private io: SocketIOServer;
+
+  private expressApp: express.Application;
+
+  constructor() {
+    this.expressApp = express();
+    this.httpServer = createServer(this.expressApp);
+    this.io = new SocketIOServer(this.httpServer, { cors: { origin: '*' } });
+  }
+
   public static async start(): Promise<void> {
-    const app = expressApp();
-    const server = createServer(app);
-    const io = new SocketIOServer(server, { cors: { origin: '*' } });
+    const server = new Server();
+
+    const { expressApp, io } = server;
 
     /** Loaders */
-    expressLoader(app);
+    expressLoader(expressApp);
     ioLoader(io);
     await ormLoader();
 
-    server.listen(config.HTTP_PORT, () => {
-      // eslint-disable-next-line no-console
-      console.log(`Server running on port ${config.HTTP_PORT}`);
+    server.httpServer.listen(config.HTTP_PORT, () => {
+      Logger.info(`Server running on port ${config.HTTP_PORT}`);
     });
   }
 }

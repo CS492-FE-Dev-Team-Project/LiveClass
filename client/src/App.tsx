@@ -11,5 +11,4 @@ const App = (): React.ReactElement<any, any> => {
     </div>
   );
 };
-
 export default App;
