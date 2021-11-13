@@ -20,20 +20,21 @@ const OnChatTextMessage = (socket: Socket) => (request: string) => {
 };
 
 const OnInstructorTimeChange = (socket: Socket) => (request: string) => {
-  const { newtime } = JSON.parse(request);
-  console.log('newTime: ', newtime);
+  const { lectureId, newtime } = JSON.parse(request);
+  // console.log('newTime: ', newtime);
 
-  socket.to(`Lecture_10`).emit('InstructorTimeChange', `${newtime}`);
-  // socket.to(`Lecture_${lectureId}`).emit(newtime);
+  socket.to(`Lecture_${lectureId}`).emit('InstructorTimeChange', `${newtime}`);
 };
 
-const OnInstructorPlayPause = (socket: Socket, isPlay: boolean) => () => {
-  // const { lectureId } = JSON.parse(request); // argument request: string
-  console.log(isPlay ? 'Instructor play' : 'Instructor pause');
+const OnInstructorPlayPause =
+  (socket: Socket, isPlay: boolean) => (request: string) => {
+    const { lectureId } = JSON.parse(request); // argument request: string
+    // console.log(isPlay ? 'Instructor play' : 'Instructor pause');
 
-  socket.to(`Lecture_10`).emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
-  // socket.to(`Lecture_${lectureId}`).emit(newtime);
-};
+    socket
+      .to(`Lecture_${lectureId}`)
+      .emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
+  };
 
 export default (io: SocketIOServer) => {
   io.on('connection', (socket: Socket) => {

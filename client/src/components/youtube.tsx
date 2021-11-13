@@ -71,23 +71,21 @@ const YouTubePlayer = ({
   const onStateChange = (evt: any) => {
     const player = evt.target;
 
+    const JO = JSON.stringify({
+      lectureId: room,
+      newtime: player.getCurrentTime()
+    });
+
     // When instructor changes video time : (onStateChange evt) pause-buffer-play
     // For now, detect 'buffer' as a cue of video time change
     if (evt.data === VideoState.BUFFERING) {
-      const JO = JSON.stringify({
-        newtime: player.getCurrentTime()
-      });
-
       socket?.emit('InstructorTimeChange', JO);
     } else if (evt.data === VideoState.PLAYING) {
       // In case of changing video time while paused - update time when resume playing
-      const JO = JSON.stringify({
-        newtime: player.getCurrentTime()
-      });
       socket?.emit('InstructorTimeChange', JO);
-      socket?.emit('InstructorPlay');
+      socket?.emit('InstructorPlay', JO);
     } else if (evt.data === VideoState.PAUSED) {
-      socket?.emit('InstructorPause');
+      socket?.emit('InstructorPause', JO);
     }
   };
 
