@@ -17,6 +17,9 @@ const YouTubePage = (): React.ReactElement<any, any> => {
       name={user.name}
       studentNumber={user.studentNumber}
       room={user.room}
+      videoId="j1_5ttGRzFs"
+      width={300}
+      height={200}
     />
   );
 };
