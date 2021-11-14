@@ -1,21 +1,14 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
-import './App.css';
-import ChatTestPage from './pages/chatTestPage';
-
-import YoutubeTestPage from './pages/youtubeTestPage_combined';
+import LeftMenuPage from './pages/leftmenuTestPage';
 
 const App = (): React.ReactElement<any, any> => {
   return (
-    <>
-      {YoutubeTestPage}
-
-      <div className="App">
-        <ChakraProvider>
-          <ChatTestPage />
-        </ChakraProvider>
-      </div>
-    </>
+    <div className="App">
+      <ChakraProvider>
+        <LeftMenuPage />
+      </ChakraProvider>
+    </div>
   );
 };
 export default App;
