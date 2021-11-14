@@ -4,6 +4,7 @@ import '../style/youtube.css';
 
 import { useSocket } from '../lib/socket';
 
+import Flag from './timeline';
 //
 interface userInfo {
   name: string;
@@ -23,6 +24,11 @@ enum VideoState {
   CUED = 5
 }
 
+export interface flagInfo {
+  time: number;
+  message: string;
+}
+
 const YouTubePlayer = ({
   name,
   studentNumber,
@@ -34,6 +40,12 @@ const YouTubePlayer = ({
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
   const { socket, connected } = useSocket();
   const videoWrapper = useRef<HTMLDivElement>(null);
+  const videoDuration = useRef(0);
+
+  const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
+    { time: 30, message: 'A' },
+    { time: 50, message: 'B' }
+  ]); // 🐛 get flagInfoArr by calling DB API
 
   // Cover/uncover video - for ad time or buffering
   const cover = () => videoWrapper.current?.classList.add('coverVideo');
@@ -64,7 +76,9 @@ const YouTubePlayer = ({
   }, [connected, video]);
 
   const onReady = (evt: any) => {
+    // console.log(evt.target.playerInfo.duration);
     setVideo(evt.target);
+    videoDuration.current = evt.target.playerInfo.duration;
   };
 
   // Take care of sync logic here
@@ -118,6 +132,11 @@ const YouTubePlayer = ({
         height
       }}
     >
+      {flagInfoArr.map((info, idx) => {
+        const MAX = videoDuration.current;
+        return <Flag time={(info.time / MAX) * 100} message={info.message} />;
+      })}
+
       <div className="video-cover" style={coverStyles} />
       <div className="video-container">
         <YouTube
