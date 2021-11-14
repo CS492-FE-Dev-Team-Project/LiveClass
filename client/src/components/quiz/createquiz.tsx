@@ -15,16 +15,21 @@ import { FormControl, FormLabel } from '@chakra-ui/form-control';
 
 import { Input } from '@chakra-ui/input';
 
-const QuizUser = ({ quiz, disclosure }: any) => {
+import { Field, FieldArray, Form, Formik, getIn } from 'formik';
+
+const CreateQuiz = ({ quiz, disclosure }: any) => {
   const { isOpen, onOpen, onClose } = disclosure;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{quiz.quizTitle}</ModalHeader>
+        <ModalHeader>Create Quiz</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box>{quiz.quizContents}</Box>
+          <Box>{quiz.quizTitle}</Box>
+          <Input type="text" placeholder="Write problem here" />
+          <Box>{quiz.quizAnswer}</Box>
           <Input type="text" placeholder="Write answer here" />
         </ModalBody>
         <ModalFooter>
@@ -40,4 +45,4 @@ const QuizUser = ({ quiz, disclosure }: any) => {
   );
 };
 
-export default QuizUser;
+export default CreateQuiz;
