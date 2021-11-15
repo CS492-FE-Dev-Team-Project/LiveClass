@@ -52,7 +52,9 @@ const YouTubePlayer = ({
   // -- 🐛 Mockup data--
   const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
     { time: 30, message: 'A' },
-    { time: 50, message: 'B' }
+    { time: 50, message: 'B' },
+    { time: -1, message: 'C' },
+    { time: 100, message: 'D' }
   ]); // get real 'flagInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
@@ -164,9 +166,16 @@ const YouTubePlayer = ({
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
         {flagInfoArr.map((info, idx) => {
           if (videoDuration.current === 0) return <div />;
+
+          // edge cases for time - outside [0, videoDuration]
+          let { time } = info;
+          if (info.time > videoDuration.current)
+            time = videoDuration.current - 5;
+          else if (info.time < 0) time = 0;
+
           return (
             <Flag
-              time={(info.time / videoDuration.current) * 100}
+              time={(time / videoDuration.current) * 100}
               message={info.message}
             />
           );
@@ -179,7 +188,9 @@ const YouTubePlayer = ({
             height="5px"
             width="100%"
             value={
-              videoDuration ? (videoCurrent / videoDuration.current) * 100 : 0
+              videoDuration.current
+                ? (videoCurrent / videoDuration.current) * 100
+                : 0
             }
           />
         ) : (
