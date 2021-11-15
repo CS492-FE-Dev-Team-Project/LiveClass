@@ -40,7 +40,7 @@ const YouTubePlayer = ({
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
   const { socket, connected } = useSocket();
   const videoWrapper = useRef<HTMLDivElement>(null);
-  const videoDuration = useRef(0);
+  const [videoDuration, setVideoDuration] = useState<number>(0);
 
   const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
     { time: 30, message: 'A' },
@@ -78,7 +78,7 @@ const YouTubePlayer = ({
   const onReady = (evt: any) => {
     // console.log(evt.target.playerInfo.duration);
     setVideo(evt.target);
-    videoDuration.current = evt.target.playerInfo.duration;
+    setVideoDuration(evt.target.playerInfo.duration);
   };
 
   // Take care of sync logic here
@@ -110,7 +110,8 @@ const YouTubePlayer = ({
     playerVars: {
       autoplay: 1 as const,
       controls: studentNumber === -1 ? (1 as const) : (0 as const),
-      disablekb: studentNumber === -1 ? (0 as const) : (1 as const)
+      disablekb: studentNumber === -1 ? (0 as const) : (1 as const),
+      rel: 0 as const
     }
   };
 
@@ -132,14 +133,21 @@ const YouTubePlayer = ({
         height
       }}
     >
-      {flagInfoArr.map((info, idx) => {
-        const MAX = videoDuration.current;
-        return <Flag time={(info.time / MAX) * 100} message={info.message} />;
-      })}
-
+      <div className="video-timeline-components">
+        {flagInfoArr.map((info, idx) => {
+          if (videoDuration === 0) return <div />;
+          return (
+            <Flag
+              time={(info.time / videoDuration) * 100}
+              message={info.message}
+            />
+          );
+        })}
+      </div>
       <div className="video-cover" style={coverStyles} />
       <div className="video-container">
         <YouTube
+          className="video"
           videoId={videoId}
           opts={options}
           onReady={onReady}
