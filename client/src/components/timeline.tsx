@@ -1,22 +1,17 @@
-import { AlertDialogBody } from '@chakra-ui/modal';
 import React from 'react';
-import { flagInfo } from './youtube';
-
-interface timeInput {
-  loc: number;
-}
+import { flagInfo } from './youtube'; // props type
 
 const timeline = ({ time, message }: flagInfo) => {
+  // 🐛 DO SOMETHING HERE
   const onClickEvt = () => {
     alert(message);
   };
 
-  console.log(time);
   return (
     <button
       className="timeline-flag"
       style={{
-        left: `${time}%`
+        left: `${time}%` /* ratio of current time to video duration */
       }}
       type="button"
       aria-label="timeline"

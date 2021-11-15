@@ -38,19 +38,22 @@ const YouTubePlayer = ({
   width = 640,
   height = 360
 }: userInfo) => {
-  const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
   const { socket, connected } = useSocket();
-  const videoWrapper = useRef<HTMLDivElement>(null);
-  const [videoCurrent, setVideoCurrent] = useState<number>(0);
+  const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
 
+  const [videoCurrent, setVideoCurrent] = useState<number>(0);
   const videoDuration = useRef<number>(0);
   const intervalID = useRef<NodeJS.Timeout | null>(null);
+
+  // DOM ref
+  const videoWrapper = useRef<HTMLDivElement>(null);
   const videoTimelineWrapper = useRef<HTMLDivElement>(null);
 
+  // -- 🐛 Mockup data--
   const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
     { time: 30, message: 'A' },
     { time: 50, message: 'B' }
-  ]); // 🐛 get flagInfoArr by calling DB API
+  ]); // get real 'flagInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
   const cover = () => videoWrapper.current?.classList.add('coverVideo');
@@ -62,6 +65,12 @@ const YouTubePlayer = ({
     uncover();
   }, 2000);
   */
+
+  // Initialize
+  const onReady = (evt: any) => {
+    setVideo(evt.target);
+    videoDuration.current = evt.target.playerInfo.duration;
+  };
 
   // Set socket listeners and join room
   useEffect(() => {
@@ -80,22 +89,13 @@ const YouTubePlayer = ({
     socket?.emit('JoinLecture', `{ "lectureId": ${room} }`);
   }, [connected, video]);
 
-  const onReady = (evt: any) => {
-    console.log(evt.target.playerInfo);
-    setVideo(evt.target);
-    // setVideoDuration(evt.target.playerInfo.duration);
-    videoDuration.current = evt.target.playerInfo.duration;
-    console.log('Duration update : ', videoDuration.current);
-  };
-
-  // Set new setInterval on play
+  // (For progress bar time) Set new setInterval on play
   const onPlay = (evt: any) => {
     intervalID.current = setInterval(() => {
       setVideoCurrent(video.getCurrentTime());
     }, 100);
   };
-
-  // Remove setInterval on pause
+  // (For progress bar time) Remove setInterval on pause
   const onPause = (evt: any) => {
     clearInterval(intervalID.current as NodeJS.Timeout);
   };
@@ -136,7 +136,7 @@ const YouTubePlayer = ({
     }
   };
 
-  // Use to set background image for video cover
+  // (Optional - default : black backgroun) Use to set background image for video cover
   const imgURL =
     'https://previews.123rf.com/images/sevenozz/sevenozz1812/sevenozz181200056/127054720-vintage-tv-test-screen-please-stand-by-television-calibration-pattern.jpg';
   const coverStyles = {
@@ -160,6 +160,7 @@ const YouTubePlayer = ({
         videoTimelineWrapper.current?.classList.remove('showTimeline');
       }}
     >
+      {/* Overlay components on top of video player - timeline component and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
         {flagInfoArr.map((info, idx) => {
           if (videoDuration.current === 0) return <div />;
@@ -174,7 +175,7 @@ const YouTubePlayer = ({
           <Progress
             colorScheme="red"
             position="absolute"
-            bottom="40px"
+            bottom="5px"
             height="5px"
             width="100%"
             value={
@@ -182,7 +183,7 @@ const YouTubePlayer = ({
             }
           />
         ) : (
-          <div />
+          <div /> /* Empty */
         )}
       </div>
       <div className="video-cover" style={coverStyles} />
