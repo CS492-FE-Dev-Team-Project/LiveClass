@@ -18,6 +18,21 @@ const OnChatTextMessage = (socket: Socket) => (request: string) => {
   socket.to(`Lecture_${lectureId}`).emit(textMessage);
 };
 
+const OnInstructorTimeChange = (socket: Socket) => (request: string) => {
+  const { lectureId, newtime } = JSON.parse(request);
+
+  socket.to(`Lecture_${lectureId}`).emit('InstructorTimeChange', `${newtime}`);
+};
+
+const OnInstructorPlayPause =
+  (socket: Socket, isPlay: boolean) => (request: string) => {
+    const { lectureId } = JSON.parse(request); // argument request: string
+
+    socket
+      .to(`Lecture_${lectureId}`)
+      .emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
+  };
+
 export default (io: SocketIOServer) => {
   io.on('connection', (socket: Socket) => {
     Logger.info('User connected');
@@ -27,5 +42,10 @@ export default (io: SocketIOServer) => {
 
     socket.on('JoinLecture', OnJoinLecture(socket));
     socket.on('ChatTextMessage', OnChatTextMessage(socket));
+
+    // client/youtube.tsx
+    socket.on('InstructorTimeChange', OnInstructorTimeChange(socket));
+    socket.on('InstructorPlay', OnInstructorPlayPause(socket, true));
+    socket.on('InstructorPause', OnInstructorPlayPause(socket, false));
   });
 };
