@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
+import { Progress } from '@chakra-ui/react';
 import { useSocket } from '../lib/socket';
 
 import Flag from './timeline';
@@ -40,7 +41,10 @@ const YouTubePlayer = ({
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
   const { socket, connected } = useSocket();
   const videoWrapper = useRef<HTMLDivElement>(null);
-  const [videoDuration, setVideoDuration] = useState<number>(0);
+  const [videoCurrent, setVideoCurrent] = useState<number>(0);
+
+  const videoDuration = useRef<number>(0);
+  const intervalID = useRef<NodeJS.Timeout | null>(null);
   const videoTimelineWrapper = useRef<HTMLDivElement>(null);
 
   const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
@@ -77,9 +81,23 @@ const YouTubePlayer = ({
   }, [connected, video]);
 
   const onReady = (evt: any) => {
-    // console.log(evt.target.playerInfo.duration);
+    console.log(evt.target.playerInfo);
     setVideo(evt.target);
-    setVideoDuration(evt.target.playerInfo.duration);
+    // setVideoDuration(evt.target.playerInfo.duration);
+    videoDuration.current = evt.target.playerInfo.duration;
+    console.log('Duration update : ', videoDuration.current);
+  };
+
+  // Set new setInterval on play
+  const onPlay = (evt: any) => {
+    intervalID.current = setInterval(() => {
+      setVideoCurrent(video.getCurrentTime());
+    }, 100);
+  };
+
+  // Remove setInterval on pause
+  const onPause = (evt: any) => {
+    clearInterval(intervalID.current as NodeJS.Timeout);
   };
 
   // Take care of sync logic here
@@ -144,14 +162,28 @@ const YouTubePlayer = ({
     >
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
         {flagInfoArr.map((info, idx) => {
-          if (videoDuration === 0) return <div />;
+          if (videoDuration.current === 0) return <div />;
           return (
             <Flag
-              time={(info.time / videoDuration) * 100}
+              time={(info.time / videoDuration.current) * 100}
               message={info.message}
             />
           );
         })}
+        {studentNumber !== -1 ? (
+          <Progress
+            colorScheme="red"
+            position="absolute"
+            bottom="40px"
+            height="5px"
+            width="100%"
+            value={
+              videoDuration ? (videoCurrent / videoDuration.current) * 100 : 0
+            }
+          />
+        ) : (
+          <div />
+        )}
       </div>
       <div className="video-cover" style={coverStyles} />
       <div className="video-container">
@@ -160,6 +192,8 @@ const YouTubePlayer = ({
           videoId={videoId}
           opts={options}
           onReady={onReady}
+          onPlay={onPlay}
+          onPause={onPause}
           onStateChange={onStateChange}
         />
       </div>
