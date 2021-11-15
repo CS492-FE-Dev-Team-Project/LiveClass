@@ -41,6 +41,7 @@ const YouTubePlayer = ({
   const { socket, connected } = useSocket();
   const videoWrapper = useRef<HTMLDivElement>(null);
   const [videoDuration, setVideoDuration] = useState<number>(0);
+  const videoTimelineWrapper = useRef<HTMLDivElement>(null);
 
   const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
     { time: 30, message: 'A' },
@@ -83,6 +84,8 @@ const YouTubePlayer = ({
 
   // Take care of sync logic here
   const onStateChange = (evt: any) => {
+    if (studentNumber !== -1) return;
+
     const player = evt.target;
 
     const JO = JSON.stringify({
@@ -132,8 +135,14 @@ const YouTubePlayer = ({
         width,
         height
       }}
+      onMouseEnter={() => {
+        videoTimelineWrapper.current?.classList.add('showTimeline');
+      }}
+      onMouseLeave={() => {
+        videoTimelineWrapper.current?.classList.remove('showTimeline');
+      }}
     >
-      <div className="video-timeline-components">
+      <div className="video-timeline-components" ref={videoTimelineWrapper}>
         {flagInfoArr.map((info, idx) => {
           if (videoDuration === 0) return <div />;
           return (
