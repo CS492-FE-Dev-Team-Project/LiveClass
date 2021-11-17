@@ -6,10 +6,11 @@ import LeftMenuButton from './leftmenubutton';
 
 const LeftMenu = ({ menus }: any) => {
   return (
-    <Box minH="100vh" maxW="150px" ml="2">
+    <Box h="100vh" ml="2">
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
         spacing={0}
+        w="150px"
         align="stretch"
       >
         {menus.map((menu: any) => (

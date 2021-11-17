@@ -12,7 +12,7 @@ interface ChatProps {
 
 const Chat = ({ header, hasHeader }: ChatProps) => {
   return (
-    <Flex maxW={200} h="100vh" backgroundColor="gray.50" flexDir="column">
+    <Flex w={300} h="100vh" backgroundColor="gray.50" flexDir="column">
       {hasHeader && (
         <Header
           backgroundColor="gray.200"

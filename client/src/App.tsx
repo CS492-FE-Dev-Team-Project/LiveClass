@@ -1,12 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
-import LeftMenuPage from './pages/leftmenuTestPage';
+import ClassPage from './pages/classPage';
 
 const App = (): React.ReactElement<any, any> => {
   return (
     <div className="App">
       <ChakraProvider>
-        <LeftMenuPage />
+        <ClassPage />
       </ChakraProvider>
     </div>
   );
