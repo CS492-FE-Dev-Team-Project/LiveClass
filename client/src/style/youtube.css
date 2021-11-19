@@ -1,5 +1,11 @@
-#youtube-wrapper .video-cover {
+/* Position any components inside 'youtube-wrapper' with absolute */
+#youtube-wrapper {
   position: relative;
+}
+
+/* Video cover for buferring, ad-roll - cover whole player */
+#youtube-wrapper .video-cover {
+  position: static;
   display: none;
   width: 100%;
   height: 100%;
@@ -8,11 +14,11 @@
   right: 0;
   bottom: 0;
   background-color: black;
-  z-index: 2;
+  z-index: 3; /* Above everything */
 }
 
 #youtube-wrapper .video-container {
-  position: relative;
+  position: static;
   display: block;
   width: 100%;
   height: 100%;
@@ -20,7 +26,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 1; /* Below everything */
 }
 
 /* When class 'coverVideo' is added to the wrapper, the video is hidden */
@@ -38,6 +44,46 @@
   */
 }
 
-.student#youtube-wrapper {
+/* Disable all mouse pointer events for participants (students) */
+.student#youtube-wrapper .video-container {
   pointer-events: none;
+}
+
+/* Timeline component */
+
+/* Show Timeline component on mouse hover in 'youtube-wrapper' */
+.video-timeline-components {
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.video-timeline-components.showTimeline {
+  visibility: visible;
+  opacity: 1;
+
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+/* Timeline component design */
+.timeline-flag {
+  position: absolute; /* timeline component should be placed inside youtube-wrapper with pos:relative*/
+  bottom: 45px; /* Right above YouTube iframe progress bar */
+
+  width: 15px;
+  height: 15px;
+
+  background-color: blue; /* change accordingly */
+  z-index: 2; /* above video, below cover */
+}
+
+.student#youtube-wrapper .timeline-flag {
+  bottom: 10px; /* match with 'bottom' of chakra-UI <Progress /> */
+}
+
+/* For test */
+.timeline-flag:hover {
+  background-color: red;
 }
