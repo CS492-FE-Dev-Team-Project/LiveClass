@@ -1,9 +1,8 @@
 import passport from 'passport';
 import { Server as SocketIOServer, Socket } from 'socket.io';
 import ioHandler from '../ioHandler';
-import sessionMiddleware from './session';
 
-export default (io: SocketIOServer) => {
+export default (io: SocketIOServer, sessionMiddleware: any) => {
   const wrap = (middleware: any) => (socket: Socket, next: any) =>
     middleware(socket.request, {}, next);
 
