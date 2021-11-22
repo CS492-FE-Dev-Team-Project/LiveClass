@@ -1,18 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import morgan, { StreamOptions } from 'morgan';
-import session from 'express-session';
-import { Connection } from 'typeorm';
-import { TypeormStore } from 'typeorm-store';
 import passport from 'passport';
 import myPassport from '../passport';
 
 import serverRoute from '../routes';
 import Logger from './logger';
-import config from '../config';
-import Session from '../entity/session';
+import sessionMiddleware from './session';
 
-export default (app: express.Application, connection: Connection) => {
+export default (app: express.Application) => {
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -26,15 +22,7 @@ export default (app: express.Application, connection: Connection) => {
     })
   );
 
-  const sessionRepository = connection.getRepository(Session);
-  app.use(
-    session({
-      secret: config.auth.session.secret,
-      resave: false,
-      saveUninitialized: true,
-      store: new TypeormStore({ repository: sessionRepository })
-    })
-  );
+  app.use(sessionMiddleware);
 
   app.use(passport.initialize());
   app.use(passport.session());
