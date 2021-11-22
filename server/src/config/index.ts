@@ -24,15 +24,5 @@ export default {
   connectionOptions,
   logs: {
     level: process.env.NODE_ENV === 'production' ? 'error' : 'silly'
-  },
-  auth: {
-    session: {
-      secret: process.env.SESSION_SECRET!
-    },
-    naver: {
-      clientId: process.env.NAVER_AUTH_CLIENT_ID!,
-      callbackURL: process.env.NAVER_AUTH_CALLBACK_URL!,
-      clientSecret: process.env.NAVER_AUTH_CLIENT_SECRET!
-    }
   }
 };
