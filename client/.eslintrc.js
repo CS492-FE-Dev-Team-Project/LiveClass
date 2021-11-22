@@ -14,8 +14,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'linebreak-style': ['error', require('os').EOL === '\r\n' ? 'windows' : 'unix'],
-	  'prettier/prettier': ['error', { endOfLine: 'auto'} ], // CRLF 문제 해결
+    'prettier/prettier': ['error', { endOfLine: 'auto' }], // CRLF 문제 해결
     'import/prefer-default-export': 1,
     'import/extensions': 0,
     'no-use-before-define': 0,
