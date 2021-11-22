@@ -17,14 +17,16 @@ const ClassPage = () => {
       <Flex>
         <LeftMenu menus={menus} />
         <Box w="10px" h="100vh" />
-        <YouTube
-          name={user.name}
-          studentNumber={user.studentNumber}
-          room={user.room}
-          videoId="j1_5ttGRzFs"
-          width="100%"
-          height="560"
-        />
+        <Box w="100%" h="100vh">
+          <YouTube
+            name={user.name}
+            studentNumber={user.studentNumber}
+            room={user.room}
+            videoId="j1_5ttGRzFs"
+            width="100%"
+            height="500"
+          />
+        </Box>
         <Chat header="Chat" hasHeader />
       </Flex>
     </>
