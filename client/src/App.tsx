@@ -5,9 +5,8 @@ import LeftMenuPage from './pages/leftmenuTestPage';
 import ChatTestPage from './pages/chatTestPage';
 import YoutubeTestPage from './pages/youtubeTestPage_combined';
 
-
 const App = (): React.ReactElement<any, any> => {
-  return(
+  return (
     <>
       <div className="App">
         <ChakraProvider>

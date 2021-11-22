@@ -1,11 +1,7 @@
 import { Router } from 'express';
 import Logger from '../../loader/logger';
+import { authenticateUser } from '../../passport';
 import classrooms from './classData';
-
-interface ClassCreateRequest {
-  userId: number;
-  className: string;
-}
 
 export default (app: Router) => {
   const route = Router();
@@ -14,11 +10,10 @@ export default (app: Router) => {
     res.json(classrooms);
   });
 
-  route.post('/', (req, res) => {
+  route.post('/', authenticateUser, (req, res) => {
     try {
       // Do something with given request.
-      const { userId, className }: ClassCreateRequest = req.body;
-      Logger.silly('UserId: %d ClassName: %s', userId, className);
+      // const { userId, className }: ClassCreateRequest = req.body;
 
       // Send back the request if successful.
       res.json(classrooms[0]);
@@ -28,7 +23,7 @@ export default (app: Router) => {
     }
   });
 
-  route.get('/:classId/lectures', (req, res) => {
+  route.get('/:classId/lectures', authenticateUser, (req, res) => {
     try {
       // get classIdentifier some way.
       // Here it is given as a url parameter.

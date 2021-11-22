@@ -5,6 +5,7 @@ import { Server as SocketIOServer } from 'socket.io';
 import config from './config';
 import { expressLoader, ioLoader, ormLoader } from './loader';
 import Logger from './loader/logger';
+import session from './loader/session';
 
 class Server {
   private httpServer: httpServer;
@@ -25,9 +26,10 @@ class Server {
     const { expressApp, io } = server;
 
     /** Loaders */
-    expressLoader(expressApp);
-    ioLoader(io);
-    await ormLoader();
+    const connection = await ormLoader();
+    const sessionMiddleware = session(connection);
+    expressLoader(expressApp, sessionMiddleware);
+    ioLoader(io, sessionMiddleware);
 
     server.httpServer.listen(config.HTTP_PORT, () => {
       Logger.info(`Server running on port ${config.HTTP_PORT}`);
