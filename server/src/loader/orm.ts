@@ -5,7 +5,8 @@ import Logger from './logger';
 export default async () => {
   const { connectionOptions } = config;
 
-  await createConnection(connectionOptions);
+  const connection = await createConnection(connectionOptions);
 
   Logger.info(`DB connected on ${connectionOptions.port}`);
+  return connection;
 };

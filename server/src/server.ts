@@ -25,9 +25,9 @@ class Server {
     const { expressApp, io } = server;
 
     /** Loaders */
-    expressLoader(expressApp);
+    const connection = await ormLoader();
+    expressLoader(expressApp, connection);
     ioLoader(io);
-    await ormLoader();
 
     server.httpServer.listen(config.HTTP_PORT, () => {
       Logger.info(`Server running on port ${config.HTTP_PORT}`);
