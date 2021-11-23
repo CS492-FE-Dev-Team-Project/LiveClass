@@ -22,6 +22,7 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
           if (r.status === 401) {
             setUserStatus(UserLoadStatus.NOTLOADED);
           } else if (r.status === 200) {
+            console.log('Logged IN');
             setUserName(r.userName);
             setUserStatus(UserLoadStatus.LOADED);
           }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 
@@ -9,6 +9,21 @@ import LobbyContent from '../components/lobbyPage/lobbyContent';
 import classData from '../data/classData';
 import ClassCard from '../components/lobbyPage/classCard';
 import Header from '../components/common/Header';
+import UserContext from '../context/user/userContext';
+import { UserLoadStatus } from '../context/user/userProvider';
+import useClasses from '../hooks/useClasses';
+
+export interface Class {
+  uuid: string;
+  title: string;
+  subtitle: string;
+  memberType: MemberType;
+}
+
+enum MemberType {
+  INSTRUCTOR = 'instructor',
+  STUDENT = 'student'
+}
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -21,13 +36,7 @@ const LobbyPage = () => {
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // -- 🐛 Call DB API to get joined classroom data --
-  const instructorClassData = classData.filter(
-    (elem, index) => elem.memberType === 'Instructor'
-  );
-  const participantClassData = classData.filter(
-    (elem, index) => elem.memberType === 'Participant'
-  );
+  const { classes, addClass } = useClasses();
 
   return (
     <>
@@ -45,18 +54,18 @@ const LobbyPage = () => {
         Teaching lectures
       </Heading>
       <LobbyContent col={col}>
-        {instructorClassData.map(
-          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+        {classes
+          .filter(({ memberType }) => memberType === MemberType.INSTRUCTOR)
+          .map(({ uuid, title, subtitle }) => (
             <ClassCard
-              key={id}
-              imgSrc={imgSrc}
+              key={uuid}
+              imgSrc="imgSrc"
               title={title}
-              subTitle={subTitle}
-              color={color}
-              backgroundColor={backgroundColor}
+              subTitle={subtitle}
+              color="black"
+              backgroundColor="white"
             />
-          )
-        )}
+          ))}
       </LobbyContent>
 
       <br />
@@ -65,18 +74,18 @@ const LobbyPage = () => {
         Listening lectures
       </Heading>
       <LobbyContent col={col}>
-        {participantClassData.map(
-          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+        {classes
+          .filter(({ memberType }) => memberType === MemberType.STUDENT)
+          .map(({ uuid, title, subtitle }) => (
             <ClassCard
-              key={id}
-              imgSrc={imgSrc}
+              key={uuid}
+              imgSrc="imgSrc"
               title={title}
-              subTitle={subTitle}
-              color={color}
-              backgroundColor={backgroundColor}
+              subTitle={subtitle}
+              color="black"
+              backgroundColor="white"
             />
-          )
-        )}
+          ))}
       </LobbyContent>
       <IconButton
         position="fixed"
@@ -86,7 +95,20 @@ const LobbyPage = () => {
         aria-label="Add Classroom"
         colorScheme="green"
         icon={<AddIcon />}
-        onClick={onOpen}
+        onClick={() => {
+          fetch('http://localhost:5000/api/lobby/class', {
+            method: 'PATCH',
+            body: JSON.stringify({
+              uuid: 'c34c8b0c-9826-4405-9cc8-52ea2e2fedba'
+            }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+            .then(r => r.json())
+            .then(j => {
+              addClass(j.class);
+            })
+            .catch(e => console.error(e));
+        }}
       />
       <AddClassModal onClose={onClose} isOpen={isOpen} />
     </>
