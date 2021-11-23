@@ -12,6 +12,8 @@ const ClassPage = () => {
     room: 10
   };
 
+  const screenHeight = window.innerHeight;
+
   return (
     <>
       <Flex>
@@ -24,7 +26,7 @@ const ClassPage = () => {
             room={user.room}
             videoId="j1_5ttGRzFs"
             width="100%"
-            height="500"
+            height={screenHeight}
           />
         </Box>
         <Chat header="Chat" hasHeader />
