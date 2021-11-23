@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, useDisclosure } from '@chakra-ui/react';
+import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 
 import { AddIcon } from '@chakra-ui/icons';
@@ -21,6 +21,14 @@ const LobbyPage = () => {
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // -- 🐛 Call DB API to get joined classroom data --
+  const instructorClassData = classData.filter(
+    (elem, index) => elem.memberType === 'Instructor'
+  );
+  const participantClassData = classData.filter(
+    (elem, index) => elem.memberType === 'Participant'
+  );
+
   return (
     <>
       <Header
@@ -30,8 +38,34 @@ const LobbyPage = () => {
         headingSize="lg"
         p={8}
       />
+
+      <br />
+
+      <Heading size="lg" pl="30px">
+        Teaching lectures
+      </Heading>
       <LobbyContent col={col}>
-        {classData.map(
+        {instructorClassData.map(
+          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+            <ClassCard
+              key={id}
+              imgSrc={imgSrc}
+              title={title}
+              subTitle={subTitle}
+              color={color}
+              backgroundColor={backgroundColor}
+            />
+          )
+        )}
+      </LobbyContent>
+
+      <br />
+
+      <Heading size="lg" pl="30px">
+        Listening lectures
+      </Heading>
+      <LobbyContent col={col}>
+        {participantClassData.map(
           ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
             <ClassCard
               key={id}
@@ -54,7 +88,6 @@ const LobbyPage = () => {
         icon={<AddIcon />}
         onClick={onOpen}
       />
-
       <AddClassModal onClose={onClose} isOpen={isOpen} />
     </>
   );

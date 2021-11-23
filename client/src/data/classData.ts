@@ -5,7 +5,8 @@ const dummyClasses = [
     title: 'CS330',
     subTitle: 'Operating Systems',
     color: 'white',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    memberType: 'Instructor'
   },
   {
     id: 1,
@@ -13,7 +14,8 @@ const dummyClasses = [
     title: 'CS330',
     subTitle: 'Operating Systems',
     color: 'gray.50',
-    backgroundColor: 'green.600'
+    backgroundColor: 'green.600',
+    memberType: 'Participant'
   },
   {
     id: 2,
@@ -21,7 +23,8 @@ const dummyClasses = [
     title: 'CS330',
     subTitle: 'Operating Systems',
     color: 'black',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    memberType: 'Participant'
   },
   {
     id: 3,
@@ -29,7 +32,8 @@ const dummyClasses = [
     title: 'CS330',
     subTitle: 'Operating Systems',
     color: 'teal.400',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    memberType: 'Participant'
   },
   {
     id: 4,
@@ -37,7 +41,8 @@ const dummyClasses = [
     title: 'CS330',
     subTitle: 'Operating Systems',
     color: 'white',
-    backgroundColor: 'blue.500'
+    backgroundColor: 'blue.500',
+    memberType: 'Instructor'
   },
   {
     id: 5,
@@ -45,7 +50,8 @@ const dummyClasses = [
     title: 'CS330',
     subTitle: 'Operating Systems',
     color: 'yellow.50',
-    backgroundColor: 'blue.500'
+    backgroundColor: 'blue.500',
+    memberType: 'Participant'
   }
 ];
 
