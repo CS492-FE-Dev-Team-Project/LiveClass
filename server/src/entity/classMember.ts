@@ -13,7 +13,10 @@ import Class from './class';
 import Marker from './marker';
 import User from './user';
 
-type MemberType = 'instructor' | 'student';
+export enum MemberType {
+  INSTRUCTOR = 'instructor',
+  STUDENT = 'student'
+}
 
 @Entity()
 export default class ClassMember extends BaseEntity {

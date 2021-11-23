@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { UserLoadStatus } from './userProvider';
+import { UserLoadStatus } from '../../types';
 
 interface UserContextInterface {
   userName: string;
@@ -8,7 +8,7 @@ interface UserContextInterface {
 
 const UserContext = createContext<UserContextInterface>({
   userName: '',
-  status: UserLoadStatus.LOADING
+  status: UserLoadStatus.LOADED
 });
 
 export default UserContext;

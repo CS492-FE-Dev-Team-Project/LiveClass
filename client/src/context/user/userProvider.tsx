@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { UserLoadStatus } from '../../types';
 
 import UserContext from './userContext';
-
-export enum UserLoadStatus {
-  LOADED,
-  LOADING,
-  NOTLOADED
-}
 
 const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   const [userName, setUserName] = useState('');
@@ -22,6 +17,7 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
           if (r.status === 401) {
             setUserStatus(UserLoadStatus.NOTLOADED);
           } else if (r.status === 200) {
+            console.log('Logged IN');
             setUserName(r.userName);
             setUserStatus(UserLoadStatus.LOADED);
           }
