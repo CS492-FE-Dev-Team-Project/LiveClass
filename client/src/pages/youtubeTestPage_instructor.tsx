@@ -2,7 +2,7 @@ import React from 'react';
 
 import YouTube from '../components/youtube';
 
-import { SocketProvider } from '../lib/socket';
+import { SocketProvider } from '../context/socket';
 
 const YouTubePage = (): React.ReactElement<any, any> => {
   // Instructor example

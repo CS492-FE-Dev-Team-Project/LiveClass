@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SocketProvider, useSocket } from '../lib/socket';
+import { SocketProvider, useSocket } from '../context/socket';
 
 interface TextMessage {
   time: string;

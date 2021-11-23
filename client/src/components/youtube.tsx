@@ -3,7 +3,7 @@ import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
 import { Progress } from '@chakra-ui/react';
-import { useSocket } from '../lib/socket';
+import { useSocket } from '../context/socket';
 
 import Flag from './timeline';
 //

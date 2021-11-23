@@ -64,6 +64,6 @@ export const authenticateUser = (
   if (req.isAuthenticated()) {
     return next();
   }
-
-  return res.redirect('/api/auth/naver');
+  Logger.info('Authentication Failed');
+  return res.json({ status: 401 }).status(401);
 };
