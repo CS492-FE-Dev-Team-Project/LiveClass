@@ -6,7 +6,7 @@ import classrooms from './classData';
 export default (app: Router) => {
   const route = Router();
 
-  route.get('/', (req, res) => {
+  route.get('/', authenticateUser, (req, res) => {
     res.json(classrooms);
   });
 
