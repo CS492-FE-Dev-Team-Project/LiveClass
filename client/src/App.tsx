@@ -1,5 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import QuizTestPage from './pages/quizTestPage';
 import LeftMenuPage from './pages/leftmenuTestPage';
 import ChatTestPage from './pages/chatTestPage';
@@ -11,7 +12,12 @@ const App = (): React.ReactElement<any, any> => {
     <>
       <div className="App">
         <ChakraProvider>
-          <LobbyPage />
+          <Router>
+            <Routes>
+              <Route path="/" element={<LobbyPage />} />
+              <Route path="/youtubetest" element={YoutubeTestPage} />
+            </Routes>
+          </Router>
         </ChakraProvider>
       </div>
     </>
