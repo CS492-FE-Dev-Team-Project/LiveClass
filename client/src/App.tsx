@@ -6,6 +6,7 @@ import LeftMenuPage from './pages/leftmenuTestPage';
 import ChatTestPage from './pages/chatTestPage';
 import YoutubeTestPage from './pages/youtubeTestPage_combined';
 import LobbyPage from './pages/lobbyPage';
+import LoginPage from './pages/loginPage';
 
 const App = (): React.ReactElement<any, any> => {
   return (
@@ -15,7 +16,7 @@ const App = (): React.ReactElement<any, any> => {
           <Router>
             <Routes>
               <Route path="/" element={<LobbyPage />} />
-              <Route path="/youtubetest" element={YoutubeTestPage} />
+              <Route path="/login" element={<LoginPage />} />
             </Routes>
           </Router>
         </ChakraProvider>
