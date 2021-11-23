@@ -7,6 +7,10 @@ import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 
 const ClassPage = () => {
+  const classData = {
+    name: 'CS330'
+  };
+
   const user = {
     name: 'Kim',
     studentNumber: -1, // -1
@@ -18,7 +22,7 @@ const ClassPage = () => {
   return (
     <>
       <Flex>
-        <LeftMenu menus={menus} />
+        <LeftMenu classname={classData.name} menus={menus} />
         <Box w="10px" h="100vh" />
         <Box w="100%" h="100vh">
           <YouTube

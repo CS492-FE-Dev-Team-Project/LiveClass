@@ -1,10 +1,9 @@
 import { CloseIcon, SettingsIcon } from '@chakra-ui/icons';
-import { Box, Flex, StackDivider, VStack } from '@chakra-ui/react';
+import { Box, Flex, StackDivider, VStack, IconButton } from '@chakra-ui/react';
 import React from 'react';
-import LeftMenuButton from './leftmenubutton';
 import LeftMenuTab from './leftmenutab';
 
-const LeftMenu = ({ menus }: any) => {
+const LeftMenu = ({ classname, menus }: any) => {
   return (
     <Flex w="165px" h="100vh" flexDir="column">
       <Flex overflowX="hidden" overflowY="auto" flexDir="column" h="full">
@@ -26,15 +25,18 @@ const LeftMenu = ({ menus }: any) => {
       </Flex>
       <Flex p="26px 10px" w="full" backgroundColor="white" flexDir="column">
         <Box position="absolute" bottom={3}>
-          <LeftMenuButton
-            name="Setting"
-            color="gray"
-            icon={<SettingsIcon w={3} h={3} />}
+          <IconButton
+            size="sm"
+            colorScheme="red"
+            icon={<CloseIcon />}
+            aria-label="Send Message"
+            m={0.5}
           />
-          <LeftMenuButton
-            name="Quit"
-            color="red"
-            icon={<CloseIcon w={3} h={3} />}
+          <IconButton
+            size="sm"
+            icon={<SettingsIcon />}
+            aria-label="Send Message"
+            m={0.5}
           />
         </Box>
       </Flex>
