@@ -2,6 +2,7 @@ import { Router } from 'express';
 import classRoute from './classRoute';
 import auth from './authRoute';
 import meRoute from './meRoute';
+import lobbyRoute from './lobbyRoute';
 
 export default () => {
   const route = Router();
@@ -10,6 +11,7 @@ export default () => {
   classRoute(route);
   auth(route);
   meRoute(route);
+  lobbyRoute(route);
 
   return route;
 };
