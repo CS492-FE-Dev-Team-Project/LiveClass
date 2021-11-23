@@ -21,11 +21,7 @@ module.exports = {
     'prefer-arrow-callback': 'off',
     'comma-dangle': ['error', 'never'],
     'import/extensions': ['off'],
-    'import/no-unresolved': 'error',
-    'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': ['error'],
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error']
+    'import/no-unresolved': 'error'
   },
   settings: {
     'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
