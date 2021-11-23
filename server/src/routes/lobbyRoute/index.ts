@@ -12,6 +12,7 @@ export default (app: Router) => {
   router.get('/classes', async (req, res) => {
     try {
       const user = req.user!;
+
       const classMembers = await ClassMember.find({
         where: { member: user.id },
         join: {
@@ -65,9 +66,15 @@ export default (app: Router) => {
     try {
       const user = req.user!;
       const { uuid } = req.body;
-      const joinClass = await Class.findOne(uuid, { relations: ['members'] });
+      const joinClass = await Class.createQueryBuilder('class')
+        .leftJoinAndSelect('class.members', 'class_member')
+        .leftJoinAndSelect('class_member.member', 'member')
+        .where('member.id=:memberId', {
+          memberId: user.id
+        })
+        .getOne();
       if (!joinClass) {
-        res.json({ err: 'No Such Class', status: 400 });
+        throw new Error('No Such Class');
       }
 
       if (
@@ -76,7 +83,7 @@ export default (app: Router) => {
             member !== undefined && member.id === user.id
         )
       ) {
-        res.json({ err: 'Already Joined Class', status: 400 });
+        throw new Error('Already Joined Class');
       }
 
       const classMember = new ClassMember();
