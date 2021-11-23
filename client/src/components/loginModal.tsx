@@ -12,7 +12,7 @@ import {
 
 import NaverLoginButtonAsset from '../assets/naver_login_kor.png';
 import UserContext from '../context/user/userContext';
-import { UserLoadStatus } from '../context/user/userProvider';
+import { UserLoadStatus } from '../types';
 
 const NaverLoginButton = ({ ...props }) => {
   return (

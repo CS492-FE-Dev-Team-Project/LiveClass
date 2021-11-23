@@ -62,6 +62,7 @@ export const authenticateUser = (
   next: NextFunction
 ) => {
   if (req.isAuthenticated()) {
+    Logger.info(`Authentication Success: ${req.user?.userName}`);
     return next();
   }
   Logger.info('Authentication Failed');

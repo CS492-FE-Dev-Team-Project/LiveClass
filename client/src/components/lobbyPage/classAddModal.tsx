@@ -9,14 +9,12 @@ import {
   HStack
 } from '@chakra-ui/react';
 
-import classData from '../../data/classData';
-import ClassCard from './classCard';
-
 import {
   initContent,
   createContent,
   joinContent
 } from './classAddModalContents';
+import { Class } from '../../types';
 
 export enum ClassAddModalState {
   INIT,
@@ -27,98 +25,77 @@ export enum ClassAddModalState {
 interface AddClassModalProps {
   isOpen: boolean;
   onClose: () => void;
+  addClass: (newClass: Class) => void;
 }
 
-const AddClassModal = (
-  { isOpen, onClose }: AddClassModalProps,
-  userclassData2: any
-) => {
+const AddClassModal = ({ isOpen, onClose, addClass }: AddClassModalProps) => {
   const [modalState, setModalState] = React.useState(ClassAddModalState.INIT);
-  const [Title, setTitle] = React.useState('');
-  const [Subtitle, setSubtitle] = React.useState('');
-  const [PageColor, setColor] = React.useState('');
-  const [Joinid, setJoinid] = React.useState('');
-  const [tempClasses, setClasses] = React.useState({
-    id: 0,
-    imgSrc: 'https://bit.ly/2Z4KKcF',
-    title: 'CS330',
-    subTitle: 'Operating Systems',
-    color: 'white',
-    backgroundColor: 'black',
-    memberType: 'Instructor'
-  });
-  const onChangejoin = (e: any) => {
-    setJoinid(e.target.value);
+  const [title, setTitle] = React.useState('');
+  const [subtitle, setSubtitle] = React.useState('');
+  const [joinClassUUID, setJoinUUID] = React.useState('');
+
+  const onChangejoinUUID = (e: any) => {
+    setJoinUUID(e.target.value);
   };
-  const onChangename = (e: any) => {
+  const onChangeTitle = (e: any) => {
     setTitle(e.target.value);
   };
-  const onChangesubtitle = (e: any) => {
+  const onChangeSubtitle = (e: any) => {
     setSubtitle(e.target.value);
   };
-  const onChangecolor = (e: any) => {
-    let Color = 'select';
-    let index = 0;
-    if (typeof e.target.options.selectedIndex !== 'undefined') {
-      index = e.target.options.selectedIndex;
-    }
-    switch (index) {
-      default:
-        Color = 'black';
-        break;
-      case 1:
-        Color = 'white';
-        break;
-      case 2:
-        Color = 'yellow.50';
-        break;
-      case 3:
-        Color = 'blue';
-        break;
-      case 4:
-        Color = 'gray.50';
-        break;
-      case 5:
-        Color = 'green';
-        break;
-    }
-    setColor(Color);
-  };
-  const saveClicked = (evt: any) => {
-    setClasses({
-      id: 0,
-      imgSrc: 'https://bit.ly/2Z4KKcF',
-      title: Title,
-      subTitle: Subtitle,
-      color: PageColor,
-      backgroundColor: 'black',
-      memberType: 'Instructor'
-    });
-    console.log(tempClasses);
-  };
-  const cancelClicked = (evt: any) => {
+
+  const onModalClose = () => {
     setTitle('');
     setSubtitle('');
-    setColor('');
+    setJoinUUID('');
     onClose();
     setModalState(ClassAddModalState.INIT);
   };
-  const joinClicked = (evt: any) => {
-    // add data here
+
+  const handleJoin = () => {
+    fetch('http://localhost:5000/api/lobby/class', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uuid: joinClassUUID })
+    })
+      .then(r => r.json())
+      .then(j => {
+        if (j.status === 200) {
+          addClass(j.class);
+          onModalClose();
+        } else if (j.status === 400) {
+          throw new Error(j.err);
+        }
+      })
+      .catch(e => {
+        // TODO: 실패시 에러 핸들링
+        console.error(e);
+      });
   };
-  const joinCancelClicked = (evt: any) => {
-    onClose();
-    setModalState(ClassAddModalState.INIT);
+
+  const handleCreate = () => {
+    fetch('http://localhost:5000/api/lobby/class', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, subtitle })
+    })
+      .then(r => r.json())
+      .then(j => {
+        if (j.status === 200) {
+          addClass(j.class);
+          onModalClose();
+        } else if (j.status === 400) {
+          throw new Error(j.err);
+        }
+      })
+      .catch(e => {
+        // TODO: 실패시 에러 핸들링
+        console.error(e);
+      });
   };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => {
-        onClose();
-        setModalState(ClassAddModalState.INIT);
-      }}
-      size="xl"
-    >
+    <Modal isOpen={isOpen} onClose={onModalClose} size="xl">
       <ModalOverlay />
       <ModalContent height="500px">
         <ModalHeader textAlign="center">New Class</ModalHeader>
@@ -128,18 +105,13 @@ const AddClassModal = (
             {modalState === ClassAddModalState.INIT &&
               initContent({ setModalState })}
             {modalState === ClassAddModalState.JOIN &&
-              joinContent({
-                onChangejoin,
-                joinClicked,
-                joinCancelClicked
-              })}
+              joinContent({ onChangejoinUUID, handleJoin, onModalClose })}
             {modalState === ClassAddModalState.CREATE &&
               createContent({
-                onChangename,
-                onChangesubtitle,
-                onChangecolor,
-                saveClicked,
-                cancelClicked
+                onChangeTitle,
+                onChangeSubtitle,
+                handleCreate,
+                onModalClose
               })}
           </HStack>
         </ModalBody>
