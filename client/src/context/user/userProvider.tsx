@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { UserLoadStatus } from '../../types';
 
 import UserContext from './userContext';
-
-export enum UserLoadStatus {
-  LOADED,
-  LOADING,
-  NOTLOADED
-}
 
 const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   const [userName, setUserName] = useState('');

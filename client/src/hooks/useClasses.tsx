@@ -1,18 +1,6 @@
 import { useState, useEffect } from 'react';
-import { UserLoadStatus } from '../context/user/userProvider';
+import { Class, UserLoadStatus } from '../types';
 import useMe from './useMe';
-
-export interface Class {
-  uuid: string;
-  title: string;
-  subtitle: string;
-  memberType: MemberType;
-}
-
-export enum MemberType {
-  INSTRUCTOR = 'instructor',
-  STUDENT = 'student'
-}
 
 const useClasses = () => {
   const [classes, setClasses] = useState<Class[]>([]);

@@ -1,29 +1,14 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React from 'react';
 import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
-
 import { AddIcon } from '@chakra-ui/icons';
+
 import AddClassModal from '../components/lobbyPage/classAddModal';
 import LobbyContent from '../components/lobbyPage/lobbyContent';
-
-import classData from '../data/classData';
 import ClassCard from '../components/lobbyPage/classCard';
 import Header from '../components/common/Header';
-import UserContext from '../context/user/userContext';
-import { UserLoadStatus } from '../context/user/userProvider';
 import useClasses from '../hooks/useClasses';
-
-export interface Class {
-  uuid: string;
-  title: string;
-  subtitle: string;
-  memberType: MemberType;
-}
-
-enum MemberType {
-  INSTRUCTOR = 'instructor',
-  STUDENT = 'student'
-}
+import { MemberType } from '../types';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -95,22 +80,9 @@ const LobbyPage = () => {
         aria-label="Add Classroom"
         colorScheme="green"
         icon={<AddIcon />}
-        onClick={() => {
-          fetch('http://localhost:5000/api/lobby/class', {
-            method: 'PATCH',
-            body: JSON.stringify({
-              uuid: 'c34c8b0c-9826-4405-9cc8-52ea2e2fedba'
-            }),
-            headers: { 'Content-Type': 'application/json' }
-          })
-            .then(r => r.json())
-            .then(j => {
-              addClass(j.class);
-            })
-            .catch(e => console.error(e));
-        }}
+        onClick={onOpen}
       />
-      <AddClassModal onClose={onClose} isOpen={isOpen} />
+      <AddClassModal onClose={onClose} isOpen={isOpen} addClass={addClass} />
     </>
   );
 };
