@@ -1,7 +1,13 @@
 import React from 'react';
-import { Button, Box, Select } from '@chakra-ui/react';
-import { Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react';
-import { FormControl, FormLabel, useDisclosure } from '@chakra-ui/react';
+
+import {
+  Input,
+  InputGroup,
+  Stack,
+  Button,
+  FormControl,
+  FormLabel
+} from '@chakra-ui/react';
 import { ClassAddModalState } from './classAddModal';
 
 interface initContentProps {
@@ -33,36 +39,44 @@ const initContent = ({ setModalState }: initContentProps) => {
   );
 };
 
-const joinContent = ({ onChangejoin, joinClicked, joinCancelClicked }: any) => {
+const joinContent = ({ onChangejoinUUID, handleJoin, onModalClose }: any) => {
   return (
     <Stack>
       <FormControl>
         <FormLabel>Join ID</FormLabel>
         <InputGroup size="lg">
-          <Input type="text" placeholder="Class ID" onChange={onChangejoin} />
+          <Input
+            type="text"
+            placeholder="Class ID"
+            onChange={onChangejoinUUID}
+          />
         </InputGroup>
       </FormControl>
-      <Button onClick={joinClicked} colorScheme="blue" mr={3}>
+      <Button onClick={handleJoin} colorScheme="blue" mr={3}>
         Join
       </Button>
-      <Button onClick={joinCancelClicked}>Cancel</Button>
+      <Button onClick={onModalClose}>Cancel</Button>
     </Stack>
   );
 };
 
 const createContent = ({
-  onChangename,
-  onChangesubtitle,
-  onChangecolor,
-  saveClicked,
-  cancelClicked
+  onChangeTitle,
+  onChangeSubtitle,
+  handleCreate,
+  onModalClose
 }: any) => {
+  console.log(onChangeSubtitle);
   return (
     <Stack>
       <FormControl>
-        <FormLabel>Class name</FormLabel>
+        <FormLabel>Class Title</FormLabel>
         <InputGroup size="lg">
-          <Input type="text" placeholder="Class name" onChange={onChangename} />
+          <Input
+            type="text"
+            placeholder="Class name"
+            onChange={onChangeTitle}
+          />
         </InputGroup>
       </FormControl>
       <FormControl>
@@ -71,24 +85,14 @@ const createContent = ({
           <Input
             type="text"
             placeholder="Class Subtitle"
-            onChange={onChangesubtitle}
+            onChange={onChangeSubtitle}
           />
         </InputGroup>
       </FormControl>
-      <FormControl>
-        <FormLabel>Color(default: black)</FormLabel>
-        <Select placeholder="Select color" onClick={onChangecolor}>
-          <option>white</option>
-          <option>yellow</option>
-          <option>blue</option>
-          <option>gray</option>
-          <option>green</option>
-        </Select>
-      </FormControl>
-      <Button onClick={saveClicked} colorScheme="blue" mr={3}>
+      <Button onClick={handleCreate} colorScheme="blue" mr={3}>
         Save
       </Button>
-      <Button onClick={cancelClicked}>Cancel</Button>
+      <Button onClick={onModalClose}>Cancel</Button>
     </Stack>
   );
 };

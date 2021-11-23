@@ -1,14 +1,14 @@
 import React from 'react';
 import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
-
 import { AddIcon } from '@chakra-ui/icons';
+
 import AddClassModal from '../components/lobbyPage/classAddModal';
 import LobbyContent from '../components/lobbyPage/lobbyContent';
-
-import classData from '../data/classData';
 import ClassCard from '../components/lobbyPage/classCard';
 import Header from '../components/common/Header';
+import useClasses from '../hooks/useClasses';
+import { MemberType } from '../types';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -21,13 +21,7 @@ const LobbyPage = () => {
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // -- 🐛 Call DB API to get joined classroom data --
-  const instructorClassData = classData.filter(
-    (elem, index) => elem.memberType === 'Instructor'
-  );
-  const participantClassData = classData.filter(
-    (elem, index) => elem.memberType === 'Participant'
-  );
+  const { classes, addClass } = useClasses();
 
   return (
     <>
@@ -45,18 +39,18 @@ const LobbyPage = () => {
         Teaching lectures
       </Heading>
       <LobbyContent col={col}>
-        {instructorClassData.map(
-          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+        {classes
+          .filter(({ memberType }) => memberType === MemberType.INSTRUCTOR)
+          .map(({ uuid, title, subtitle }) => (
             <ClassCard
-              key={id}
-              imgSrc={imgSrc}
+              key={uuid}
+              imgSrc="imgSrc"
               title={title}
-              subTitle={subTitle}
-              color={color}
-              backgroundColor={backgroundColor}
+              subTitle={subtitle}
+              color="black"
+              backgroundColor="white"
             />
-          )
-        )}
+          ))}
       </LobbyContent>
 
       <br />
@@ -65,18 +59,18 @@ const LobbyPage = () => {
         Listening lectures
       </Heading>
       <LobbyContent col={col}>
-        {participantClassData.map(
-          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+        {classes
+          .filter(({ memberType }) => memberType === MemberType.STUDENT)
+          .map(({ uuid, title, subtitle }) => (
             <ClassCard
-              key={id}
-              imgSrc={imgSrc}
+              key={uuid}
+              imgSrc="imgSrc"
               title={title}
-              subTitle={subTitle}
-              color={color}
-              backgroundColor={backgroundColor}
+              subTitle={subtitle}
+              color="black"
+              backgroundColor="white"
             />
-          )
-        )}
+          ))}
       </LobbyContent>
       <IconButton
         position="fixed"
@@ -88,7 +82,7 @@ const LobbyPage = () => {
         icon={<AddIcon />}
         onClick={onOpen}
       />
-      <AddClassModal onClose={onClose} isOpen={isOpen} />
+      <AddClassModal onClose={onClose} isOpen={isOpen} addClass={addClass} />
     </>
   );
 };
