@@ -33,22 +33,30 @@ const initContent = ({ setModalState }: initContentProps) => {
   );
 };
 
-const joinContent = () => {
-  return <Box>JOIN</Box>;
+const joinContent = ({ onChangejoin, joinClicked, joinCancelClicked }: any) => {
+  return (
+    <Stack>
+      <FormControl>
+        <FormLabel>Join ID</FormLabel>
+        <InputGroup size="lg">
+          <Input type="text" placeholder="Class ID" onChange={onChangejoin} />
+        </InputGroup>
+      </FormControl>
+      <Button onClick={joinClicked} colorScheme="blue" mr={3}>
+        Join
+      </Button>
+      <Button onClick={joinCancelClicked}>Cancel</Button>
+    </Stack>
+  );
 };
 
-const [title, setTitle] = React.useState('');
-
-const onChangename = (e: any) => {
-  setTitle(e.target.value);
-};
-
-const buttonClicked = (evt: any) => {
-  console.log(evt);
-  console.log(evt.nativeEvent.data);
-};
-
-const createContent = ({ userclassData }: any) => {
+const createContent = ({
+  onChangename,
+  onChangesubtitle,
+  onChangecolor,
+  saveClicked,
+  cancelClicked
+}: any) => {
   return (
     <Stack>
       <FormControl>
@@ -60,12 +68,16 @@ const createContent = ({ userclassData }: any) => {
       <FormControl>
         <FormLabel>Class Subtitle</FormLabel>
         <InputGroup>
-          <Input type="text" placeholder="Class Subtitle" />
+          <Input
+            type="text"
+            placeholder="Class Subtitle"
+            onChange={onChangesubtitle}
+          />
         </InputGroup>
       </FormControl>
       <FormControl>
-        <FormLabel>Color</FormLabel>
-        <Select placeholder="Select Color">
+        <FormLabel>Color(default: black)</FormLabel>
+        <Select placeholder="Select color" onClick={onChangecolor}>
           <option>white</option>
           <option>yellow</option>
           <option>blue</option>
@@ -73,9 +85,10 @@ const createContent = ({ userclassData }: any) => {
           <option>green</option>
         </Select>
       </FormControl>
-      <Button onClick={buttonClicked} colorScheme="blue" mr={3}>
+      <Button onClick={saveClicked} colorScheme="blue" mr={3}>
         Save
       </Button>
+      <Button onClick={cancelClicked}>Cancel</Button>
     </Stack>
   );
 };

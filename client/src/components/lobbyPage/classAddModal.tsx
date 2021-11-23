@@ -34,6 +34,82 @@ const AddClassModal = (
   userclassData2: any
 ) => {
   const [modalState, setModalState] = React.useState(ClassAddModalState.INIT);
+  const [Title, setTitle] = React.useState('');
+  const [Subtitle, setSubtitle] = React.useState('');
+  const [PageColor, setColor] = React.useState('');
+  const [Joinid, setJoinid] = React.useState('');
+  const [tempClasses, setClasses] = React.useState({
+    id: 0,
+    imgSrc: 'https://bit.ly/2Z4KKcF',
+    title: 'CS330',
+    subTitle: 'Operating Systems',
+    color: 'white',
+    backgroundColor: 'black',
+    memberType: 'Instructor'
+  });
+  const onChangejoin = (e: any) => {
+    setJoinid(e.target.value);
+  };
+  const onChangename = (e: any) => {
+    setTitle(e.target.value);
+  };
+  const onChangesubtitle = (e: any) => {
+    setSubtitle(e.target.value);
+  };
+  const onchangecolor = (e: any) => {
+    let Color = 'select';
+    let index = 0;
+    if (typeof e.target.options.selectedIndex !== 'undefined') {
+      index = e.target.options.selectedIndex;
+    }
+    switch (index) {
+      default:
+        Color = 'black';
+        break;
+      case 1:
+        Color = 'white';
+        break;
+      case 2:
+        Color = 'yellow.50';
+        break;
+      case 3:
+        Color = 'blue';
+        break;
+      case 4:
+        Color = 'gray.50';
+        break;
+      case 5:
+        Color = 'green';
+        break;
+    }
+    setColor(Color);
+  };
+  const saveClicked = (evt: any) => {
+    setClasses({
+      id: 0,
+      imgSrc: 'https://bit.ly/2Z4KKcF',
+      title: Title,
+      subTitle: Subtitle,
+      color: PageColor,
+      backgroundColor: 'black',
+      memberType: 'Instructor'
+    });
+    console.log(tempClasses);
+  };
+  const cancelClicked = (evt: any) => {
+    setTitle('');
+    setSubtitle('');
+    setColor('');
+    onClose();
+    setModalState(ClassAddModalState.INIT);
+  };
+  const joinClicked = (evt: any) => {
+    // add data here
+  };
+  const joinCancelClicked = (evt: any) => {
+    onClose();
+    setModalState(ClassAddModalState.INIT);
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -51,9 +127,20 @@ const AddClassModal = (
           <HStack justifyContent="center" alignItems="center" w="full" h="full">
             {modalState === ClassAddModalState.INIT &&
               initContent({ setModalState })}
-            {modalState === ClassAddModalState.JOIN && joinContent()}
+            {modalState === ClassAddModalState.JOIN &&
+              joinContent({
+                onChangejoin,
+                joinClicked,
+                joinCancelClicked
+              })}
             {modalState === ClassAddModalState.CREATE &&
-              createContent({ userclassData2 })}
+              createContent({
+                onChangename,
+                onChangesubtitle,
+                onchangecolor,
+                saveClicked,
+                cancelClicked
+              })}
           </HStack>
         </ModalBody>
       </ModalContent>
