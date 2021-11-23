@@ -13,8 +13,8 @@ import Lecture from './lecture';
 
 @Entity()
 export default class Class extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  public uuid: string;
+  @PrimaryGeneratedColumn()
+  public id: number;
 
   @CreateDateColumn()
   public createdDate: Date;
@@ -23,14 +23,14 @@ export default class Class extends BaseEntity {
   public updatedDate: Date;
 
   @Column('varchar')
-  public title: string;
+  public className: string;
 
-  @Column('varchar')
-  public subtitle: string;
+  @Column()
+  public classCode: string;
 
   @OneToMany(() => Lecture, lecture => lecture.class)
   public lectures: Lecture[];
 
   @OneToMany(() => ClassMember, classMember => classMember.class)
-  public members!: ClassMember[];
+  public members: ClassMember[];
 }
