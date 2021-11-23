@@ -56,7 +56,7 @@ const AddClassModal = (
   const onChangesubtitle = (e: any) => {
     setSubtitle(e.target.value);
   };
-  const onchangecolor = (e: any) => {
+  const onChangecolor = (e: any) => {
     let Color = 'select';
     let index = 0;
     if (typeof e.target.options.selectedIndex !== 'undefined') {
@@ -137,7 +137,7 @@ const AddClassModal = (
               createContent({
                 onChangename,
                 onChangesubtitle,
-                onchangecolor,
+                onChangecolor,
                 saveClicked,
                 cancelClicked
               })}
