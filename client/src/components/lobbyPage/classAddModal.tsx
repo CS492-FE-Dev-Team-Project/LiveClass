@@ -9,6 +9,9 @@ import {
   HStack
 } from '@chakra-ui/react';
 
+import classData from '../../data/classData';
+import ClassCard from './classCard';
+
 import {
   initContent,
   createContent,
@@ -26,7 +29,10 @@ interface AddClassModalProps {
   onClose: () => void;
 }
 
-const AddClassModal = ({ isOpen, onClose }: AddClassModalProps) => {
+const AddClassModal = (
+  { isOpen, onClose }: AddClassModalProps,
+  userclassData2: any
+) => {
   const [modalState, setModalState] = React.useState(ClassAddModalState.INIT);
   return (
     <Modal
@@ -46,7 +52,8 @@ const AddClassModal = ({ isOpen, onClose }: AddClassModalProps) => {
             {modalState === ClassAddModalState.INIT &&
               initContent({ setModalState })}
             {modalState === ClassAddModalState.JOIN && joinContent()}
-            {modalState === ClassAddModalState.CREATE && createContent()}
+            {modalState === ClassAddModalState.CREATE &&
+              createContent({ userclassData2 })}
           </HStack>
         </ModalBody>
       </ModalContent>
