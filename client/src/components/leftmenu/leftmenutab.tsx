@@ -3,7 +3,7 @@ import { Stack, Box, Button } from '@chakra-ui/react';
 
 const LeftMenuTab = ({ tabTitle, tabContents }: any) => {
   return (
-    <Box>
+    <Box w="150px">
       <Stack spacing={0}>
         <Box
           letterSpacing="wide"

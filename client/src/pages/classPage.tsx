@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, AspectRatio, HStack, Flex } from '@chakra-ui/react';
+import { Box, IconButton, Flex } from '@chakra-ui/react';
+import { ChevronRightIcon, TimeIcon } from '@chakra-ui/icons';
 import LeftMenu from '../components/leftmenu/leftmenu';
 import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
@@ -12,7 +13,7 @@ const ClassPage = () => {
     room: 10
   };
 
-  const screenHeight = window.innerHeight;
+  const screenHeight = window.innerHeight - 1;
 
   return (
     <>
