@@ -32,6 +32,7 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
   const [messages, setMessages] = useState<Array<Message>>([]);
   const chatMode = useRef<ChatMode>(ChatMode.Live);
 
+  // Socket listeners
   useEffect(() => {
     // TimeMarker Click event - fetch discussion messages
     socket?.on('TimeMarkerClicked', (markerId: number) => {
@@ -41,15 +42,13 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
     });
   }, [connected]);
 
-  // 🐛 (API?) Fetch Live class message
+  // Click 'X' close button in the header
+  // 1) chatMode.current == discussion mode : change to Live mode; fetch Live chat messages
+  // 2) chatMode.current == Live chatting : clear chat
   const backToLiveChat = () => {
-    setMessages([]);
+    setMessages([]); // 🐛 (API?) Fetch Live chat message
     chatMode.current = ChatMode.Live;
   };
-
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
 
   const createMessage = (message: string) => {
     // 🐛 (API) Create message
