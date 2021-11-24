@@ -1,12 +1,34 @@
-import { CloseIcon, SettingsIcon } from '@chakra-ui/icons';
-import { Box, Flex, StackDivider, VStack, IconButton } from '@chakra-ui/react';
+import { ChevronRightIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
+import {
+  CloseButton,
+  Box,
+  Flex,
+  StackDivider,
+  VStack,
+  IconButton
+} from '@chakra-ui/react';
 import React from 'react';
 import LeftMenuTab from './leftmenutab';
+import Header from '../common/Header';
 
 const LeftMenu = ({ classname, menus }: any) => {
   return (
     <Flex w="165px" h="100vh" flexDir="column">
       <Flex overflowX="hidden" overflowY="auto" flexDir="column" h="full">
+        <Header
+          backgroundColor="gray.200"
+          color="black"
+          headingSize="sx"
+          headingText={classname}
+          p={2}
+        >
+          <IconButton
+            size="xs"
+            marginLeft="auto"
+            icon={<ChevronRightIcon />}
+            aria-label="Close Menu"
+          />
+        </Header>
         <Box h="100vh" ml="2">
           <VStack
             divider={<StackDivider borderColor="gray.200" />}
@@ -29,13 +51,13 @@ const LeftMenu = ({ classname, menus }: any) => {
             size="sm"
             colorScheme="red"
             icon={<CloseIcon />}
-            aria-label="Send Message"
+            aria-label="Quit"
             m={0.5}
           />
           <IconButton
             size="sm"
             icon={<SettingsIcon />}
-            aria-label="Send Message"
+            aria-label="Settings"
             m={0.5}
           />
         </Box>

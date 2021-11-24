@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Flex } from '@chakra-ui/react';
-import { ChevronRightIcon, TimeIcon } from '@chakra-ui/icons';
+import { Box, Flex } from '@chakra-ui/react';
 import LeftMenu from '../components/leftmenu/leftmenu';
 import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
@@ -17,13 +16,10 @@ const ClassPage = () => {
     room: 10
   };
 
-  const screenHeight = window.innerHeight - 1;
-
   return (
     <>
       <Flex>
         <LeftMenu classname={classData.name} menus={menus} />
-        <Box w="10px" h="100vh" />
         <Box w="100%" h="100vh">
           <YouTube
             name={user.name}
@@ -31,7 +27,7 @@ const ClassPage = () => {
             room={user.room}
             videoId="j1_5ttGRzFs"
             width="100%"
-            height={screenHeight}
+            height="100%"
           />
         </Box>
         <Chat header="Chat" hasHeader />
