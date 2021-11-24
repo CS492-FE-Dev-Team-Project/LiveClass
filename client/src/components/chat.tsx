@@ -4,7 +4,7 @@ import ChatMessage from './chatMessage';
 import ChatInput from './chatInput';
 import Header from './common/Header';
 
-import { useSocket } from '../lib/socket';
+import { useSocket } from '../context/socket';
 import dummyMessages from '../data/chatMessages'; // 🐛 Dummy message - call DB API to get real data
 
 interface ChatProps {
@@ -12,6 +12,7 @@ interface ChatProps {
   hasHeader: boolean;
 }
 
+// 🚨 Possible duplicate with 'interface ChatMessageProps' in 'chatMessage.tsx'
 interface Message {
   userName: string;
   message: string;
@@ -27,10 +28,33 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
   useEffect(() => {
     // TimeMarker Click event - fetch discussion messages
     socket?.on('TimeMarkerClicked', (markerId: number) => {
-      // 🐛 get real 'messages' data related with timeMarker by calling DB API
+      // 🐛 (API) Fetch timeMarker thread messages
       setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
     });
   }, [connected]);
+
+  // 🐛 (API?) Fetch Live class message
+  const backToLiveChat = () => {
+    setMessages([]);
+  };
+
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
+
+  const createMessage = (message: string) => {
+    // 🐛 (API) Create message
+    // Providing info : message (string)
+    const dummyMessageObj = {
+      id: 999,
+      userName: 'MyName',
+      message,
+      time: '00:00',
+      isMy: true
+    };
+
+    setMessages(arr => [...arr, dummyMessageObj]);
+  };
 
   return (
     <Flex w={300} h="100vh" backgroundColor="gray.50" flexDir="column">
@@ -42,7 +66,7 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
           headingText={header}
           p={2}
         >
-          <CloseButton marginLeft="auto" size="sm" />
+          <CloseButton marginLeft="auto" size="sm" onClick={backToLiveChat} />
         </Header>
       )}
       <Flex overflowY="auto" pb={3} pt={3} flexDir="column" h="full">
@@ -56,7 +80,7 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
           />
         ))}
       </Flex>
-      <ChatInput />
+      <ChatInput sendMessage={(msg: string) => createMessage(msg)} />
     </Flex>
   );
 };
