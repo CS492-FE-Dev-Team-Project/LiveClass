@@ -10,8 +10,9 @@ const YouTubePage = (): React.ReactElement<any, any> => {
       <div className="App">{Instructor}</div>
       <h1>Participant</h1>
       <div className="App">{Participant}</div>
+      <div className="App">{Participant}</div>
     </>
   );
 };
 
-export default <YouTubePage />;
+export default YouTubePage;
