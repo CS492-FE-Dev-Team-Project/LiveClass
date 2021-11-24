@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { markerInfo } from './youtube'; // props type
-import { useSocket } from '../lib/socket';
+import { useSocket } from '../context/socket';
 
 const timeline = ({ id, time }: markerInfo) => {
   const { socket } = useSocket();
