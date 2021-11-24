@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CloseButton, Flex } from '@chakra-ui/react';
 import ChatMessage from './chatMessage';
 import ChatInput from './chatInput';
@@ -21,21 +21,30 @@ interface Message {
   isMy: boolean;
 }
 
+// 0 : live chatting, 1 : discussion mode (timeMarker), 2 : ...
+enum ChatMode {
+  Live,
+  MarkerDiscussion
+}
+
 const Chat = ({ header, hasHeader }: ChatProps) => {
   const { socket, connected } = useSocket();
   const [messages, setMessages] = useState<Array<Message>>([]);
+  const chatMode = useRef<ChatMode>(ChatMode.Live);
 
   useEffect(() => {
     // TimeMarker Click event - fetch discussion messages
     socket?.on('TimeMarkerClicked', (markerId: number) => {
       // 🐛 (API) Fetch timeMarker thread messages
       setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
+      chatMode.current = ChatMode.MarkerDiscussion;
     });
   }, [connected]);
 
   // 🐛 (API?) Fetch Live class message
   const backToLiveChat = () => {
     setMessages([]);
+    chatMode.current = ChatMode.Live;
   };
 
   useEffect(() => {
@@ -53,7 +62,18 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
       isMy: true
     };
 
+    // Update local chatBox
     setMessages(arr => [...arr, dummyMessageObj]);
+
+    // Update DB
+    switch (chatMode.current) {
+      case ChatMode.MarkerDiscussion:
+        console.log('(DB API) Create markerDiscussion message');
+        break;
+      default:
+        // ChatMode.Live
+        console.log('Create Live message');
+    }
   };
 
   return (
