@@ -1,14 +1,14 @@
 import React from 'react';
-import { IconButton, useDisclosure } from '@chakra-ui/react';
+import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
-
 import { AddIcon } from '@chakra-ui/icons';
+
 import AddClassModal from '../components/lobbyPage/classAddModal';
 import LobbyContent from '../components/lobbyPage/lobbyContent';
-
-import classData from '../data/classData';
 import ClassCard from '../components/lobbyPage/classCard';
 import Header from '../components/common/Header';
+import useClasses from '../hooks/useClasses';
+import { MemberType } from '../types';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -21,6 +21,8 @@ const LobbyPage = () => {
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { classes, addClass } = useClasses();
+
   return (
     <>
       <Header
@@ -30,19 +32,45 @@ const LobbyPage = () => {
         headingSize="lg"
         p={8}
       />
+
+      <br />
+
+      <Heading size="lg" pl="30px">
+        Teaching lectures
+      </Heading>
       <LobbyContent col={col}>
-        {classData.map(
-          ({ id, imgSrc, title, subTitle, color, backgroundColor }) => (
+        {classes
+          .filter(({ memberType }) => memberType === MemberType.INSTRUCTOR)
+          .map(({ uuid, title, subtitle }) => (
             <ClassCard
-              key={id}
-              imgSrc={imgSrc}
+              key={uuid}
+              imgSrc="imgSrc"
               title={title}
-              subTitle={subTitle}
-              color={color}
-              backgroundColor={backgroundColor}
+              subTitle={subtitle}
+              color="black"
+              backgroundColor="white"
             />
-          )
-        )}
+          ))}
+      </LobbyContent>
+
+      <br />
+
+      <Heading size="lg" pl="30px">
+        Listening lectures
+      </Heading>
+      <LobbyContent col={col}>
+        {classes
+          .filter(({ memberType }) => memberType === MemberType.STUDENT)
+          .map(({ uuid, title, subtitle }) => (
+            <ClassCard
+              key={uuid}
+              imgSrc="imgSrc"
+              title={title}
+              subTitle={subtitle}
+              color="black"
+              backgroundColor="white"
+            />
+          ))}
       </LobbyContent>
       <IconButton
         position="fixed"
@@ -54,8 +82,7 @@ const LobbyPage = () => {
         icon={<AddIcon />}
         onClick={onOpen}
       />
-
-      <AddClassModal onClose={onClose} isOpen={isOpen} />
+      <AddClassModal onClose={onClose} isOpen={isOpen} addClass={addClass} />
     </>
   );
 };

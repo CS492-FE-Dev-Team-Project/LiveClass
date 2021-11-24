@@ -14,8 +14,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'linebreak-style': ['error', require('os').EOL === '\r\n' ? 'windows' : 'unix'],
-	  'prettier/prettier': ['error', { endOfLine: 'auto'} ], // CRLF 문제 해결
+    'prettier/prettier': ['error', { endOfLine: 'auto' }], // CRLF 문제 해결
     'import/prefer-default-export': 1,
     'import/extensions': 0,
     'no-use-before-define': 0,
@@ -29,6 +28,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'], // https://stackoverflow.com/questions/63961803/eslint-says-all-enums-in-typescript-app-are-already-declared-in-the-upper-scope
     'react/require-default-props': 'off', // https://stackoverflow.com/questions/63696724/eslint-problem-with-default-props-in-functional-component-typescript-react
     'jsx-a11y/click-events-have-key-events': 0, // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/click-events-have-key-events.md
-    'jsx-a11y/no-static-element-interactions': 0 // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md
+    'jsx-a11y/no-static-element-interactions': 0, // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md,
+    'react/jsx-props-no-spreading': 0
   }
 };

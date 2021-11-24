@@ -1,13 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import morgan, { StreamOptions } from 'morgan';
+import passport from 'passport';
+import path from 'path';
 
+import myPassport from '../passport';
 import serverRoute from '../routes';
 import Logger from './logger';
 
-export default (app: express.Application) => {
+export default (app: express.Application, sessionMiddleware: any) => {
   app.use(cors());
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(express.urlencoded({ extended: true }));
   const stream: StreamOptions = {
     write: msg => Logger.http(msg.substring(0, msg.lastIndexOf('\n')))
@@ -18,6 +22,14 @@ export default (app: express.Application) => {
     })
   );
 
+  app.use(sessionMiddleware);
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+  myPassport();
+
+  app.use(express.static(path.join(__dirname, '../../client')));
+
   app.get('/', (req, res) => {
     res.send('LiveClass Main Server!!').status(200);
   });
@@ -25,9 +37,8 @@ export default (app: express.Application) => {
   // TODO: Add Authentication Middlewares
 
   app.use('/api', serverRoute());
-
-  app.use('/*', (req, res) => {
-    res.send('404 Bad Request: Invalid Url').status(404);
+  app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/index.html'));
   });
 
   // TODO: Add Error Handling middlewares

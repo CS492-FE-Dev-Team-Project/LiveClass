@@ -24,7 +24,8 @@ export default class User extends BaseEntity {
   @Column('varchar')
   public userName: string;
 
-  // TODO: add SSOAcounts
+  @Column()
+  public naverId: string;
 
   @OneToMany(() => ClassMember, classMember => classMember.member)
   public classes: ClassMember[];
