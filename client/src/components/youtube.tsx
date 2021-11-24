@@ -12,8 +12,8 @@ interface userInfo {
   studentNumber: number;
   room: number;
   videoId: string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
 }
 
 enum VideoState {
