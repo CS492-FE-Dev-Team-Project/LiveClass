@@ -1,10 +1,16 @@
-import React from 'react';
-import { flagInfo } from './youtube'; // props type
+import React, { useEffect } from 'react';
+import { markerInfo } from './youtube'; // props type
+import { useSocket } from '../lib/socket';
 
-const timeline = ({ time, message }: flagInfo) => {
-  // 🐛 DO SOMETHING HERE
+const timeline = ({ id, time }: markerInfo) => {
+  const { socket } = useSocket();
+
+  // Click handler - Send click event through Socket, to Chat component
   const onClickEvt = () => {
-    alert(message);
+    const payload = JSON.stringify({ markerId: id });
+
+    // send 'markerId' of clicked marker to Chat component
+    socket?.emit('TimeMarkerClicked', payload);
   };
 
   return (
