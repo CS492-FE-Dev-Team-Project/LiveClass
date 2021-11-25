@@ -1,23 +1,21 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import LeftMenu from '../components/leftmenu/leftmenu';
 import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
 import useMe from '../hooks/useMe';
-import { MemberType } from '../types';
+import { Class, MemberType } from '../types';
 
 const ClassPage = () => {
-  const { uuid, memberType } = useParams();
   const { status, userName } = useMe();
+  const {
+    state: { title, subtitle, uuid, memberType }
+  }: { state: Class } = useLocation();
 
-  console.log(uuid, memberType);
-
-  const classData = {
-    name: 'CS330'
-  };
+  console.log(title, subtitle, uuid, memberType);
 
   const user = {
     name: 'Kim',
@@ -29,11 +27,11 @@ const ClassPage = () => {
     <>
       <FloatConnectionStatus />
       <Flex>
-        <LeftMenu className={classData.name} menus={menus} />
+        <LeftMenu className={title} menus={menus} />
         <Box w="100%" h="100vh">
           <YouTube
             userName={userName}
-            memberType={memberType as MemberType}
+            memberType={memberType}
             room={user.room}
             videoId="j1_5ttGRzFs"
             width="100%"
