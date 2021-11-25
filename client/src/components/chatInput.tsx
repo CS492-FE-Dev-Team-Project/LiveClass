@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { IconButton, Textarea, Flex } from '@chakra-ui/react';
 import { ChatIcon, TimeIcon } from '@chakra-ui/icons';
 
-const ChatInput = () => {
+const ChatInput = ({ sendMessage }: any) => {
+  const [message, setMessage] = useState('');
+
   return (
     <Flex p="8px 6px" w="full" backgroundColor="white" flexDir="column">
       <Textarea
@@ -12,6 +14,10 @@ const ChatInput = () => {
         m={0.5}
         p="5px 5px"
         resize="vertical"
+        value={message}
+        onChange={evt => {
+          setMessage(evt.target.value);
+        }}
       />
       <Flex justifyContent="right">
         <IconButton
@@ -21,6 +27,10 @@ const ChatInput = () => {
           m={0.5}
         />
         <IconButton
+          onClick={evt => {
+            sendMessage(message);
+            setMessage(''); // clear message after send
+          }}
           size="xs"
           icon={<ChatIcon />}
           aria-label="Send Message"

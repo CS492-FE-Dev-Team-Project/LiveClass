@@ -5,7 +5,7 @@ import '../style/youtube.css';
 import { Progress } from '@chakra-ui/react';
 import { useSocket } from '../context/socket';
 
-import Flag from './timeline';
+import Marker from './timeMarker';
 //
 interface userInfo {
   name: string;
@@ -25,9 +25,9 @@ enum VideoState {
   CUED = 5
 }
 
-export interface flagInfo {
+export interface markerInfo {
+  id: number;
   time: number;
-  message: string;
 }
 
 const YouTubePlayer = ({
@@ -50,12 +50,12 @@ const YouTubePlayer = ({
   const videoTimelineWrapper = useRef<HTMLDivElement>(null);
 
   // -- 🐛 Mockup data--
-  const [flagInfoArr, setFlagInfoArr] = useState<Array<flagInfo>>([
-    { time: 30, message: 'A' },
-    { time: 50, message: 'B' },
-    { time: -1, message: 'C' },
-    { time: 100, message: 'D' }
-  ]); // get real 'flagInfoArr' data by calling DB API 🐛
+  const [markerInfoArr, setMarkerInfoArr] = useState<Array<markerInfo>>([
+    { id: 0, time: 30 },
+    { id: 1, time: 50 },
+    { id: 2, time: -1 },
+    { id: 3, time: 100 }
+  ]); // get real 'markerInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
   const cover = () => videoWrapper.current?.classList.add('coverVideo');
@@ -164,7 +164,7 @@ const YouTubePlayer = ({
     >
       {/* Overlay components on top of video player - timeline component and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
-        {flagInfoArr.map((info, idx) => {
+        {markerInfoArr.map((info, idx) => {
           if (videoDuration.current === 0) return <div />;
 
           // edge cases for time - outside [0, videoDuration]
@@ -174,10 +174,7 @@ const YouTubePlayer = ({
           else if (info.time < 0) time = 0;
 
           return (
-            <Flag
-              time={(time / videoDuration.current) * 100}
-              message={info.message}
-            />
+            <Marker id={info.id} time={(time / videoDuration.current) * 100} />
           );
         })}
         {studentNumber !== -1 ? (

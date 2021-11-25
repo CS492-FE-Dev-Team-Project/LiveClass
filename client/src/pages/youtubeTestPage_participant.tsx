@@ -4,6 +4,8 @@ import YouTube from '../components/youtube';
 
 import { SocketProvider } from '../context/socket';
 
+import ChatTestPage from './chatTestPage';
+
 const YouTubePage = (): React.ReactElement<any, any> => {
   // Participant example
   const user = {
@@ -27,5 +29,6 @@ const YouTubePage = (): React.ReactElement<any, any> => {
 export default (
   <SocketProvider url="localhost:5000">
     <YouTubePage />
+    <ChatTestPage />
   </SocketProvider>
 );

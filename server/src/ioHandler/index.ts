@@ -33,6 +33,12 @@ const OnInstructorPlayPause =
       .emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
   };
 
+const OnTimeMarkerClicked = (socket: Socket) => (request: string) => {
+  const { markerId } = JSON.parse(request);
+  socket.emit('TimeMarkerClicked', `${markerId}`);
+  // Listening on 'client/src/components/chat.tsx'
+};
+
 export default (io: SocketIOServer) => {
   io.on('connection', (socket: Socket) => {
     Logger.info('User connected');
@@ -43,9 +49,12 @@ export default (io: SocketIOServer) => {
     socket.on('JoinLecture', OnJoinLecture(socket));
     socket.on('ChatTextMessage', OnChatTextMessage(socket));
 
-    // client/youtube.tsx
+    // client/components/youtube.tsx
     socket.on('InstructorTimeChange', OnInstructorTimeChange(socket));
     socket.on('InstructorPlay', OnInstructorPlayPause(socket, true));
     socket.on('InstructorPause', OnInstructorPlayPause(socket, false));
+
+    // client/components/timeMarker.tsx
+    socket.on('TimeMarkerClicked', OnTimeMarkerClicked(socket));
   });
 };
