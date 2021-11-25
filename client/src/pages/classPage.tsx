@@ -5,6 +5,7 @@ import LeftMenu from '../components/leftmenu/leftmenu';
 import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
+import FloatConnectionStatus from '../components/floatConnectionStatus';
 
 const ClassPage = () => {
   const { uuid } = useParams();
@@ -21,6 +22,7 @@ const ClassPage = () => {
 
   return (
     <>
+      <FloatConnectionStatus />
       <Flex>
         <LeftMenu classname={classData.name} menus={menus} />
         <Box w="100%" h="100vh">
