@@ -5,7 +5,7 @@ import UserContext from './userContext';
 
 const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   const [userName, setUserName] = useState('');
-  const [status, setUserStatus] = useState(UserLoadStatus.LOADED);
+  const [status, setUserStatus] = useState(UserLoadStatus.LOADING);
 
   useEffect(() => {
     if (status === UserLoadStatus.LOADING) {
