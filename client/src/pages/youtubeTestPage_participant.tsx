@@ -3,6 +3,7 @@ import React from 'react';
 import YouTube from '../components/youtube';
 
 import { SocketProvider } from '../context/socket';
+import { MemberType } from '../types';
 
 import ChatTestPage from './chatTestPage';
 
@@ -16,8 +17,8 @@ const YouTubePage = (): React.ReactElement<any, any> => {
 
   return (
     <YouTube
-      name={user.name}
-      studentNumber={user.studentNumber}
+      userName={user.name}
+      memberType={MemberType.STUDENT}
       room={user.room}
       videoId="j1_5ttGRzFs"
       width={300}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Stack, Box, Button } from '@chakra-ui/react';
+import { Menu, TabContent } from './leftmenu';
 
-const LeftMenuTab = ({ tabTitle, tabContents }: any) => {
+const LeftMenuTab = ({ tabTitle, tabContents }: Menu) => {
   return (
     <Box w="150px">
       <Stack spacing={0}>
@@ -15,7 +16,7 @@ const LeftMenuTab = ({ tabTitle, tabContents }: any) => {
         >
           {tabTitle}
         </Box>
-        {tabContents.map((tab: any) => (
+        {tabContents.map((tab: TabContent) => (
           <Button
             colorScheme="gray"
             variant="ghost"

@@ -14,7 +14,7 @@
     "prepare": "husky install",
     "build:client": "cd client && yarn build",
     "clean": "rm -rf ./server/client && mkdir ./server/client && cd server && yarn down",
-    "build:server": "prebuild:server && cd server && yarn build",
+    "build:server": "yarn prebuild:server && cd server && yarn build",
     "run:server": "cd server && yarn up",
     "build:run": "yarn build:server && yarn run:server",
     "prebuild:server":"yarn build:client && cp -r ./client/build/* ./server/client"

@@ -6,10 +6,11 @@ import { Progress } from '@chakra-ui/react';
 import { useSocket } from '../context/socket';
 
 import Marker from './timeMarker';
-//
+import { MemberType } from '../types';
+
 interface userInfo {
-  name: string;
-  studentNumber: number;
+  userName: string;
+  memberType: MemberType;
   room: number;
   videoId: string;
   width?: number | string;
@@ -31,8 +32,8 @@ export interface markerInfo {
 }
 
 const YouTubePlayer = ({
-  name,
-  studentNumber,
+  userName,
+  memberType,
   room,
   videoId,
   width = 640,
@@ -77,7 +78,7 @@ const YouTubePlayer = ({
   // Set socket listeners and join room
   useEffect(() => {
     // If not instructor, sync video time, play, and pause
-    if (studentNumber !== -1) {
+    if (memberType === MemberType.STUDENT) {
       socket?.on('InstructorTimeChange', (newtime: number) => {
         video?.seekTo(newtime);
       });
@@ -104,7 +105,7 @@ const YouTubePlayer = ({
 
   // Take care of sync logic here
   const onStateChange = (evt: any) => {
-    if (studentNumber !== -1) return;
+    if (memberType === MemberType.STUDENT) return;
 
     const player = evt.target;
 
@@ -132,8 +133,10 @@ const YouTubePlayer = ({
     width: width.toString(),
     playerVars: {
       autoplay: 1 as const,
-      controls: studentNumber === -1 ? (1 as const) : (0 as const),
-      disablekb: studentNumber === -1 ? (0 as const) : (1 as const),
+      controls:
+        memberType === MemberType.INSTRUCTOR ? (1 as const) : (0 as const),
+      disablekb:
+        memberType === MemberType.INSTRUCTOR ? (0 as const) : (1 as const),
       rel: 0 as const
     }
   };
@@ -148,7 +151,7 @@ const YouTubePlayer = ({
 
   return (
     <div
-      className={studentNumber === -1 ? 'teacher' : 'student'}
+      className={memberType === MemberType.INSTRUCTOR ? 'teacher' : 'student'}
       id="youtube-wrapper"
       ref={videoWrapper}
       style={{
@@ -177,7 +180,7 @@ const YouTubePlayer = ({
             <Marker id={info.id} time={(time / videoDuration.current) * 100} />
           );
         })}
-        {studentNumber !== -1 ? (
+        {memberType === MemberType.STUDENT ? (
           <Progress
             colorScheme="red"
             position="absolute"
