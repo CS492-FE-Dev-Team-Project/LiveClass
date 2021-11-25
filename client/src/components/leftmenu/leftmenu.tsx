@@ -11,7 +11,22 @@ import React from 'react';
 import LeftMenuTab from './leftmenutab';
 import Header from '../common/Header';
 
-const LeftMenu = ({ classname, menus }: any) => {
+export interface TabContent {
+  tabName: string;
+  link: string;
+}
+
+export interface Menu {
+  tabTitle: string;
+  tabContents: TabContent[];
+}
+
+interface LeftMenuProps {
+  className: string;
+  menus: Menu[];
+}
+
+const LeftMenu = ({ className, menus }: LeftMenuProps) => {
   return (
     <Flex w="165px" h="100vh" flexDir="column">
       <Flex overflowX="hidden" overflowY="auto" flexDir="column" h="full">
@@ -19,7 +34,7 @@ const LeftMenu = ({ classname, menus }: any) => {
           backgroundColor="gray.200"
           color="black"
           headingSize="sx"
-          headingText={classname}
+          headingText={className}
           p={2}
         >
           <IconButton
@@ -36,7 +51,7 @@ const LeftMenu = ({ classname, menus }: any) => {
             w="165px"
             align="stretch"
           >
-            {menus.map((menu: any) => (
+            {menus.map((menu: Menu) => (
               <LeftMenuTab
                 tabTitle={menu.tabTitle}
                 tabContents={menu.tabContents}

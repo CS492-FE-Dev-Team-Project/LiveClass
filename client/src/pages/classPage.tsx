@@ -29,7 +29,7 @@ const ClassPage = () => {
     <>
       <FloatConnectionStatus />
       <Flex>
-        <LeftMenu classname={classData.name} menus={menus} />
+        <LeftMenu className={classData.name} menus={menus} />
         <Box w="100%" h="100vh">
           <YouTube
             userName={userName}
