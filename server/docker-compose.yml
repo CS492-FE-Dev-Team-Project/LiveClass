@@ -25,6 +25,7 @@ services:
     restart: always
     volumes:
       - ./src:/home/node/app/src
+      - ./client:/home/node/app/client
     container_name: cs492c-api-server
     expose:
       - 5000
