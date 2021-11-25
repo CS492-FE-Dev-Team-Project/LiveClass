@@ -6,9 +6,14 @@ import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
+import useMe from '../hooks/useMe';
+import { MemberType } from '../types';
 
 const ClassPage = () => {
-  const { uuid } = useParams();
+  const { uuid, memberType } = useParams();
+  const { status, userName } = useMe();
+
+  console.log(uuid, memberType);
 
   const classData = {
     name: 'CS330'
@@ -27,8 +32,8 @@ const ClassPage = () => {
         <LeftMenu classname={classData.name} menus={menus} />
         <Box w="100%" h="100vh">
           <YouTube
-            name={user.name}
-            studentNumber={user.studentNumber}
+            userName={userName}
+            memberType={memberType as MemberType}
             room={user.room}
             videoId="j1_5ttGRzFs"
             width="100%"

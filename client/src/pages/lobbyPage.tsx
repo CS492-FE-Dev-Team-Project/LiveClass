@@ -42,8 +42,8 @@ const LobbyPage = () => {
       <LobbyContent col={col}>
         {classes
           .filter(({ memberType }) => memberType === MemberType.INSTRUCTOR)
-          .map(({ uuid, title, subtitle }) => (
-            <Link to={`/class/${uuid}`} key={uuid}>
+          .map(({ uuid, title, subtitle, memberType }) => (
+            <Link to={`/class/${uuid}/${memberType}`} key={uuid}>
               <ClassCard
                 title={title}
                 subTitle={subtitle}
@@ -62,8 +62,8 @@ const LobbyPage = () => {
       <LobbyContent col={col}>
         {classes
           .filter(({ memberType }) => memberType === MemberType.STUDENT)
-          .map(({ uuid, title, subtitle }) => (
-            <Link to={`/class/${uuid}`} key={uuid}>
+          .map(({ uuid, title, subtitle, memberType }) => (
+            <Link to={`/class/${uuid}/${memberType}`} key={uuid}>
               <ClassCard
                 imgSrc="a"
                 title={title}
