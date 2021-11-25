@@ -1,11 +1,14 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
+import { useParams } from 'react-router';
 import LeftMenu from '../components/leftmenu/leftmenu';
 import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 
 const ClassPage = () => {
+  const { uuid } = useParams();
+
   const classData = {
     name: 'CS330'
   };
