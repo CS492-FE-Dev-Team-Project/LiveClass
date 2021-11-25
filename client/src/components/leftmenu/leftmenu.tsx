@@ -24,6 +24,7 @@ import {
 import LeftMenuTab from './leftmenutab';
 import Header from '../common/Header';
 import LangContext from '../../context/language/languageContext';
+import { LanguageType } from '../../types';
 
 const GlobeIcon = createIcon({
   displayName: 'GlobeIcon',
@@ -121,7 +122,7 @@ const LeftMenu = ({ className, menus }: LeftMenuProps) => {
                         colorScheme="green"
                         marginRight="2px"
                         onClick={() => {
-                          setLanguage('en');
+                          setLanguage(LanguageType.EN);
                           onClose();
                         }}
                       >
@@ -130,7 +131,7 @@ const LeftMenu = ({ className, menus }: LeftMenuProps) => {
                       <Button
                         colorScheme="blue"
                         onClick={() => {
-                          setLanguage('ko');
+                          setLanguage(LanguageType.KO);
                           onClose();
                         }}
                       >
