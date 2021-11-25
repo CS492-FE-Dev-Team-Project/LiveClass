@@ -2,6 +2,7 @@ import React from 'react';
 import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 import { AddIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 
 import AddClassModal from '../components/lobbyPage/classAddModal';
 import LobbyContent from '../components/lobbyPage/lobbyContent';
@@ -42,14 +43,14 @@ const LobbyPage = () => {
         {classes
           .filter(({ memberType }) => memberType === MemberType.INSTRUCTOR)
           .map(({ uuid, title, subtitle }) => (
-            <ClassCard
-              key={uuid}
-              imgSrc="imgSrc"
-              title={title}
-              subTitle={subtitle}
-              color="black"
-              backgroundColor="white"
-            />
+            <Link to={`/class/${uuid}`} key={uuid}>
+              <ClassCard
+                title={title}
+                subTitle={subtitle}
+                color="white"
+                backgroundColor="black"
+              />
+            </Link>
           ))}
       </LobbyContent>
 
@@ -62,14 +63,15 @@ const LobbyPage = () => {
         {classes
           .filter(({ memberType }) => memberType === MemberType.STUDENT)
           .map(({ uuid, title, subtitle }) => (
-            <ClassCard
-              key={uuid}
-              imgSrc="imgSrc"
-              title={title}
-              subTitle={subtitle}
-              color="black"
-              backgroundColor="white"
-            />
+            <Link to={`/class/${uuid}`} key={uuid}>
+              <ClassCard
+                imgSrc="a"
+                title={title}
+                subTitle={subtitle}
+                color="white"
+                backgroundColor="black"
+              />
+            </Link>
           ))}
       </LobbyContent>
       <IconButton
