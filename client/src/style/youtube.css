@@ -72,6 +72,13 @@
   transition: all 0.4s;
 }
 
+.video-timeline-components .flagButton {
+  position: absolute;
+  top: 10px;
+  left: 45%;
+  top: 8px;
+}
+
 /* Timeline component design */
 .timeline-flag {
   position: absolute; /* timeline component should be placed inside youtube-wrapper with pos:relative*/

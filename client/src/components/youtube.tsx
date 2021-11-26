@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
-import { Progress } from '@chakra-ui/react';
+import { Progress, Button } from '@chakra-ui/react';
+import { FlagButton } from './common/Button';
 import { useSocket } from '../context/socket';
 
 import Marker from './timeMarker';
@@ -42,9 +43,9 @@ const YouTubePlayer = ({
   const { socket, connected } = useSocket();
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
 
-  const [videoCurrent, setVideoCurrent] = useState<number>(0);
-  const videoDuration = useRef<number>(0);
-  const intervalID = useRef<NodeJS.Timeout | null>(null);
+  const [videoCurrent, setVideoCurrent] = useState<number>(0); // current running time of the video
+  const videoDuration = useRef<number>(0); // total video length
+  const intervalID = useRef<NodeJS.Timeout | null>(null); // setInterval return value for tracking current running time
 
   // DOM ref
   const videoWrapper = useRef<HTMLDivElement>(null);
@@ -127,6 +128,11 @@ const YouTubePlayer = ({
     }
   };
 
+  // 🐛 Call API to create timeMarker
+  const createTimeMarker = () => {
+    alert(videoCurrent);
+  };
+
   // Options for 'react-youtube' library component
   const options = {
     height: height.toString(),
@@ -167,6 +173,7 @@ const YouTubePlayer = ({
     >
       {/* Overlay components on top of video player - timeline component and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
+        <FlagButton onClick={createTimeMarker}>Bookmark</FlagButton>
         {markerInfoArr.map((info, idx) => {
           if (videoDuration.current === 0) return <div />;
 
