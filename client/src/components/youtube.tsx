@@ -7,7 +7,7 @@ import { FlagButton } from './common/Button';
 import { useSocket } from '../context/socket';
 
 import Marker from './timeMarker';
-import { MemberType } from '../types';
+import { MarkerType, MemberType } from '../types';
 
 interface userInfo {
   userName: string;
@@ -30,6 +30,7 @@ enum VideoState {
 export interface markerInfo {
   id: number;
   time: number;
+  type: MarkerType;
 }
 
 const YouTubePlayer = ({
@@ -53,10 +54,10 @@ const YouTubePlayer = ({
 
   // -- 🐛 Mockup data--
   const [markerInfoArr, setMarkerInfoArr] = useState<Array<markerInfo>>([
-    { id: 0, time: 30 },
-    { id: 1, time: 50 },
-    { id: 2, time: -1 },
-    { id: 3, time: 100 }
+    { id: 0, time: 30, type: MarkerType.DISCUSSION },
+    { id: 1, time: 50, type: MarkerType.NOTICE },
+    { id: 2, time: -1, type: MarkerType.QUESTION },
+    { id: 3, time: 100, type: MarkerType.QUIZ }
   ]); // get real 'markerInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
@@ -138,7 +139,10 @@ const YouTubePlayer = ({
         : markerInfoArr.reduce((prev, cur) => {
             return prev.id < cur.id ? cur : prev;
           }).id + 1; // get maxId
-    setMarkerInfoArr(arr => [...arr, { id, time: videoCurrent }]);
+    setMarkerInfoArr(arr => [
+      ...arr,
+      { id, time: videoCurrent, type: MarkerType.QUESTION }
+    ]);
   };
 
   // Options for 'react-youtube' library component
@@ -192,7 +196,11 @@ const YouTubePlayer = ({
           else if (info.time < 0) time = 0;
 
           return (
-            <Marker id={info.id} time={(time / videoDuration.current) * 100} />
+            <Marker
+              id={info.id}
+              time={(time / videoDuration.current) * 100}
+              type={info.type}
+            />
           );
         })}
         {memberType === MemberType.STUDENT ? (

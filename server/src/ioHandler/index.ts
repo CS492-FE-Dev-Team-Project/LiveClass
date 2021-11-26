@@ -34,8 +34,8 @@ const OnInstructorPlayPause =
   };
 
 const OnTimeMarkerClicked = (socket: Socket) => (request: string) => {
-  const { markerId } = JSON.parse(request);
-  socket.emit('TimeMarkerClicked', `${markerId}`);
+  const { markerId, markerType } = JSON.parse(request);
+  socket.emit('TimeMarkerClicked', markerId, markerType);
   // Listening on 'client/src/components/chat.tsx'
 };
 
