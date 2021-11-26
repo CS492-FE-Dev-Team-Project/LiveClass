@@ -14,7 +14,7 @@ interface userInfo {
   memberType: MemberType;
   room: number;
   videoId: string;
-  width?: number | string;
+  width?: number | string; // 100px or '65%'
   height?: number | string;
 }
 
@@ -37,8 +37,8 @@ const YouTubePlayer = ({
   memberType,
   room,
   videoId,
-  width = 640,
-  height = 360
+  width = '100%',
+  height = '100%'
 }: userInfo) => {
   const { socket, connected } = useSocket();
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
@@ -130,7 +130,15 @@ const YouTubePlayer = ({
 
   // 🐛 Call API to create timeMarker
   const createTimeMarker = () => {
-    alert(videoCurrent);
+    // alert(videoCurrent);
+
+    const id =
+      markerInfoArr.length === 0
+        ? 0
+        : markerInfoArr.reduce((prev, cur) => {
+            return prev.id < cur.id ? cur : prev;
+          }).id + 1; // get maxId
+    setMarkerInfoArr(arr => [...arr, { id, time: videoCurrent }]);
   };
 
   // Options for 'react-youtube' library component
