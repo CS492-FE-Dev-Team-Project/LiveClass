@@ -8,11 +8,11 @@ import {
   OneToMany,
   UpdateDateColumn
 } from 'typeorm';
-import ClassMember from './classMember';
-import Lecture from './lecture';
+import ClassMember from './classMemberEntity';
+import Lecture from './lectureEntity';
 
 @Entity()
-export default class Class extends BaseEntity {
+export default class ClassEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public uuid: string;
 

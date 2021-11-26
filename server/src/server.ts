@@ -6,6 +6,7 @@ import config from './config';
 import { expressLoader, ioLoader, ormLoader } from './loader';
 import Logger from './loader/logger';
 import session from './loader/session';
+import ClassManager from './data/classManager';
 
 class Server {
   private httpServer: httpServer;
@@ -14,10 +15,13 @@ class Server {
 
   private expressApp: express.Application;
 
+  private classManager: ClassManager;
+
   constructor() {
     this.expressApp = express();
     this.httpServer = createServer(this.expressApp);
     this.io = new SocketIOServer(this.httpServer, { cors: { origin: '*' } });
+    this.classManager = new ClassManager();
   }
 
   public static async start(): Promise<void> {

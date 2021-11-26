@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as NaverStrategy, Profile } from 'passport-naver-v2';
 import { Express, NextFunction, Request, Response } from 'express';
 
-import User from './entity/user';
+import User from './entity/userEntity';
 import config from './config';
 import Logger from './loader/logger';
 
