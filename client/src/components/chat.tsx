@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CloseButton, Flex } from '@chakra-ui/react';
+
 import ChatMessage from './chatMessage';
 import ChatInput from './chatInput';
 import Header from './common/Header';
+
+import { MarkerType } from '../types';
+import { MarkerSettingsPopover } from './common/Popover';
 
 import { useSocket } from '../context/socket';
 import dummyMessages from '../data/chatMessages'; // 🐛 Dummy message - call DB API to get real data
 
 interface ChatProps {
-  header: string;
   hasHeader: boolean;
+  customHeader?: string;
 }
 
 // 🚨 Possible duplicate with 'interface ChatMessageProps' in 'chatMessage.tsx'
@@ -23,31 +27,46 @@ interface Message {
 
 // 0 : live chatting, 1 : discussion mode (timeMarker), 2 : ...
 enum ChatMode {
-  Live,
-  MarkerDiscussion
+  QUESTION,
+  QUIZ,
+  NOTICE,
+  DISCUSSION,
+  LIVE
 }
 
-const Chat = ({ header, hasHeader }: ChatProps) => {
+const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
   const { socket, connected } = useSocket();
   const [messages, setMessages] = useState<Array<Message>>([]);
-  const chatMode = useRef<ChatMode>(ChatMode.Live);
+  const [chatMode, setChatMode] = useState<ChatMode>(ChatMode.LIVE);
+  const currentMarkerId = useRef<number>(-1);
+
+  // Set Chat header title
+  const pickHeader = ['Question', 'Quiz', 'Notice', 'Discussion'];
+  let header = customHeader;
+  if (header === '') {
+    header = chatMode === ChatMode.LIVE ? 'Live Chat' : pickHeader[chatMode];
+  }
 
   // Socket listeners
   useEffect(() => {
     // TimeMarker Click event - fetch discussion messages
-    socket?.on('TimeMarkerClicked', (markerId: number) => {
-      // 🐛 (API) Fetch timeMarker thread messages
-      setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
-      chatMode.current = ChatMode.MarkerDiscussion;
-    });
+    socket?.on(
+      'TimeMarkerClicked',
+      (markerId: number, markerType: MarkerType) => {
+        // 🐛 (API) Fetch timeMarker thread messages
+        currentMarkerId.current = markerId;
+        setChatMode(markerType as number);
+        setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
+      }
+    );
   }, [connected]);
 
   // Click 'X' close button in the header
   // 1) chatMode.current == discussion mode : change to Live mode; fetch Live chat messages
   // 2) chatMode.current == Live chatting : clear chat
   const backToLiveChat = () => {
+    setChatMode(ChatMode.LIVE);
     setMessages([]); // 🐛 (API?) Fetch Live chat message
-    chatMode.current = ChatMode.Live;
   };
 
   const createMessage = (message: string) => {
@@ -65,14 +84,19 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
     setMessages(arr => [...arr, dummyMessageObj]);
 
     // Update DB
-    switch (chatMode.current) {
-      case ChatMode.MarkerDiscussion:
+    switch (chatMode) {
+      case ChatMode.DISCUSSION:
         console.log('(DB API) Create markerDiscussion message');
         break;
       default:
-        // ChatMode.Live
+        // ChatMode.LIVE
         console.log('Create Live message');
     }
+  };
+
+  const changeMarkerType = (markerType: MarkerType) => {
+    // 🐛 Use API to change the type of the marker
+    setChatMode(markerType as number);
   };
 
   return (
@@ -81,11 +105,14 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
         <Header
           backgroundColor="gray.200"
           color="black"
-          headingSize="sx"
+          headingSize="md"
           headingText={header}
-          p={2}
+          p={3}
         >
-          <CloseButton marginLeft="auto" size="sm" onClick={backToLiveChat} />
+          {chatMode !== ChatMode.LIVE && (
+            <MarkerSettingsPopover changeMarkerType={changeMarkerType} />
+          )}
+          <CloseButton marginLeft="auto" size="lg" onClick={backToLiveChat} />
         </Header>
       )}
       <Flex overflowY="auto" pb={3} pt={3} flexDir="column" h="full">

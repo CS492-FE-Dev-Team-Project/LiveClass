@@ -38,7 +38,7 @@ const ClassPage = () => {
             height="100%"
           />
         </Box>
-        <Chat header="Chat" hasHeader />
+        <Chat hasHeader />
       </Flex>
     </>
   );
