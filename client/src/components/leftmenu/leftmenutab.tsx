@@ -11,7 +11,7 @@ const LeftMenuTab = ({ tabTitle, tabContents }: Menu) => {
           letterSpacing="wide"
           justifyContent="flex-start"
           fontWeight="bold"
-          fontSize="18px"
+          fontSize="14px"
           ml="2"
           mt="2"
         >

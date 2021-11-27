@@ -1,5 +1,9 @@
 import React, { useContext } from 'react';
 import {
+  Box,
+  Flex,
+  VStack,
+  Spacer,
   Modal,
   ModalBody,
   ModalContent,
@@ -10,14 +14,14 @@ import {
   Spinner
 } from '@chakra-ui/react';
 
-import NaverLoginButtonAsset from '../assets/naver_login_kor.png';
+import NaverLoginButtonAsset from '../assets/naver_login_eng.png';
 import UserContext from '../context/user/userContext';
 import { UserLoadStatus } from '../types';
 
 const NaverLoginButton = ({ ...props }) => {
   return (
-    <Button w={400} h={100} {...props}>
-      <Image src={NaverLoginButtonAsset} w="full" h="full" />
+    <Button w={460} h={100} colorScheme="white" {...props}>
+      <Image src={NaverLoginButtonAsset} fit="fill" />
     </Button>
   );
 };
@@ -27,6 +31,7 @@ const LoginModal = () => {
 
   return (
     <Modal
+      size="xl"
       isOpen={status !== UserLoadStatus.LOADED}
       onClose={() => {
         console.log();
@@ -37,13 +42,38 @@ const LoginModal = () => {
         <Spinner />
       ) : (
         <ModalContent>
-          <ModalHeader>Login</ModalHeader>
+          <ModalHeader>
+            <VStack w="100%">
+              <Box
+                w="100%"
+                textAlign="center"
+                fontSize="36px"
+                fontWeight="bold"
+              >
+                LiveClass
+              </Box>
+              <Box
+                w="100%"
+                textAlign="center"
+                fontSize="50px"
+                fontWeight="bold"
+              >
+                LOG IN
+              </Box>
+            </VStack>
+          </ModalHeader>
           <ModalBody>
-            <NaverLoginButton
-              onClick={() => {
-                window.location.pathname = '/api/auth/naver';
-              }}
-            />
+            <Flex>
+              <Box w="100%" display="flex">
+                <Spacer />
+                <NaverLoginButton
+                  onClick={() => {
+                    window.location.pathname = '/api/auth/naver';
+                  }}
+                />
+                <Spacer />
+              </Box>
+            </Flex>
           </ModalBody>
         </ModalContent>
       )}

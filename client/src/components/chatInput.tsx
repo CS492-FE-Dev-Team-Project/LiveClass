@@ -8,10 +8,11 @@ const ChatInput = ({ sendMessage }: any) => {
   return (
     <Flex p="8px 6px" w="full" backgroundColor="white" flexDir="column">
       <Textarea
-        placeholder="Chat"
+        placeholder="Enter Chat"
         fontSize="14px"
         rows={2}
         m={0.5}
+        borderColor="black"
         p="5px 5px"
         resize="vertical"
         value={message}
