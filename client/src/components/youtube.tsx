@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
-import { Progress, Button } from '@chakra-ui/react';
-import { FlagButton } from './common/Button';
+import { Progress, Button, Box } from '@chakra-ui/react';
+import { CreateMarkerButtons } from './common/Button';
 import { useSocket } from '../context/socket';
 
 import Marker from './timeMarker';
@@ -55,9 +55,7 @@ const YouTubePlayer = ({
   // -- 🐛 Mockup data--
   const [markerInfoArr, setMarkerInfoArr] = useState<Array<markerInfo>>([
     { id: 0, time: 30, type: MarkerType.DISCUSSION },
-    { id: 1, time: 50, type: MarkerType.NOTICE },
-    { id: 2, time: -1, type: MarkerType.QUESTION },
-    { id: 3, time: 100, type: MarkerType.QUIZ }
+    { id: 1, time: -1, type: MarkerType.QUESTION }
   ]); // get real 'markerInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
@@ -130,7 +128,7 @@ const YouTubePlayer = ({
   };
 
   // 🐛 Call API to create timeMarker
-  const createTimeMarker = () => {
+  const createTimeMarker = (markerType: MarkerType) => {
     // alert(videoCurrent);
 
     const id =
@@ -141,7 +139,7 @@ const YouTubePlayer = ({
           }).id + 1; // get maxId
     setMarkerInfoArr(arr => [
       ...arr,
-      { id, time: videoCurrent, type: MarkerType.QUESTION }
+      { id, time: videoCurrent, type: markerType }
     ]);
   };
 
@@ -183,9 +181,9 @@ const YouTubePlayer = ({
         videoTimelineWrapper.current?.classList.remove('showTimeline');
       }}
     >
-      {/* Overlay components on top of video player - timeline component and progress bar */}
+      {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
-        <FlagButton onClick={createTimeMarker}>Bookmark</FlagButton>
+        <CreateMarkerButtons onClick={createTimeMarker} />
         {markerInfoArr.map((info, idx) => {
           if (videoDuration.current === 0) return <div />;
 

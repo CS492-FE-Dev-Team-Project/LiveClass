@@ -72,7 +72,7 @@
   transition: all 0.4s;
 }
 
-.video-timeline-components .flagButton {
+.video-timeline-components .create-timeline-marker {
   position: absolute;
   top: 10px;
   left: 45%;
@@ -80,7 +80,7 @@
 }
 
 /* Timeline component design */
-.timeline-flag {
+.timeline-marker {
   position: absolute; /* timeline component should be placed inside youtube-wrapper with pos:relative*/
   bottom: 45px; /* Right above YouTube iframe progress bar */
 
@@ -91,11 +91,11 @@
   z-index: 2; /* above video, below cover */
 }
 
-.student#youtube-wrapper .timeline-flag {
+.student#youtube-wrapper .timeline-marker {
   bottom: 10px; /* match with 'bottom' of chakra-UI <Progress /> */
 }
 
 /* For test */
-.timeline-flag:hover {
+.timeline-marker:hover {
   background-color: red;
 }

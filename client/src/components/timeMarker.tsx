@@ -13,11 +13,11 @@ const timeline = ({ id, time, type }: markerInfo) => {
     socket?.emit('TimeMarkerClicked', payload);
   };
 
-  const colorPick = ['red', 'yellow', 'blue', 'green'];
+  const colorPick = ['red', 'blue'];
 
   return (
     <button
-      className="timeline-flag"
+      className="timeline-marker"
       style={{
         left: `${time}%` /* ratio of current time to video duration */,
         backgroundColor: colorPick[type]

@@ -1,5 +1,6 @@
 import React from 'react';
-import { createIcon, Button } from '@chakra-ui/react';
+import { createIcon, Button, Box } from '@chakra-ui/react';
+import { MarkerType } from '../../types';
 
 const FlagIcon = createIcon({
   displayName: 'flagIcon',
@@ -27,7 +28,7 @@ const FlagIcon = createIcon({
 });
 
 interface ButtonProps {
-  onClick: () => void;
+  onClick: (arg?: any | void) => void;
 }
 
 const FlagButton = ({
@@ -45,4 +46,19 @@ const FlagButton = ({
   </Button>
 );
 
-export { FlagButton };
+const CreateMarkerButtons: React.FC<ButtonProps> = ({ onClick }) => (
+  <Box className="create-timeline-marker">
+    <Button
+      colorScheme="red"
+      marginRight="2px"
+      onClick={() => onClick(MarkerType.QUESTION)}
+    >
+      Question
+    </Button>
+    <Button colorScheme="blue" onClick={() => onClick(MarkerType.DISCUSSION)}>
+      Discussion
+    </Button>
+  </Box>
+);
+
+export { FlagButton, CreateMarkerButtons };
