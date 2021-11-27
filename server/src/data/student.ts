@@ -1,7 +1,7 @@
 import ClassMember, { MemberType } from '../entity/classMemberEntity';
 import { Language } from '../types';
 
-class Student {
+class Member {
   public readonly id: number;
 
   public readonly userName: string;
@@ -31,4 +31,4 @@ class Student {
   }
 }
 
-export default Student;
+export default Member;

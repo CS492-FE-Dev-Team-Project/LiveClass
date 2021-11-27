@@ -1,7 +1,7 @@
 import ClassEntity from '../entity/classEntity';
 import ClassMember from '../entity/classMemberEntity';
 import { classUuid } from '../types';
-import Student from './student';
+import Member from './student';
 
 class Class {
   public readonly uuid: classUuid;
@@ -10,7 +10,7 @@ class Class {
 
   public readonly subtitle: string;
 
-  private students: Student[] = [];
+  private connectedMembers: Member[] = [];
 
   private chatMassages: { studentId: number; time: Date; message: string }[] =
     [];
@@ -24,24 +24,24 @@ class Class {
     this.subtitle = subtitle;
   }
 
-  public addStudent(member: ClassMember): Student {
+  public addMember(member: ClassMember): Member {
     if (!member.member) {
       throw new Error('Need to fetch User');
     }
-    const newStudent = new Student(member);
-    this.students.push(newStudent);
+    const newMember = new Member(member);
+    this.connectedMembers.push(newMember);
 
-    return newStudent;
+    return newMember;
   }
 
-  public getStudent(userId: number): Student | undefined {
-    return this.students.find(({ id }) => id === userId);
+  public getMember(userId: number): Member | undefined {
+    return this.connectedMembers.find(({ id }) => id === userId);
   }
 
   public exitUser(userId: number): boolean {
-    const students = this.students.filter(({ id }) => id !== userId);
-    const success = students.length < this.students.length;
-    this.students = students;
+    const students = this.connectedMembers.filter(({ id }) => id !== userId);
+    const success = students.length < this.connectedMembers.length;
+    this.connectedMembers = students;
 
     return success;
   }

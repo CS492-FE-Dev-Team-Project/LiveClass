@@ -24,7 +24,7 @@ class ClassManager {
   public findUserClass(id: number): Class | undefined {
     let result;
     this.classMap.forEach(cls => {
-      if (cls.getStudent(id)) {
+      if (cls.getMember(id)) {
         result = cls;
       }
     });
