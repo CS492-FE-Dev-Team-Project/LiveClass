@@ -54,10 +54,10 @@ const AddLecturePage = () => {
   const [Lecturequizlist, setLecturequizlist] = React.useState([
     {
       id: 0,
-      link: 'Lecturelink',
-      quiztime: 'Lecturequiztime',
-      problem: 'Lectureproblem',
-      answer: 'Lectureanswer'
+      link: 'Lecture Link',
+      quiztime: 'Lecture Quiz Time',
+      problem: 'Lecture Problem',
+      answer: 'Lecture Answer'
     }
   ]);
   const onChangeLecturequiz = () => {
@@ -193,6 +193,10 @@ const AddLecturePage = () => {
         />
       </HStack>
       <Heading size="md" pl="30px">
+        Quiz List
+      </Heading>
+      <ol>{showQuiz}</ol>
+      <Heading size="md" pl="30px">
         Youtube Link
       </Heading>
       <FormControl pl="30px">
@@ -216,27 +220,35 @@ const AddLecturePage = () => {
                 <ModalHeader>Create Quiz</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <Box>Problem Description</Box>
-                  <Textarea
-                    placeholder="Description"
-                    onChange={onChangeLectureproblem}
-                    focusBorderColor="black"
-                  />
-                  <Box>Answer</Box>
-                  <Input
-                    type="text"
-                    placeholder="Problem Answer"
-                    onChange={onChangeLectureanswer}
-                    focusBorderColor="black"
-                  />
-                  <Box>Quiz Open Time</Box>
-                  <FormLabel>If 07:34 please enter 0734</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="Quiz pop up time"
-                    onChange={onChangeLecturequiztime}
-                    focusBorderColor="black"
-                  />
+                  <Stack spacing="20px">
+                    <Stack>
+                      <Box>Problem Description</Box>
+                      <Textarea
+                        placeholder="Description"
+                        onChange={onChangeLectureproblem}
+                        focusBorderColor="black"
+                      />
+                    </Stack>
+                    <Stack>
+                      <Box>Answer</Box>
+                      <Input
+                        type="text"
+                        placeholder="Problem Answer"
+                        onChange={onChangeLectureanswer}
+                        focusBorderColor="black"
+                      />
+                    </Stack>
+                    <Stack>
+                      <Box>Quiz Open Time</Box>
+                      <FormLabel>If 07:34 please enter 0734</FormLabel>
+                      <Input
+                        type="text"
+                        placeholder="Quiz pop up time"
+                        onChange={onChangeLecturequiztime}
+                        focusBorderColor="black"
+                      />
+                    </Stack>
+                  </Stack>
                 </ModalBody>
                 <ModalFooter>
                   <Button
@@ -280,10 +292,6 @@ const AddLecturePage = () => {
           </>
         </HStack>
       </FormControl>
-      <Heading size="md" pl="30px">
-        Quiz List
-      </Heading>
-      <ol>{showQuiz}</ol>
     </Stack>
   );
 };
