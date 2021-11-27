@@ -20,6 +20,7 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
   io.on('connection', (socket: CustomSocket) => {
     const { user } = socket.request;
     Logger.info(`User connected: ${user?.userName}`);
+
     socket.onAny((eventName, ...args) => {
       Logger.debug(
         `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
@@ -27,6 +28,13 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     });
     socket.on('disconnect', () => {
       socket.disconnect();
+      if (user) {
+        Logger.info(`User ${user.userName} Disconnected`);
+        const cls = classManager.findUserClass(user.id);
+        if (cls) {
+          cls.exitUser(user.id);
+        }
+      }
     });
 
     socket.on('JoinClass', ClassProtocols.OnJoinClass(socket, classManager));

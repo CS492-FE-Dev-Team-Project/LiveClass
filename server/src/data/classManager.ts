@@ -20,6 +20,16 @@ class ClassManager {
     this.classMap.set(uuid, newClass);
     return newClass;
   }
+
+  public findUserClass(id: number): Class | undefined {
+    let result;
+    this.classMap.forEach(cls => {
+      if (cls.getStudent(id)) {
+        result = cls;
+      }
+    });
+    return result;
+  }
 }
 
 export default ClassManager;
