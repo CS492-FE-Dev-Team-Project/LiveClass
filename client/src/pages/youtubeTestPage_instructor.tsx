@@ -21,8 +21,6 @@ const YouTubePage = (): React.ReactElement<any, any> => {
       memberType={MemberType.INSTRUCTOR}
       room="uuid"
       videoId="j1_5ttGRzFs"
-      width={600}
-      height={400}
     />
   );
 };

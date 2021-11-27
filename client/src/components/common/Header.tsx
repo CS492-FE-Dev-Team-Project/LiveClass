@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Heading } from '@chakra-ui/react';
+import { Flex, Heading, Box } from '@chakra-ui/react';
 
 interface HeaderProps {
   backgroundColor: string;
@@ -18,9 +18,15 @@ const Header = ({
   headingText
 }: React.PropsWithChildren<HeaderProps>) => {
   return (
-    <Flex width="full" p={p} backgroundColor={backgroundColor} color={color}>
+    <Flex
+      width="full"
+      p={p}
+      backgroundColor={backgroundColor}
+      color={color}
+      justify="space-between"
+    >
       <Heading size={headingSize}>{headingText}</Heading>
-      {children}
+      <Flex>{children}</Flex>
     </Flex>
   );
 };
