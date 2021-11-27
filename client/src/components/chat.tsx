@@ -76,12 +76,12 @@ const Chat = ({ header, hasHeader }: ChatProps) => {
   };
 
   return (
-    <Flex w={300} h="100vh" backgroundColor="gray.50" flexDir="column">
+    <Flex w="350px" h="100vh" backgroundColor="gray.50" flexDir="column">
       {hasHeader && (
         <Header
           backgroundColor="gray.200"
           color="black"
-          headingSize="sx"
+          headingSize="md"
           headingText={header}
           p={2}
         >

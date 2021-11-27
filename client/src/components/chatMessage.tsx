@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
+import { generateKeyPair } from 'crypto';
 
 interface ChatMessageProps {
   userName: string;
@@ -21,8 +22,8 @@ const Message = ({ message, backgroundColor, color }: MessageProps) => {
       color={color}
       marginBottom="auto"
       borderRadius="7px"
-      fontSize="7px"
-      p="5px 5px"
+      fontSize="14px"
+      p="5px 7px"
     >
       {message}
     </Box>
@@ -31,7 +32,7 @@ const Message = ({ message, backgroundColor, color }: MessageProps) => {
 
 const Time = ({ time }: { time: string }) => {
   return (
-    <Box fontSize={5} marginTop="auto" p={1}>
+    <Box fontSize={5} marginTop="auto" p={1} color="black">
       {time}
     </Box>
   );
@@ -45,7 +46,7 @@ const Username = ({ userName }: { userName: string }) => {
       width="fit-content"
       mt={0}
       mb={0.5}
-      fontSize="7px"
+      fontSize="14px"
       p="2px 5px"
       textAlign="start"
     >
