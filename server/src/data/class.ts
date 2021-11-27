@@ -1,7 +1,7 @@
 import ClassEntity from '../entity/classEntity';
 import ClassMember from '../entity/classMemberEntity';
 import { classUuid } from '../types';
-import Member from './student';
+import Member from './member';
 
 class Class {
   public readonly uuid: classUuid;
