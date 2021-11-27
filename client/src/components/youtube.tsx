@@ -2,18 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
-import { Progress } from '@chakra-ui/react';
+import { Progress, Button, Box } from '@chakra-ui/react';
+import { CreateMarkerButtons } from './common/Button';
 import { useSocket } from '../context/socket';
 
 import Marker from './timeMarker';
-import { MemberType } from '../types';
+import { MarkerType, MemberType } from '../types';
 
 interface userInfo {
   userName: string;
   memberType: MemberType;
   room: string;
   videoId: string;
-  width?: number | string;
+  width?: number | string; // 100px or '65%'
   height?: number | string;
 }
 
@@ -29,6 +30,7 @@ enum VideoState {
 export interface markerInfo {
   id: number;
   time: number;
+  type: MarkerType;
 }
 
 const YouTubePlayer = ({
@@ -36,15 +38,15 @@ const YouTubePlayer = ({
   memberType,
   room,
   videoId,
-  width = 640,
-  height = 360
+  width = '100%',
+  height = '100%'
 }: userInfo) => {
   const { socket, connected } = useSocket();
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
 
-  const [videoCurrent, setVideoCurrent] = useState<number>(0);
-  const videoDuration = useRef<number>(0);
-  const intervalID = useRef<NodeJS.Timeout | null>(null);
+  const [videoCurrent, setVideoCurrent] = useState<number>(0); // current running time of the video
+  const videoDuration = useRef<number>(0); // total video length
+  const intervalID = useRef<NodeJS.Timeout | null>(null); // setInterval return value for tracking current running time
 
   // DOM ref
   const videoWrapper = useRef<HTMLDivElement>(null);
@@ -52,10 +54,8 @@ const YouTubePlayer = ({
 
   // -- 🐛 Mockup data--
   const [markerInfoArr, setMarkerInfoArr] = useState<Array<markerInfo>>([
-    { id: 0, time: 30 },
-    { id: 1, time: 50 },
-    { id: 2, time: -1 },
-    { id: 3, time: 100 }
+    { id: 0, time: 30, type: MarkerType.DISCUSSION },
+    { id: 1, time: -1, type: MarkerType.QUESTION }
   ]); // get real 'markerInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
@@ -127,6 +127,22 @@ const YouTubePlayer = ({
     }
   };
 
+  // 🐛 Call API to create timeMarker
+  const createTimeMarker = (markerType: MarkerType) => {
+    // alert(videoCurrent);
+
+    const id =
+      markerInfoArr.length === 0
+        ? 0
+        : markerInfoArr.reduce((prev, cur) => {
+            return prev.id < cur.id ? cur : prev;
+          }).id + 1; // get maxId
+    setMarkerInfoArr(arr => [
+      ...arr,
+      { id, time: videoCurrent, type: markerType }
+    ]);
+  };
+
   // Options for 'react-youtube' library component
   const options = {
     height: height.toString(),
@@ -165,8 +181,9 @@ const YouTubePlayer = ({
         videoTimelineWrapper.current?.classList.remove('showTimeline');
       }}
     >
-      {/* Overlay components on top of video player - timeline component and progress bar */}
+      {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
+        <CreateMarkerButtons onClick={createTimeMarker} />
         {markerInfoArr.map((info, idx) => {
           if (videoDuration.current === 0) return <div />;
 
@@ -177,7 +194,11 @@ const YouTubePlayer = ({
           else if (info.time < 0) time = 0;
 
           return (
-            <Marker id={info.id} time={(time / videoDuration.current) * 100} />
+            <Marker
+              id={info.id}
+              time={(time / videoDuration.current) * 100}
+              type={info.type}
+            />
           );
         })}
         {memberType === MemberType.STUDENT ? (

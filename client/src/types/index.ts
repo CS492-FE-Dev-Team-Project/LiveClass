@@ -15,3 +15,10 @@ export enum UserLoadStatus {
   LOADING,
   NOTLOADED
 }
+
+export enum MarkerType {
+  QUESTION,
+  QUIZ,
+  NOTICE,
+  DISCUSSION
+}

@@ -26,6 +26,7 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
         `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
       );
     });
+    
     socket.on('disconnect', () => {
       socket.disconnect();
       if (user) {
