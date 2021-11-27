@@ -9,9 +9,9 @@ import {
   Column,
   OneToMany
 } from 'typeorm';
-import Class from './class';
-import Marker from './marker';
-import User from './user';
+import Class from './classEntity';
+import Marker from './markerEntity';
+import User from './userEntity';
 
 export enum MemberType {
   INSTRUCTOR = 'instructor',
@@ -19,7 +19,7 @@ export enum MemberType {
 }
 
 @Entity()
-export default class ClassMember extends BaseEntity {
+export default class ClassMemberEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 

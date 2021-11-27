@@ -8,10 +8,10 @@ import {
   UpdateDateColumn,
   OneToMany
 } from 'typeorm';
-import ClassMember from './classMember';
+import ClassMember from './classMemberEntity';
 
 @Entity()
-export default class User extends BaseEntity {
+export default class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 

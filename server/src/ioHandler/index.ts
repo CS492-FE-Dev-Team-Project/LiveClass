@@ -1,60 +1,63 @@
-import { Server as SocketIOServer, Socket } from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
+import ClassManager from '../data/classManager';
 import Logger from '../loader/logger';
+import { CustomSocket } from '../types';
+import ChatProtocols from './chatProtocols';
+import ClassProtocols from './classProtocols';
+import YoutubeProtocols from './youtubeProtocols';
 
-const OnJoinLecture = (socket: Socket) => (request: string) => {
-  const { lectureId } = JSON.parse(request);
-  const lectureName = `Lecture_${lectureId}`;
-  socket.join(lectureName);
-  Logger.info(`A User Joined to ${lectureName}`);
-  socket.emit('JoinLecture', { lectureId, status: 200 });
-};
+// const OnTimeMarkerClicked =
+//   (socket: Socket, classManager: ClassManager) => async (request: string) => {
+//     const { classUuid, markerId } = JSON.parse(request);
+//     const cls = await classManager.getOrCreateClass(classUuid);
+//     socket.emit('TimeMarkerClicked', {
+//       messages: { markerId, cls }
+//     });
+//     // Listening on 'client/src/components/chat.tsx'
+//   };
 
-const OnChatTextMessage = (socket: Socket) => (request: string) => {
-  const { lectureId, textMessage } = JSON.parse(request);
-  socket.emit('ChatTextMessage', {
-    time: new Date().toISOString(),
-    textMessage
-  });
-  socket.to(`Lecture_${lectureId}`).emit(textMessage);
-};
+export default (io: SocketIOServer, classManager: ClassManager) => {
+  io.on('connection', (socket: CustomSocket) => {
+    const { user } = socket.request;
+    Logger.info(`User connected: ${user?.userName}`);
 
-const OnInstructorTimeChange = (socket: Socket) => (request: string) => {
-  const { lectureId, newtime } = JSON.parse(request);
-
-  socket.to(`Lecture_${lectureId}`).emit('InstructorTimeChange', `${newtime}`);
-};
-
-const OnInstructorPlayPause =
-  (socket: Socket, isPlay: boolean) => (request: string) => {
-    const { lectureId } = JSON.parse(request); // argument request: string
-
-    socket
-      .to(`Lecture_${lectureId}`)
-      .emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
-  };
-
-const OnTimeMarkerClicked = (socket: Socket) => (request: string) => {
-  const { markerId } = JSON.parse(request);
-  socket.emit('TimeMarkerClicked', `${markerId}`);
-  // Listening on 'client/src/components/chat.tsx'
-};
-
-export default (io: SocketIOServer) => {
-  io.on('connection', (socket: Socket) => {
-    Logger.info('User connected');
+    socket.onAny((eventName, ...args) => {
+      Logger.debug(
+        `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
+      );
+    });
     socket.on('disconnect', () => {
       socket.disconnect();
+      if (user) {
+        Logger.info(`User ${user.userName} Disconnected`);
+        const cls = classManager.findUserClass(user.id);
+        if (cls) {
+          cls.exitUser(user.id);
+        }
+      }
     });
 
-    socket.on('JoinLecture', OnJoinLecture(socket));
-    socket.on('ChatTextMessage', OnChatTextMessage(socket));
+    socket.on('JoinClass', ClassProtocols.OnJoinClass(socket, classManager));
+    socket.on(
+      'ChatTextMessage',
+      ChatProtocols.OnChatTextMessage(socket, classManager)
+    );
 
     // client/components/youtube.tsx
-    socket.on('InstructorTimeChange', OnInstructorTimeChange(socket));
-    socket.on('InstructorPlay', OnInstructorPlayPause(socket, true));
-    socket.on('InstructorPause', OnInstructorPlayPause(socket, false));
+    socket.on(
+      'InstructorTimeChange',
+      YoutubeProtocols.OnInstructorTimeChange(socket, classManager)
+    );
+    socket.on(
+      'InstructorPlay',
+      YoutubeProtocols.OnInstructorPlayPause(socket, true, classManager)
+    );
+    socket.on(
+      'InstructorPause',
+      YoutubeProtocols.OnInstructorPlayPause(socket, false, classManager)
+    );
 
     // client/components/timeMarker.tsx
-    socket.on('TimeMarkerClicked', OnTimeMarkerClicked(socket));
+    // socket.on('TimeMarkerClicked', OnTimeMarkerClicked(socket, classManager));
   });
 };

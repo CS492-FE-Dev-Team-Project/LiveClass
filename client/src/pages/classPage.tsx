@@ -32,7 +32,7 @@ const ClassPage = () => {
           <YouTube
             userName={userName}
             memberType={memberType}
-            room={user.room}
+            room={uuid}
             videoId="j1_5ttGRzFs"
             width="100%"
             height="100%"
