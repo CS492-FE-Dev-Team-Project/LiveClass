@@ -1,13 +1,17 @@
 import 'reflect-metadata';
 import config from './config';
-import { expressLoader, ioLoader, Logger, ormLoader, session } from './loader';
 import Server from './server';
+import ormLoader from './loader/orm';
+import expressLoader from './loader/express';
+import ioLoader from './loader/io';
+import sessionLoader from './loader/session';
+import Logger from './loader/logger';
 
 const start = async () => {
   const server = new Server();
 
   const connection = await ormLoader();
-  const sessionMiddleware = session(connection);
+  const sessionMiddleware = sessionLoader(connection);
   expressLoader(server, sessionMiddleware);
   ioLoader(server, sessionMiddleware);
 
