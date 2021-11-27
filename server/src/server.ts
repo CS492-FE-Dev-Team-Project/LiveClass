@@ -3,37 +3,26 @@ import express from 'express';
 import { Server as SocketIOServer } from 'socket.io';
 
 import config from './config';
-import { expressLoader, ioLoader, ormLoader } from './loader';
-import Logger from './loader/logger';
-import session from './loader/session';
+import ClassManager from './data/classManager';
 
 class Server {
-  private httpServer: httpServer;
+  public httpServer: httpServer;
 
-  private io: SocketIOServer;
+  public io: SocketIOServer;
 
-  private expressApp: express.Application;
+  public expressApp: express.Application;
+
+  public classManager: ClassManager;
 
   constructor() {
     this.expressApp = express();
     this.httpServer = createServer(this.expressApp);
     this.io = new SocketIOServer(this.httpServer, { cors: { origin: '*' } });
+    this.classManager = new ClassManager();
   }
 
-  public static async start(): Promise<void> {
-    const server = new Server();
-
-    const { expressApp, io } = server;
-
-    /** Loaders */
-    const connection = await ormLoader();
-    const sessionMiddleware = session(connection);
-    expressLoader(expressApp, sessionMiddleware);
-    ioLoader(io, sessionMiddleware);
-
-    server.httpServer.listen(config.HTTP_PORT, () => {
-      Logger.info(`Server running on port ${config.HTTP_PORT}`);
-    });
+  public listen(callback?: () => void) {
+    this.httpServer.listen(config.HTTP_PORT, callback);
   }
 }
 

@@ -9,11 +9,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import Class from './class';
-import Marker from './marker';
+import Class from './classEntity';
+import Marker from './markerEntity';
 
 @Entity()
-export default class Lecture extends BaseEntity {
+export default class LectureEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 

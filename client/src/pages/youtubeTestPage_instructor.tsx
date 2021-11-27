@@ -19,7 +19,7 @@ const YouTubePage = (): React.ReactElement<any, any> => {
     <YouTube
       userName={user.name}
       memberType={MemberType.INSTRUCTOR}
-      room={user.room}
+      room="uuid"
       videoId="j1_5ttGRzFs"
     />
   );

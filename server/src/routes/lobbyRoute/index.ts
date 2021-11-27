@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import Class from '../../entity/class';
-import ClassMember, { MemberType } from '../../entity/classMember';
+import Class from '../../entity/classEntity';
+import ClassMember, { MemberType } from '../../entity/classMemberEntity';
 import Logger from '../../loader/logger';
 import { authenticateUser } from '../../passport';
 

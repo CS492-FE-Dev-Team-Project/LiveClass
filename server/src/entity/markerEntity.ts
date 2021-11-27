@@ -7,13 +7,13 @@ import {
   CreateDateColumn,
   ManyToOne
 } from 'typeorm';
-import ClassMember from './classMember';
-import Lecture from './lecture';
+import ClassMember from './classMemberEntity';
+import Lecture from './lectureEntity';
 
 type MarkerType = 'question' | 'quiz' | 'notice' | 'discussion';
 
 @Entity()
-export default class Marker extends BaseEntity {
+export default class MarkerEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
