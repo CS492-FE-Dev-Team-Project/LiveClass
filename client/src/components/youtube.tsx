@@ -11,7 +11,7 @@ import { MemberType } from '../types';
 interface userInfo {
   userName: string;
   memberType: MemberType;
-  room: number;
+  room: string;
   videoId: string;
   width?: number | string;
   height?: number | string;
@@ -89,7 +89,7 @@ const YouTubePlayer = ({
         video?.pauseVideo();
       });
     }
-    socket?.emit('JoinLecture', `{ "lectureId": ${room} }`);
+    socket?.emit('JoinClass', JSON.stringify({ classUuid: room }));
   }, [connected, video]);
 
   // (For progress bar time) Set new setInterval on play
@@ -110,7 +110,7 @@ const YouTubePlayer = ({
     const player = evt.target;
 
     const JO = JSON.stringify({
-      lectureId: room,
+      classUuid: room,
       newtime: player.getCurrentTime()
     });
 
