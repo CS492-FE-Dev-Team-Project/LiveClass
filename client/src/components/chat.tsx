@@ -6,7 +6,6 @@ import ChatInput from './chatInput';
 import Header from './common/Header';
 
 import { MarkerType } from '../types';
-import { MarkerSettingsPopover } from './common/Popover';
 
 import { useSocket } from '../context/socket';
 import dummyMessages from '../data/chatMessages'; // 🐛 Dummy message - call DB API to get real data
@@ -109,9 +108,6 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
           headingText={header}
           p={3}
         >
-          {chatMode !== ChatMode.LIVE && (
-            <MarkerSettingsPopover changeMarkerType={changeMarkerType} />
-          )}
           <CloseButton marginLeft="auto" size="lg" onClick={backToLiveChat} />
         </Header>
       )}
