@@ -4,7 +4,7 @@ import ioHandler from '../ioHandler';
 import Server from '../server';
 
 export default (server: Server, sessionMiddleware: any) => {
-  const { io } = server;
+  const { io, classManager } = server;
   const wrap = (middleware: any) => (socket: Socket, next: any) =>
     middleware(socket.request, {}, next);
 
@@ -12,5 +12,5 @@ export default (server: Server, sessionMiddleware: any) => {
   io.use(wrap(passport.initialize()));
   io.use(wrap(passport.session()));
 
-  ioHandler(io);
+  ioHandler(io, classManager);
 };
