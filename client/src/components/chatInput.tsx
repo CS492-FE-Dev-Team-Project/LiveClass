@@ -8,10 +8,11 @@ const ChatInput = ({ sendMessage }: any) => {
   return (
     <Flex p="8px 6px" w="full" backgroundColor="white" flexDir="column">
       <Textarea
-        placeholder="Chat"
-        fontSize={8}
+        placeholder="Enter Chat"
+        fontSize="14px"
         rows={2}
         m={0.5}
+        borderColor="black"
         p="5px 5px"
         resize="vertical"
         value={message}
@@ -21,7 +22,7 @@ const ChatInput = ({ sendMessage }: any) => {
       />
       <Flex justifyContent="right">
         <IconButton
-          size="xs"
+          size="md"
           icon={<TimeIcon />}
           aria-label="Timeline"
           m={0.5}
@@ -31,7 +32,7 @@ const ChatInput = ({ sendMessage }: any) => {
             sendMessage(message);
             setMessage(''); // clear message after send
           }}
-          size="xs"
+          size="md"
           icon={<ChatIcon />}
           aria-label="Send Message"
           m={0.5}

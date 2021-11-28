@@ -64,7 +64,7 @@ const LeftMenuPage = (): React.ReactElement<any, any> => {
       ]
     }
   ];
-  return <LeftMenu className="CLASS" menus={menus} />;
+  return <LeftMenu menus={menus} />;
 };
 
 export default LeftMenuPage;
