@@ -25,7 +25,9 @@ const Header = ({
       color={color}
       justify="space-between"
     >
-      <Heading size={headingSize}>{headingText}</Heading>
+      <Heading mt="3px" size={headingSize}>
+        {headingText}
+      </Heading>
       <Flex>{children}</Flex>
     </Flex>
   );

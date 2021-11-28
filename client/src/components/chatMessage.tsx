@@ -18,6 +18,7 @@ interface MessageProps {
 const Message = ({ message, backgroundColor, color }: MessageProps) => {
   return (
     <Box
+      maxWidth="200px"
       backgroundColor={backgroundColor}
       color={color}
       marginBottom="auto"
@@ -41,8 +42,6 @@ const Time = ({ time }: { time: string }) => {
 const Username = ({ userName }: { userName: string }) => {
   return (
     <Box
-      backgroundColor="gray.100"
-      borderRadius="7px"
       width="fit-content"
       mt={0}
       mb={0.5}

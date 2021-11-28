@@ -100,7 +100,7 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
 
   return (
     <Flex
-      w="350px"
+      w="auto"
       h="100vh"
       backgroundColor="gray.50"
       flexDir="column"
@@ -117,7 +117,7 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
           <CloseButton marginLeft="auto" size="md" onClick={backToLiveChat} />
         </Header>
       )}
-      <Flex overflowY="auto" pb={3} pt={3} flexDir="column" h="full">
+      <Flex w="280px" overflowY="auto" pb={3} pt={3} flexDir="column" h="full">
         {messages.map(({ userName, message, time, id, isMy }) => (
           <ChatMessage
             key={id}
