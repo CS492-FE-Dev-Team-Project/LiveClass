@@ -31,7 +31,12 @@ import { Center, Square, Circle } from '@chakra-ui/react';
 import { Stack, HStack, VStack } from '@chakra-ui/react';
 import { Textarea } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import CreateQuiz from '../quiz/createquiz';
+import YoutubePlayer from 'youtube-player';
+
+import ClassTitle from './createLecture/classTitle';
+import ClassNotice from './createLecture/classnotice';
+import ClassTime from './createLecture/classTime';
+import ClassPlayList from './createLecture/createplaylist';
 
 const AddLecturePage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,7 +56,9 @@ const AddLecturePage = () => {
   const [Lectureproblem, setLectureproblem] = React.useState('');
   const [Lectureanswer, setLectureanswer] = React.useState('');
   const [Removenumber, setRemovenumber] = React.useState('');
-  const [Lecturequizlist, setLecturequizlist] = React.useState([
+  const [Firstflag, setFirstflag] = React.useState(0);
+  const [Youtubeplaylist, setYoutubeplaylist] = React.useState('');
+  const [Lecturequizhead, setLecturequizhead] = React.useState([
     {
       id: 0,
       link: 'Lecture Link',
@@ -60,15 +67,36 @@ const AddLecturePage = () => {
       answer: 'Lecture Answer'
     }
   ]);
+  const [Lecturequizlist, setLecturequizlist] = React.useState([
+    {
+      id: 1,
+      link: ' ',
+      quiztime: ' ',
+      problem: ' ',
+      answer: ' '
+    }
+  ]);
   const onChangeLecturequiz = () => {
-    const newquiz = {
-      id: Lecturequizlist.length,
-      link: Lecturelink,
-      quiztime: Lecturequiztime,
-      problem: Lectureproblem,
-      answer: Lectureanswer
-    };
-    setLecturequizlist([...Lecturequizlist, newquiz]);
+    if (Firstflag === 0) {
+      const newquiz = {
+        id: Lecturequizlist.length,
+        link: Lecturelink,
+        quiztime: Lecturequiztime,
+        problem: Lectureproblem,
+        answer: Lectureanswer
+      };
+      setLecturequizlist([newquiz]);
+      setFirstflag(1);
+    } else {
+      const newquiz = {
+        id: Lecturequizlist.length + 1,
+        link: Lecturelink,
+        quiztime: Lecturequiztime,
+        problem: Lectureproblem,
+        answer: Lectureanswer
+      };
+      setLecturequizlist([...Lecturequizlist, newquiz]);
+    }
     onClose();
   };
   const onChangeRemovenumber = (e: any) => {
@@ -101,8 +129,12 @@ const AddLecturePage = () => {
   const onChangeLecturenotice = (e: any) => {
     setLecturenotice(e.target.value);
   };
-  const onChangeLecturelink = (e: any) => {
-    setLecturelink(e.target.value);
+  const onChangeYoutubeplaylist = (e: any) => {
+    // this function gets youtubeplaylist address
+    setYoutubeplaylist(e.target.value);
+    // add here to create youtube playlist : array
+    // using setYoutubeplaylist to save playlist array
+    // ex setYoutubeplaylist([playlist])
   };
   const onChangeLectureproblem = (e: any) => {
     setLectureproblem(e.target.value);
@@ -123,6 +155,24 @@ const AddLecturePage = () => {
             <Td>{item.quiztime}</Td>
             <Td>{item.problem}</Td>
             <Td>{item.answer}</Td>
+            <Td>
+              <IconButton aria-label="Add to friends" icon={<MinusIcon />} />
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    );
+  });
+  const showQuizhead = Lecturequizhead.map((item: any) => {
+    return (
+      <Table variant="simple">
+        <Tbody>
+          <Tr>
+            <Td>{item.id}</Td>
+            <Td>{item.link}</Td>
+            <Td>{item.quiztime}</Td>
+            <Td>{item.problem}</Td>
+            <Td>{item.answer}</Td>
           </Tr>
         </Tbody>
       </Table>
@@ -133,165 +183,34 @@ const AddLecturePage = () => {
       <Center bg="black" h="100px" color="white" fontSize="2xl">
         Create Lecture
       </Center>
-      <Heading size="lg" pl="30px">
-        Class Title
-      </Heading>
-      <FormControl pl="30px">
-        <Input
-          type="text"
-          placeholder="Class Title"
-          onChange={onChangeLecturetitle}
-          w="500px"
-          focusBorderColor="black"
-        />
-      </FormControl>
-      <Heading size="md" pl="30px">
-        Notice
-      </Heading>
-      <FormControl pl="30px">
-        <Textarea
-          placeholder="Description"
-          onChange={onChangeLecturenotice}
-          focusBorderColor="black"
-          w="500px"
-        />
-      </FormControl>
-      <Heading size="md" pl="30px">
-        Class Time
-      </Heading>
-      <HStack pl="30px">
-        <Input
-          type="text"
-          placeholder="M"
-          onChange={onChangeLecturemonth}
-          w="50px"
-          focusBorderColor="black"
-        />
-        <FormLabel>/</FormLabel>
-        <Input
-          type="text"
-          placeholder="D"
-          onChange={onChangeLectureday}
-          w="50px"
-          focusBorderColor="black"
-        />
-        <FormLabel>/</FormLabel>
-        <Input
-          type="text"
-          placeholder="H"
-          onChange={onChangeLecturehour}
-          w="50px"
-          focusBorderColor="black"
-        />
-        <FormLabel>:</FormLabel>
-        <Input
-          type="text"
-          placeholder="M"
-          onChange={onChangeLecturemin}
-          w="50px"
-          focusBorderColor="black"
-        />
-      </HStack>
+      <ClassTitle onChangeLecturetitle={onChangeLecturetitle} />
+      <ClassNotice onChangeLecturenotice={onChangeLecturenotice} />
+      <ClassTime
+        onChangeLecturemonth={onChangeLecturemonth}
+        onChangeLectureday={onChangeLectureday}
+        onChangeLecturehour={onChangeLecturehour}
+        onChangeLecturemin={onChangeLecturemin}
+      />
       <Heading size="md" pl="30px">
         Quiz List
       </Heading>
+      <ol>{showQuizhead}</ol>
       <ol>{showQuiz}</ol>
-      <Heading size="md" pl="30px">
-        Youtube Link
-      </Heading>
-      <FormControl pl="30px">
-        <HStack spacing="30px">
-          <Input
-            type="text"
-            placeholder="Youtube Material Link"
-            onChange={onChangeLecturelink}
-            w="500px"
-            focusBorderColor="black"
-          />
-          <>
-            <IconButton
-              aria-label="Add to friends"
-              icon={<AddIcon />}
-              onClick={onOpen}
-            />
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Create Quiz</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Stack spacing="20px">
-                    <Stack>
-                      <Box>Problem Description</Box>
-                      <Textarea
-                        placeholder="Description"
-                        onChange={onChangeLectureproblem}
-                        focusBorderColor="black"
-                      />
-                    </Stack>
-                    <Stack>
-                      <Box>Answer</Box>
-                      <Input
-                        type="text"
-                        placeholder="Problem Answer"
-                        onChange={onChangeLectureanswer}
-                        focusBorderColor="black"
-                      />
-                    </Stack>
-                    <Stack>
-                      <Box>Quiz Open Time</Box>
-                      <FormLabel>If 07:34 please enter 0734</FormLabel>
-                      <Input
-                        type="text"
-                        placeholder="Quiz pop up time"
-                        onChange={onChangeLecturequiztime}
-                        focusBorderColor="black"
-                      />
-                    </Stack>
-                  </Stack>
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onChangeLecturequiz}
-                  >
-                    Add
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </>
-          <>
-            <IconButton
-              aria-label="Add to friends"
-              icon={<MinusIcon />}
-              onClick={onOpenremove}
-            />
-            <Modal isOpen={isOpenremove} onClose={onCloseremove}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Remove quiz</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Box>Which quiz number will be removed?</Box>
-                  <Input
-                    type="text"
-                    placeholder="Quiz number"
-                    onChange={onChangeRemovenumber}
-                    focusBorderColor="black"
-                  />
-                </ModalBody>
-                <ModalFooter>
-                  <Button colorScheme="blue" onClick={onChangeRemove}>
-                    Remove
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </>
-        </HStack>
-      </FormControl>
+      <ClassPlayList
+        onOpen={onOpen}
+        isOpen={isOpen}
+        onClose={onClose}
+        onChangeYoutubeplaylist={onChangeYoutubeplaylist}
+        onChangeLectureproblem={onChangeLectureproblem}
+        onChangeLectureanswer={onChangeLectureanswer}
+        onChangeLecturequiztime={onChangeLecturequiztime}
+        onChangeLecturequiz={onChangeLecturequiz}
+        onOpenremove={onOpenremove}
+        isOpenremove={isOpenremove}
+        onCloseremove={onCloseremove}
+        onChangeRemovenumber={onChangeRemovenumber}
+        onChangeRemove={onChangeRemove}
+      />
     </Stack>
   );
 };
