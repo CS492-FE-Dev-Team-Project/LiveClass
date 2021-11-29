@@ -11,7 +11,7 @@ const LobbyContent = ({
 }: React.PropsWithChildren<LobbyContentProps>) => {
   return (
     <>
-      <Grid templateColumns={`repeat(${col ?? 4}, 1fr)`} p={5} gap={8}>
+      <Grid templateColumns={`repeat(${col ?? 5}, 1fr)`} p={5} gap={8}>
         {children}
       </Grid>
     </>
