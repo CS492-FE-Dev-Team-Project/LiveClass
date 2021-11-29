@@ -32,10 +32,6 @@ export default (server: Server, sessionMiddleware: any) => {
 
   app.use(express.static(path.join(__dirname, '../../client')));
 
-  app.get('/', (req, res) => {
-    res.send('LiveClass Main Server!!').status(200);
-  });
-
   // TODO: Add Authentication Middlewares
 
   app.use('/api', serverRoute());
