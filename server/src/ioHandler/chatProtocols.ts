@@ -18,4 +18,14 @@ const OnChatTextMessage =
       .emit('ChatTextMessage', JSON.stringify({ ...payload, isMy: false }));
   };
 
-export default { OnChatTextMessage };
+const OnTimeMarkerClicked =
+  (socket: CustomSocket) =>
+  // (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { markerId, markerType } = JSON.parse(request);
+    // const cls = await classManager.getOrCreateClass(classUuid);
+    socket.emit('TimeMarkerClicked', markerId, markerType);
+    // Listening on 'client/src/components/chat.tsx'
+  };
+
+export default { OnChatTextMessage, OnTimeMarkerClicked };
