@@ -22,28 +22,13 @@ export interface Menu {
 }
 
 interface LeftMenuProps {
-  className: string;
   menus: Menu[];
 }
 
-const LeftMenu = ({ className, menus }: LeftMenuProps) => {
+const LeftMenu = ({ menus }: LeftMenuProps) => {
   return (
     <Flex w="165px" h="100vh" flexDir="column">
       <Flex overflowX="hidden" overflowY="auto" flexDir="column" h="full">
-        <Header
-          backgroundColor="gray.200"
-          color="black"
-          headingSize="sx"
-          headingText={className}
-          p={2}
-        >
-          <IconButton
-            size="xs"
-            marginLeft="auto"
-            icon={<ChevronRightIcon />}
-            aria-label="Close Menu"
-          />
-        </Header>
         <Box h="100vh" ml="2">
           <VStack
             divider={<StackDivider borderColor="gray.200" />}
@@ -63,14 +48,14 @@ const LeftMenu = ({ className, menus }: LeftMenuProps) => {
       <Flex p="26px 10px" w="full" backgroundColor="white" flexDir="column">
         <Box position="absolute" bottom={3}>
           <IconButton
-            size="sm"
+            size="md"
             colorScheme="red"
             icon={<CloseIcon />}
             aria-label="Quit"
             m={0.5}
           />
           <IconButton
-            size="sm"
+            size="md"
             icon={<SettingsIcon />}
             aria-label="Settings"
             m={0.5}

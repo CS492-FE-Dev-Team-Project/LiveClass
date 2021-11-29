@@ -27,7 +27,8 @@ const ClassPage = () => {
     <>
       <FloatConnectionStatus />
       <Flex>
-        <LeftMenu className={title} menus={menus} />
+        <LeftMenu menus={menus} />
+        <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh">
           <YouTube
             userName={userName}

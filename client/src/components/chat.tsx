@@ -99,19 +99,25 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
   };
 
   return (
-    <Flex w={300} h="100vh" backgroundColor="gray.50" flexDir="column">
+    <Flex
+      w="auto"
+      h="100vh"
+      backgroundColor="gray.50"
+      flexDir="column"
+      align="center"
+    >
       {hasHeader && (
         <Header
           backgroundColor="gray.200"
           color="black"
           headingSize="md"
           headingText={header}
-          p={3}
+          p="5px 15px"
         >
-          <CloseButton marginLeft="auto" size="lg" onClick={backToLiveChat} />
+          <CloseButton marginLeft="auto" size="md" onClick={backToLiveChat} />
         </Header>
       )}
-      <Flex overflowY="auto" pb={3} pt={3} flexDir="column" h="full">
+      <Flex w="280px" overflowY="auto" pb={3} pt={3} flexDir="column" h="full">
         {messages.map(({ userName, message, time, id, isMy }) => (
           <ChatMessage
             key={id}
