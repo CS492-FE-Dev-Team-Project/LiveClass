@@ -84,8 +84,8 @@ const LobbyPage = () => {
       </LobbyContent>
       <IconButton
         position="fixed"
-        right="100px"
-        bottom="100px"
+        right="5%"
+        bottom="10%"
         size="lg"
         aria-label="Add Classroom"
         colorScheme="green"
