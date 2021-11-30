@@ -7,6 +7,7 @@ import Header from './common/Header';
 
 import { MarkerType } from '../types';
 
+import useMe from '../hooks/useMe';
 import { useSocket } from '../context/socket';
 import dummyMessages from '../data/chatMessages'; // 🐛 Dummy message - call DB API to get real data
 
@@ -38,6 +39,7 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
   const [messages, setMessages] = useState<Array<Message>>([]);
   const [chatMode, setChatMode] = useState<ChatMode>(ChatMode.LIVE);
   const currentMarkerId = useRef<number>(-1);
+  const { userId, userName: currentUserName } = useMe();
 
   // Set Chat header title
   const pickHeader = ['Question', 'Quiz', 'Notice', 'Discussion'];
