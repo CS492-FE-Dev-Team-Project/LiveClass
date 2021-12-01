@@ -11,11 +11,9 @@ import { Class, MemberType } from '../types';
 
 const ClassPage = () => {
   const { status, userName } = useMe();
-  const {
-    state: { title, subtitle, uuid, memberType }
-  }: { state: Class } = useLocation();
+  const { classUuid, memberType } = useParams();
 
-  console.log(title, subtitle, uuid, memberType);
+  // console.log(title, subtitle, uuid, memberType);
 
   const user = {
     name: 'Kim',
@@ -32,8 +30,8 @@ const ClassPage = () => {
         <Box w="100%" h="100vh">
           <YouTube
             userName={userName}
-            memberType={memberType}
-            room={uuid}
+            memberType={(memberType ?? MemberType.STUDENT) as MemberType}
+            room={classUuid ?? 'uuid error'}
             videoId="j1_5ttGRzFs"
             width="100%"
             height="100%"
