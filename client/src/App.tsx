@@ -13,7 +13,7 @@ const App = (): React.ReactElement<any, any> => {
         <Routes>
           <Route path="/" element={<LobbyPage />} />
           <Route
-            path="class"
+            path="class/:classUuid/:memberType"
             element={
               <SocketProvider url="http://localhost:5000/">
                 <ClassPage />
