@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import UserContext from '../context/user/userContext';
 
 const useMe = () => {
-  const { status, userName } = useContext(UserContext);
+  const { status, userId, userName } = useContext(UserContext);
 
-  return { status, userName };
+  return { status, userId, userName };
 };
 
 export default useMe;

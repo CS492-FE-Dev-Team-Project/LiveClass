@@ -4,6 +4,7 @@ import { UserLoadStatus } from '../../types';
 import UserContext from './userContext';
 
 const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
+  const [userId, setUserId] = useState(0);
   const [userName, setUserName] = useState('');
   const [status, setUserStatus] = useState(UserLoadStatus.LOADING);
 
@@ -18,6 +19,7 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
             setUserStatus(UserLoadStatus.NOTLOADED);
           } else if (r.status === 200) {
             console.log('Logged IN');
+            setUserId(r.userId);
             setUserName(r.userName);
             setUserStatus(UserLoadStatus.LOADED);
           }
@@ -27,7 +29,7 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userName, status }}>
+    <UserContext.Provider value={{ userId, userName, status }}>
       {children}
     </UserContext.Provider>
   );
