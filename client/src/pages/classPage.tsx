@@ -13,14 +13,6 @@ const ClassPage = () => {
   const { status, userName } = useMe();
   const { classUuid, memberType } = useParams();
 
-  // console.log(title, subtitle, uuid, memberType);
-
-  const user = {
-    name: 'Kim',
-    studentNumber: -1, // -1
-    room: 10
-  };
-
   return (
     <>
       <FloatConnectionStatus />
