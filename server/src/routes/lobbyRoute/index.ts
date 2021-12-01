@@ -66,13 +66,12 @@ export default (app: Router) => {
     try {
       const user = req.user!;
       const { uuid } = req.body;
+
       const joinClass = await Class.createQueryBuilder('class')
         .leftJoinAndSelect('class.members', 'class_member')
         .leftJoinAndSelect('class_member.member', 'member')
-        .where('member.id=:memberId', {
-          memberId: user.id
-        })
         .getOne();
+
       if (!joinClass) {
         throw new Error('No Such Class');
       }

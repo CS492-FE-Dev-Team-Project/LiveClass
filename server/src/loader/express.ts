@@ -35,8 +35,12 @@ export default (server: Server, sessionMiddleware: any) => {
   // TODO: Add Authentication Middlewares
 
   app.use('/api', serverRoute());
-  app.use('*', (req, res) => {
+  app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../client/index.html'));
+  });
+
+  app.get('*', (req, res) => {
+    res.redirect('/');
   });
 
   // TODO: Add Error Handling middlewares
