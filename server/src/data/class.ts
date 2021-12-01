@@ -13,6 +13,8 @@ class Class {
 
   public readonly subtitle: string;
 
+  public readonly entity: ClassEntity; // Used in creating a new lecture entity - src/ioHandler/classProtocols.ts - 'OnCreateLectures'
+
   private connectedMembers: Member[] = [];
 
   private chatMassages: { studentId: number; time: Date; message: string }[] =
@@ -28,6 +30,19 @@ class Class {
     this.uuid = uuid;
     this.title = title;
     this.subtitle = subtitle;
+    this.entity = classEntity;
+
+    this.init();
+  }
+
+  public async init() {
+    const { uuid } = this;
+    const lectureEntityArr = await LectureEntity.createQueryBuilder('lecture')
+      .leftJoinAndSelect('lecture.class', 'class')
+      .where('class.uuid = :uuid', { uuid })
+      .getMany();
+
+    lectureEntityArr.map(lec => this.addLecture(lec));
   }
 
   public addMember(member: ClassMember): Member {
@@ -70,14 +85,15 @@ class Class {
   }
 
   // Lecture related methods
-  public getLecture(lectureId: number): Lecture | undefined {
+  public getLectureAll(): Lecture[] {
+    return this.availableLectures;
+  }
+
+  public getLectureById(lectureId: number): Lecture | undefined {
     return this.availableLectures.find(({ id }) => id === lectureId);
   }
 
   public addLecture(lecture: LectureEntity): Lecture {
-    // if (!member.member) {
-    //   throw new Error('Need to fetch User');
-    // }
     const newLecture = new Lecture(lecture);
     this.availableLectures.push(newLecture);
 
