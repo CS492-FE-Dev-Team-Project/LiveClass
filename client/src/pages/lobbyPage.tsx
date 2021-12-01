@@ -1,5 +1,11 @@
 import React from 'react';
-import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
+import {
+  Box,
+  IconButton,
+  useDisclosure,
+  Heading,
+  Image
+} from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 import { AddIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
@@ -10,6 +16,7 @@ import ClassCard from '../components/lobbyPage/classCard';
 import Header from '../components/common/Header';
 import useClasses from '../hooks/useClasses';
 import { MemberType } from '../types';
+import LogoAsset from '../assets/logo2.svg';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -26,13 +33,9 @@ const LobbyPage = () => {
 
   return (
     <>
-      <Header
-        backgroundColor="black"
-        color="gray.50"
-        headingText="LiveClass"
-        headingSize="lg"
-        p={8}
-      />
+      <Box h="80px" w="100%" bgColor="black">
+        <Image src={LogoAsset} alt="liveclass" h="80px" pl="8px" />
+      </Box>
 
       <br />
 
