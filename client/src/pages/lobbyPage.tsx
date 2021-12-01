@@ -37,7 +37,7 @@ const LobbyPage = () => {
       <br />
 
       <Heading size="lg" pl="30px">
-        Teaching lectures
+        Teaching Lectures
       </Heading>
       <LobbyContent col={col}>
         {classes
@@ -61,7 +61,7 @@ const LobbyPage = () => {
       <br />
 
       <Heading size="lg" pl="30px">
-        Listening lectures
+        Listening Lectures
       </Heading>
       <LobbyContent col={col}>
         {classes

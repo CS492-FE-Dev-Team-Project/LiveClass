@@ -98,7 +98,9 @@ const AddClassModal = ({ isOpen, onClose, addClass }: AddClassModalProps) => {
     <Modal isOpen={isOpen} onClose={onModalClose} size="xl">
       <ModalOverlay />
       <ModalContent height="500px">
-        <ModalHeader textAlign="center">New Class</ModalHeader>
+        <ModalHeader textAlign="center" fontSize="30px" fontWeight="bold">
+          New Class
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6} h="300px">
           <HStack justifyContent="center" alignItems="center" w="full" h="full">

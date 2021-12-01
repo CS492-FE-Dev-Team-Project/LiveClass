@@ -5,13 +5,13 @@ import LeftMenuButton from './leftmenubutton';
 
 const LeftMenuTab = ({ tabTitle, tabContents }: Menu) => {
   return (
-    <Box w="150px">
+    <Box w="175px">
       <Stack spacing={0}>
         <Box
           letterSpacing="wide"
           justifyContent="flex-start"
           fontWeight="bold"
-          fontSize="14px"
+          fontSize="18px"
           ml="2"
           mt="2"
         >
