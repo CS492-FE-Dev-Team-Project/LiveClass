@@ -1,11 +1,17 @@
 import { ChevronRightIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
-  CloseButton,
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverBody,
   Box,
   Flex,
   StackDivider,
   VStack,
-  IconButton
+  IconButton,
+  Spacer
 } from '@chakra-ui/react';
 import React from 'react';
 import LeftMenuTab from './leftmenutab';
@@ -27,13 +33,13 @@ interface LeftMenuProps {
 
 const LeftMenu = ({ menus }: LeftMenuProps) => {
   return (
-    <Flex w="165px" h="100vh" flexDir="column">
-      <Flex overflowX="hidden" overflowY="auto" flexDir="column" h="full">
-        <Box h="100vh" ml="2">
+    <Flex w="190px" h="100vh" flexDir="column">
+      <Flex overflowX="hidden" overflowY="auto" flexDir="column">
+        <Box ml="2">
           <VStack
             divider={<StackDivider borderColor="gray.200" />}
             spacing={0}
-            w="165px"
+            w="190px"
             align="stretch"
           >
             {menus.map((menu: Menu) => (
@@ -45,15 +51,28 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
           </VStack>
         </Box>
       </Flex>
-      <Flex p="26px 10px" w="full" backgroundColor="white" flexDir="column">
-        <Box position="absolute" bottom={3}>
-          <IconButton
-            size="md"
-            colorScheme="red"
-            icon={<CloseIcon />}
-            aria-label="Quit"
-            m={0.5}
-          />
+      <Spacer />
+      <Flex p="10px 10px" w="full" backgroundColor="white" flexDir="column">
+        <Box bottom={0}>
+          <Popover>
+            <PopoverTrigger>
+              <IconButton
+                size="md"
+                colorScheme="red"
+                icon={<CloseIcon />}
+                aria-label="Quit"
+                m={0.5}
+              />
+            </PopoverTrigger>
+            <PopoverContent w={180}>
+              <PopoverArrow />
+              <PopoverBody>
+                <Button colorScheme="red" w={150}>
+                  Quit Class
+                </Button>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
           <IconButton
             size="md"
             icon={<SettingsIcon />}

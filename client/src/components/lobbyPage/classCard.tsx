@@ -28,6 +28,7 @@ const ClassCard = ({
 
   return (
     <Box
+      maxW="280px"
       h={150}
       overflow="hidden"
       position="relative"

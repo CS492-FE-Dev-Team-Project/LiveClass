@@ -17,6 +17,7 @@ import {
 import NaverLoginButtonAsset from '../assets/naver_login_eng.png';
 import UserContext from '../context/user/userContext';
 import { UserLoadStatus } from '../types';
+import LogoAsset from '../assets/logo1.svg';
 
 const NaverLoginButton = ({ ...props }) => {
   return (
@@ -44,14 +45,11 @@ const LoginModal = () => {
         <ModalContent>
           <ModalHeader>
             <VStack w="100%">
-              <Box
-                w="100%"
-                textAlign="center"
-                fontSize="36px"
-                fontWeight="bold"
-              >
-                LiveClass
-              </Box>
+              <Flex w="100%" h="60px">
+                <Spacer />
+                <Image src={LogoAsset} alt="liveclass" h="60px" />
+                <Spacer />
+              </Flex>
               <Box
                 w="100%"
                 textAlign="center"
