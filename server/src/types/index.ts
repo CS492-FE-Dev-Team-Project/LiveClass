@@ -14,3 +14,10 @@ export enum Language {
 export interface CustomSocket extends Socket {
   request: IncomingMessage & { user?: Express.User };
 }
+
+export enum MarkerType {
+  QUESTION,
+  QUIZ,
+  NOTICE,
+  DISCUSSION
+}

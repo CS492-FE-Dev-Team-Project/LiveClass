@@ -10,7 +10,8 @@ import {
 import ClassMember from './classMemberEntity';
 import Lecture from './lectureEntity';
 
-type MarkerType = 'question' | 'quiz' | 'notice' | 'discussion';
+import { MarkerType } from '../types';
+// type MarkerType = 'question' | 'quiz' | 'notice' | 'discussion';
 
 @Entity()
 export default class MarkerEntity extends BaseEntity {
@@ -20,7 +21,7 @@ export default class MarkerEntity extends BaseEntity {
   @CreateDateColumn()
   public createdDate: Date;
 
-  @Column('varchar')
+  @Column()
   public markerType: MarkerType;
 
   @ManyToOne(() => Lecture, lecture => lecture.markers)
