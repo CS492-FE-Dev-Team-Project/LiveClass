@@ -63,11 +63,7 @@ const LobbyPage = () => {
         {classes
           .filter(({ memberType }) => memberType === MemberType.STUDENT)
           .map(({ uuid, title, subtitle, memberType }) => (
-            <Link
-              to="/class"
-              key={uuid}
-              state={{ title, uuid, subtitle, memberType }}
-            >
+            <Link to={`/class/${uuid}/${memberType}`} key={uuid}>
               <ClassCard
                 imgSrc="a"
                 title={title}
