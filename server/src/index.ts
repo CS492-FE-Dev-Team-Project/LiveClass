@@ -15,6 +15,8 @@ const start = async () => {
   expressLoader(server, sessionMiddleware);
   ioLoader(server, sessionMiddleware);
 
+  server.classManager.initClasses();
+
   server.listen(() => {
     Logger.info(`Server Running on ${config.HTTP_PORT}`);
   });

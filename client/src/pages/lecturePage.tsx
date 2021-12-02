@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import LeftMenu from '../components/leftmenu/leftmenu';
@@ -6,12 +6,35 @@ import menus from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
-import useMe from '../hooks/useMe';
-import { MemberType } from '../types';
+import { MemberType, Lecture } from '../types';
+import { useSocket } from '../context/socket';
 
-const ClassPage = () => {
-  const { userName } = useMe();
+const LecturePage = () => {
   const { classUuid, memberType, lectureId } = useParams();
+  const { socket, connected } = useSocket();
+  const [lecture, setLecture] = useState<Lecture>();
+
+  useEffect(() => {
+    socket?.on('JoinLecture', ({ lecture: lec, status }) => {
+      if (status === 404) {
+        alert(
+          'Error! Lecture not found in the classroom - Please restart application'
+        );
+      } else {
+        setLecture(lec);
+      }
+    });
+    const payload = JSON.stringify({ classUuid, lectureId });
+    socket?.emit('JoinLecture', payload);
+  }, [connected]);
+
+  // useEffect(() => {
+  //   console.log(lecture);
+  // }, [lecture]);
+
+  // TODO - Take care of playlist
+  // 1. Get lecture list and construct 'menus' for leftmenu
+  // 2. Use lectureDate and lectureName somehow?
 
   return (
     <>
@@ -34,4 +57,4 @@ const ClassPage = () => {
   );
 };
 
-export default ClassPage;
+export default LecturePage;

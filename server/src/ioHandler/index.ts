@@ -53,5 +53,21 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'InstructorPause',
       YoutubeProtocols.OnInstructorPlayPause(socket, false, classManager)
     );
+
+    // In Class API
+    // lecture related
+    socket.on(
+      'GetLectures',
+      ClassProtocols.OnGetLectures(socket, classManager)
+    );
+    socket.on(
+      'CreateLecture',
+      ClassProtocols.OnCreateLecture(socket, classManager)
+    );
+    socket.on(
+      'JoinLecture',
+      ClassProtocols.OnJoinLecture(socket, classManager)
+    );
+    socket.on('GetMembers', ClassProtocols.OnGetMembers(socket, classManager));
   });
 };

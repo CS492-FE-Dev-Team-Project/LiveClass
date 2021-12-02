@@ -9,6 +9,8 @@ export default (app: Router) => {
   app.use('/lobby', router);
 
   router.use(authenticateUser);
+
+  //  Get classes that user already joined
   router.get('/classes', async (req, res) => {
     try {
       const user = req.user!;
@@ -37,6 +39,7 @@ export default (app: Router) => {
     }
   });
 
+  //  Create new class
   router.post('/class', async (req, res) => {
     try {
       const user = req.user!;
@@ -62,14 +65,18 @@ export default (app: Router) => {
     }
   });
 
+  //  Join existing class
   router.patch('/class', async (req, res) => {
     try {
       const user = req.user!;
       const { uuid } = req.body;
 
-      const joinClass = await Class.createQueryBuilder('class')
+      const joinClass: Class | undefined = await Class.createQueryBuilder(
+        'class'
+      )
         .leftJoinAndSelect('class.members', 'class_member')
         .leftJoinAndSelect('class_member.member', 'member')
+        .where('class.uuid = :uuid', { uuid })
         .getOne();
 
       if (!joinClass) {
