@@ -2,6 +2,7 @@ import LectureEntity from '../entity/lectureEntity';
 import MarkerEntity from '../entity/markerEntity';
 // import { classUuid } from '../types';
 import Marker from './marker';
+import Member from './member';
 
 class Lecture {
   public readonly id: number;
@@ -11,6 +12,8 @@ class Lecture {
   public readonly lectureName: string;
 
   public readonly playlist: string;
+
+  private participants: Member[] = [];
 
   private availableMarkers: Marker[] = [];
 
@@ -45,6 +48,14 @@ class Lecture {
   public setLiveStatus(liveStatus: boolean) {
     this.LiveStatus = liveStatus;
     return this.LiveStatus;
+  }
+
+  public getSocketRoomName() {
+    return `lecture_${this.id}`;
+  }
+
+  public addParticipant(member: Member) {
+    this.participants.push(member);
   }
 }
 

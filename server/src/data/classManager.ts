@@ -14,7 +14,7 @@ class ClassManager {
       relations: ['lectures', 'members', 'members.member']
     });
 
-    Logger.info(
+    Logger.debug(
       `Create Class Obj\nentity:${JSON.stringify(classEntity, null, 2)}`
     );
 
