@@ -148,7 +148,7 @@ const YouTubePlayer = ({
     height: height.toString(),
     width: width.toString(),
     playerVars: {
-      autoplay: 1 as const,
+      autoplay: 0 as const,
       controls:
         memberType === MemberType.INSTRUCTOR ? (1 as const) : (0 as const),
       disablekb:
