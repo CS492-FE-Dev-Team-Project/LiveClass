@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import Class from '../../entity/class';
-import ClassMember, { MemberType } from '../../entity/classMember';
+import Class from '../../entity/classEntity';
+import ClassMember, { MemberType } from '../../entity/classMemberEntity';
 import Logger from '../../loader/logger';
 import { authenticateUser } from '../../passport';
 
@@ -66,13 +66,12 @@ export default (app: Router) => {
     try {
       const user = req.user!;
       const { uuid } = req.body;
+
       const joinClass = await Class.createQueryBuilder('class')
         .leftJoinAndSelect('class.members', 'class_member')
         .leftJoinAndSelect('class_member.member', 'member')
-        .where('member.id=:memberId', {
-          memberId: user.id
-        })
         .getOne();
+
       if (!joinClass) {
         throw new Error('No Such Class');
       }

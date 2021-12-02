@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 
 interface LobbyContentProps {
   col: string | undefined;
@@ -11,9 +11,9 @@ const LobbyContent = ({
 }: React.PropsWithChildren<LobbyContentProps>) => {
   return (
     <>
-      <Grid templateColumns={`repeat(${col ?? 4}, 1fr)`} p={5} gap={8}>
+      <SimpleGrid minChildWidth="260px" spacing={8} p={5}>
         {children}
-      </Grid>
+      </SimpleGrid>
     </>
   );
 };

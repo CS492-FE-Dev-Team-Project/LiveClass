@@ -17,7 +17,7 @@
     "build:server": "yarn prebuild:server && cd server && yarn build",
     "run:server": "cd server && yarn up",
     "build:run": "yarn build:server && yarn run:server",
-    "prebuild:server":"yarn build:client && cp -r ./client/build/* ./server/client"
+    "prebuild:server":"yarn build:client && cp -r ./client/build/* ./server/client/"
   },
   "devDependencies": {
     "husky": "^7.0.0"

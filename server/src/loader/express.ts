@@ -7,8 +7,10 @@ import path from 'path';
 import myPassport from '../passport';
 import serverRoute from '../routes';
 import Logger from './logger';
+import Server from '../server';
 
-export default (app: express.Application, sessionMiddleware: any) => {
+export default (server: Server, sessionMiddleware: any) => {
+  const { expressApp: app } = server;
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -30,15 +32,15 @@ export default (app: express.Application, sessionMiddleware: any) => {
 
   app.use(express.static(path.join(__dirname, '../../client')));
 
-  app.get('/', (req, res) => {
-    res.send('LiveClass Main Server!!').status(200);
-  });
-
   // TODO: Add Authentication Middlewares
 
   app.use('/api', serverRoute());
-  app.use('*', (req, res) => {
+  app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../client/index.html'));
+  });
+
+  app.get('*', (req, res) => {
+    res.redirect('/');
   });
 
   // TODO: Add Error Handling middlewares

@@ -1,5 +1,11 @@
 import React from 'react';
-import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
+import {
+  Box,
+  IconButton,
+  useDisclosure,
+  Heading,
+  Image
+} from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 import { AddIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
@@ -11,6 +17,7 @@ import Header from '../components/common/Header';
 import useClasses from '../hooks/useClasses';
 import { MemberType } from '../types';
 import AddLecturePage from '../components/lobbyPage/AddLecture';
+import LogoAsset from '../assets/logo2.svg';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -27,28 +34,27 @@ const LobbyPage = () => {
 
   return (
     <>
-      {/* <Header
+      <Header
         backgroundColor="black"
         color="gray.50"
         headingText="LiveClass"
         headingSize="lg"
         p={8}
       />
+      <Box h="80px" w="100%" bgColor="black">
+        <Image src={LogoAsset} alt="liveclass" h="80px" pl="8px" />
+      </Box>
 
       <br />
 
       <Heading size="lg" pl="30px">
-        Teaching lectures
+        Teaching Lectures
       </Heading>
       <LobbyContent col={col}>
         {classes
           .filter(({ memberType }) => memberType === MemberType.INSTRUCTOR)
           .map(({ uuid, title, subtitle, memberType }) => (
-            <Link
-              to="/class"
-              key={uuid}
-              state={{ title, uuid, subtitle, memberType }}
-            >
+            <Link to={`/class/${uuid}/${memberType}`} key={uuid}>
               <ClassCard
                 title={title}
                 subTitle={subtitle}
@@ -62,17 +68,13 @@ const LobbyPage = () => {
       <br />
 
       <Heading size="lg" pl="30px">
-        Listening lectures
+        Listening Lectures
       </Heading>
       <LobbyContent col={col}>
         {classes
           .filter(({ memberType }) => memberType === MemberType.STUDENT)
           .map(({ uuid, title, subtitle, memberType }) => (
-            <Link
-              to="/class"
-              key={uuid}
-              state={{ title, uuid, subtitle, memberType }}
-            >
+            <Link to={`/class/${uuid}/${memberType}`} key={uuid}>
               <ClassCard
                 imgSrc="a"
                 title={title}
@@ -85,16 +87,15 @@ const LobbyPage = () => {
       </LobbyContent>
       <IconButton
         position="fixed"
-        right="100px"
-        bottom="100px"
+        right="5%"
+        bottom="10%"
         size="lg"
         aria-label="Add Classroom"
         colorScheme="green"
         icon={<AddIcon />}
         onClick={onOpen}
       />
-      <AddClassModal onClose={onClose} isOpen={isOpen} addClass={addClass} /> */}
-      <AddLecturePage />
+      <AddClassModal onClose={onClose} isOpen={isOpen} addClass={addClass} />
     </>
   );
 };

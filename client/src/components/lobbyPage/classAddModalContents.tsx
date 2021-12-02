@@ -8,6 +8,7 @@ import {
   FormControl,
   FormLabel
 } from '@chakra-ui/react';
+import { AddIcon, CalendarIcon } from '@chakra-ui/icons';
 import { ClassAddModalState } from './classAddModal';
 
 interface initContentProps {
@@ -24,6 +25,8 @@ const initContent = ({ setModalState }: initContentProps) => {
           setModalState(ClassAddModalState.JOIN);
         }}
       >
+        <CalendarIcon w={10} h={10} />
+        <br />
         Join
       </Button>
       <Button
@@ -33,6 +36,8 @@ const initContent = ({ setModalState }: initContentProps) => {
           setModalState(ClassAddModalState.CREATE);
         }}
       >
+        <AddIcon w={10} h={10} />
+        <br />
         Create
       </Button>
     </>

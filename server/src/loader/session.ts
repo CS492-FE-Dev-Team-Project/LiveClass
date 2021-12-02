@@ -2,7 +2,7 @@ import session from 'express-session';
 import { Connection } from 'typeorm';
 import { TypeormStore } from 'typeorm-store';
 import config from '../config';
-import Session from '../entity/session';
+import Session from '../entity/sessionEntity';
 
 export default (connection: Connection) => {
   return session({
