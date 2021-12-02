@@ -10,11 +10,13 @@ SocketProvider.defaultProps = {
 function SocketProvider({
   url,
   children,
-  options
+  options,
+  debug = true
 }: {
   url: string;
   children: any;
   options?: SocketOptionType;
+  debug?: boolean;
 }) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
@@ -40,6 +42,12 @@ function SocketProvider({
     newSocket.on('error', err => {
       setError(err);
     });
+
+    if (debug) {
+      newSocket.onAny((event, ...any) => {
+        console.log(event, any);
+      });
+    }
 
     return () => {
       setSocket(null);

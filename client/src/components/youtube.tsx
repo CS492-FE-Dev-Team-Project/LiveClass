@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import '../style/youtube.css';
 
-import { Progress, Button, Box } from '@chakra-ui/react';
+import { Progress } from '@chakra-ui/react';
 import { CreateMarkerButtons } from './common/Button';
 import { useSocket } from '../context/socket';
 
@@ -76,18 +76,20 @@ const YouTubePlayer = ({
   // Set socket listeners and join room
   useEffect(() => {
     // If not instructor, sync video time, play, and pause
-    if (memberType === MemberType.STUDENT) {
-      socket?.on('InstructorTimeChange', (newtime: number) => {
-        video?.seekTo(newtime);
-      });
-      socket?.on('InstructorPlay', () => {
-        video?.playVideo();
-      });
-      socket?.on('InstructorPause', () => {
-        video?.pauseVideo();
-      });
+    if (connected && !!video) {
+      if (memberType === MemberType.STUDENT) {
+        socket?.on('InstructorTimeChange', (newtime: number) => {
+          video?.seekTo(newtime);
+        });
+        socket?.on('InstructorPlay', () => {
+          video?.playVideo();
+        });
+        socket?.on('InstructorPause', () => {
+          video?.pauseVideo();
+        });
+      }
+      console.log('Send JoinClass', connected, video);
     }
-    socket?.emit('JoinClass', JSON.stringify({ classUuid: room }));
   }, [connected, video]);
 
   // (For progress bar time) Set new setInterval on play
@@ -146,7 +148,7 @@ const YouTubePlayer = ({
     height: height.toString(),
     width: width.toString(),
     playerVars: {
-      autoplay: 1 as const,
+      autoplay: 0 as const,
       controls:
         memberType === MemberType.INSTRUCTOR ? (1 as const) : (0 as const),
       disablekb:

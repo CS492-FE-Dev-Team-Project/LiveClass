@@ -21,16 +21,19 @@ const ClassPage = () => {
   useEffect(() => {
     const payload = JSON.stringify({ classUuid });
 
+    socket?.on('JoinClass', data => {
+      socket?.emit('GetClassMembers', payload);
+      socket?.emit('GetLectures', payload);
+    });
+    socket?.emit('JoinClass', payload);
+
     // get all members and lectures in the classroom
-    socket?.on('GetMembers', memberArr => {
+    socket?.on('GetClassMembers', memberArr => {
       setMemberList(memberArr);
     });
     socket?.on('GetLectures', lectureArr => {
       setLectureList(lectureArr);
     });
-
-    socket?.emit('GetMembers', payload);
-    socket?.emit('GetLectures', payload);
   }, [connected]);
 
   const sampleLectureList = [
