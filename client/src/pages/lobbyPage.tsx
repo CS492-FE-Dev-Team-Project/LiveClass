@@ -89,7 +89,6 @@ const LobbyPage = () => {
         onClick={onOpen}
       />
       <AddClassModal onClose={onClose} isOpen={isOpen} addClass={addClass} />
-      <AddLecturePage />
     </>
   );
 };
