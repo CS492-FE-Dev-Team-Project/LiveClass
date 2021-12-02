@@ -8,10 +8,12 @@ import Header from './common/Header';
 import { MarkerType } from '../types';
 
 import { useSocket } from '../context/socket';
+import useMe from '../hooks/useMe';
 import dummyMessages from '../data/chatMessages'; // 🐛 Dummy message - call DB API to get real data
 
 interface ChatProps {
   hasHeader: boolean;
+  room: string;
   customHeader?: string;
 }
 
@@ -33,11 +35,12 @@ enum ChatMode {
   LIVE
 }
 
-const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
+const Chat = ({ hasHeader, room, customHeader = '' }: ChatProps) => {
   const { socket, connected } = useSocket();
   const [messages, setMessages] = useState<Array<Message>>([]);
   const [chatMode, setChatMode] = useState<ChatMode>(ChatMode.LIVE);
   const currentMarkerId = useRef<number>(-1);
+  const { userName: currentUserName } = useMe();
 
   // Set Chat header title
   const pickHeader = ['Question', 'Quiz', 'Notice', 'Discussion'];
@@ -58,6 +61,23 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
         setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
       }
     );
+
+    // Live chat event - get live chat message
+    socket?.on('ChatTextMessage', (payload: string) => {
+      const { dateStr, textMessage, chatUserName, isMy } = JSON.parse(payload);
+
+      const dateObj = new Date(dateStr);
+
+      const dummyMessageObj: Message = {
+        id: 999, // 🐛 Get rid of id?
+        userName: chatUserName,
+        message: textMessage,
+        time: `${dateObj.getHours()}:${dateObj.getMinutes()}`,
+        isMy
+      };
+
+      setMessages(arr => [...arr, dummyMessageObj]);
+    });
   }, [connected]);
 
   // Click 'X' close button in the header
@@ -79,8 +99,15 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
       isMy: true
     };
 
-    // Update local chatBox
-    setMessages(arr => [...arr, dummyMessageObj]);
+    // Send message
+    socket?.emit(
+      'ChatTextMessage',
+      JSON.stringify({
+        classUuid: room,
+        currentUserName,
+        textMessage: message
+      })
+    );
 
     // Update DB
     switch (chatMode) {
@@ -88,7 +115,7 @@ const Chat = ({ hasHeader, customHeader = '' }: ChatProps) => {
         console.log('(DB API) Create markerDiscussion message');
         break;
       default:
-        // ChatMode.LIVE
+        // ChatMode.LIVE - No need to store messages on DB
         console.log('Create Live message');
     }
   };

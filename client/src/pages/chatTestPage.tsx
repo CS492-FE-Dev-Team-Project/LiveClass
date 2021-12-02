@@ -2,7 +2,7 @@ import React from 'react';
 import Chat from '../components/chat';
 
 const ChatTestPage = () => {
-  return <Chat hasHeader />;
+  return <Chat room="" hasHeader />;
 };
 
 export default ChatTestPage;

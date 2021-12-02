@@ -17,7 +17,6 @@ const YouTubePage = (): React.ReactElement<any, any> => {
 
   return (
     <YouTube
-      userName={user.name}
       memberType={MemberType.INSTRUCTOR}
       room="uuid"
       videoId="j1_5ttGRzFs"

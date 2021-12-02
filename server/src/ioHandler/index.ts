@@ -6,16 +6,6 @@ import ChatProtocols from './chatProtocols';
 import ClassProtocols from './classProtocols';
 import YoutubeProtocols from './youtubeProtocols';
 
-// const OnTimeMarkerClicked =
-//   (socket: Socket, classManager: ClassManager) => async (request: string) => {
-//     const { classUuid, markerId } = JSON.parse(request);
-//     const cls = await classManager.getOrCreateClass(classUuid);
-//     socket.emit('TimeMarkerClicked', {
-//       messages: { markerId, cls }
-//     });
-//     // Listening on 'client/src/components/chat.tsx'
-//   };
-
 export default (io: SocketIOServer, classManager: ClassManager) => {
   io.on('connection', (socket: CustomSocket) => {
     const { user } = socket.request;
@@ -26,7 +16,7 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
         `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
       );
     });
-    
+
     socket.on('disconnect', () => {
       socket.disconnect();
       if (user) {
@@ -43,6 +33,12 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'ChatTextMessage',
       ChatProtocols.OnChatTextMessage(socket, classManager)
     );
+    // client/components/timeMarker.tsx
+    socket.on(
+      'TimeMarkerClicked',
+      // ChatProtocols.OnTimeMarkerClicked(socket, classManager)
+      ChatProtocols.OnTimeMarkerClicked(socket)
+    );
 
     // client/components/youtube.tsx
     socket.on(
@@ -57,8 +53,5 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'InstructorPause',
       YoutubeProtocols.OnInstructorPlayPause(socket, false, classManager)
     );
-
-    // client/components/timeMarker.tsx
-    // socket.on('TimeMarkerClicked', OnTimeMarkerClicked(socket, classManager));
   });
 };
