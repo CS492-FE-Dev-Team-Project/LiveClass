@@ -1,5 +1,4 @@
 import ClassEntity from '../entity/classEntity';
-import ClassMember from '../entity/classMemberEntity';
 import { classUuid } from '../types';
 import Member from './member';
 
@@ -13,9 +12,7 @@ class Class {
 
   public readonly subtitle: string;
 
-  public readonly entity: ClassEntity; // Used in creating a new lecture entity - src/ioHandler/classProtocols.ts - 'OnCreateLectures'
-
-  private connectedMembers: Member[] = [];
+  private members: Member[] = [];
 
   private chatMassages: { studentId: number; time: Date; message: string }[] =
     [];
@@ -23,70 +20,38 @@ class Class {
   private LiveStatus: boolean = false;
 
   // Lecture related variable
-  private availableLectures: Lecture[] = [];
+  private lectures: Lecture[] = [];
 
   constructor(classEntity: ClassEntity) {
     const { uuid, title, subtitle } = classEntity;
     this.uuid = uuid;
     this.title = title;
     this.subtitle = subtitle;
-    this.entity = classEntity;
-
-    this.initMembers();
-    this.initLectures();
+    this.members = classEntity.members.map(clsMember => new Member(clsMember));
+    this.lectures = classEntity.lectures.map(lecture => new Lecture(lecture));
   }
 
-  private async initMembers() {
-    const { uuid } = this;
-    const memberEntityArr: ClassMember[] = await ClassMember.createQueryBuilder(
-      'class_member'
-    )
-      .innerJoinAndSelect('class_member.class', 'class', 'class.uuid = :uuid', {
-        uuid
-      })
-      .leftJoinAndSelect('class_member.member', 'member')
-      .getMany();
-
-    // console.log('--INIT-- ', uuid, memberEntityArr);
-
-    memberEntityArr.map(mem => this.addMember(mem));
-    // console.log(this.connectedMembers);
+  public getMembers(): Member[] {
+    return this.members;
   }
 
-  private async initLectures() {
-    const { uuid } = this;
-    const lectureEntityArr: LectureEntity[] =
-      await LectureEntity.createQueryBuilder('lecture')
-        .leftJoinAndSelect('lecture.class', 'class')
-        .where('class.uuid = :uuid', { uuid })
-        .getMany();
-    lectureEntityArr.map(lec => this.addLecture(lec));
-  }
-
-  public addMember(member: ClassMember): Member {
-    if (!member.member) {
-      throw new Error('Need to fetch User');
+  public getMemberById(memberId: number): Member {
+    const memberFound = this.members.find(({ userId }) => userId === memberId);
+    if (!memberFound) {
+      throw new Error('Member Not Found');
     }
-    const newMember = new Member(member);
-    this.connectedMembers.push(newMember);
-
-    return newMember;
-  }
-
-  public getMemberAll(): Member[] {
-    return this.connectedMembers;
-  }
-
-  public getMemberById(userId: number): Member | undefined {
-    return this.connectedMembers.find(({ id }) => id === userId);
+    return memberFound;
   }
 
   public exitUser(userId: number): boolean {
-    const students = this.connectedMembers.filter(({ id }) => id !== userId);
-    const success = students.length < this.connectedMembers.length;
-    this.connectedMembers = students;
+    const member = this.getMemberById(userId);
 
-    return success;
+    if (!member) {
+      return false;
+    }
+    member?.setConnectStatus(false);
+
+    return true;
   }
 
   public getMessages(offset: number, length: number) {
@@ -107,17 +72,17 @@ class Class {
   }
 
   // Lecture related methods
-  public getLectureAll(): Lecture[] {
-    return this.availableLectures;
+  public getLectures(): Lecture[] {
+    return this.lectures;
   }
 
   public getLectureById(lectureId: number): Lecture | undefined {
-    return this.availableLectures.find(({ id }) => id === lectureId);
+    return this.lectures.find(({ id }) => id === lectureId);
   }
 
   public addLecture(lecture: LectureEntity): Lecture {
     const newLecture = new Lecture(lecture);
-    this.availableLectures.push(newLecture);
+    this.lectures.push(newLecture);
 
     return newLecture;
   }
