@@ -47,4 +47,23 @@ const OnCreateLecture =
     socket.emit('CreateLecture', { id });
   };
 
-export default { OnJoinClass, OnGetLectures, OnCreateLecture };
+const OnJoinLecture =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { classUuid, lectureId } = JSON.parse(request);
+    const cls: Class = await classManager.getOrCreateClass(classUuid);
+    const lecture: Lecture | undefined = cls.getLectureById(
+      parseInt(lectureId, 10)
+    );
+
+    let status: number = 200;
+    if (!lecture) {
+      Logger.error(
+        `Lecture#${lectureId} not found in class ${cls.title} with id='${cls.uuid}'`
+      );
+      status = 404;
+    }
+    socket.emit('JoinLecture', { lecture, status });
+  };
+
+export default { OnJoinClass, OnGetLectures, OnCreateLecture, OnJoinLecture };
