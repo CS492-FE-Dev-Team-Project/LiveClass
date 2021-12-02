@@ -68,5 +68,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'JoinLecture',
       ClassProtocols.OnJoinLecture(socket, classManager)
     );
+    socket.on('GetMembers', ClassProtocols.OnGetMembers(socket, classManager));
   });
 };

@@ -32,16 +32,34 @@ class Class {
     this.subtitle = subtitle;
     this.entity = classEntity;
 
-    this.init();
+    this.initMembers();
+    this.initLectures();
   }
 
-  public async init() {
+  private async initMembers() {
     const { uuid } = this;
-    const lectureEntityArr = await LectureEntity.createQueryBuilder('lecture')
-      .leftJoinAndSelect('lecture.class', 'class')
-      .where('class.uuid = :uuid', { uuid })
+    const memberEntityArr: ClassMember[] = await ClassMember.createQueryBuilder(
+      'class_member'
+    )
+      .innerJoinAndSelect('class_member.class', 'class', 'class.uuid = :uuid', {
+        uuid
+      })
+      .leftJoinAndSelect('class_member.member', 'member')
       .getMany();
 
+    // console.log('--INIT-- ', uuid, memberEntityArr);
+
+    memberEntityArr.map(mem => this.addMember(mem));
+    // console.log(this.connectedMembers);
+  }
+
+  private async initLectures() {
+    const { uuid } = this;
+    const lectureEntityArr: LectureEntity[] =
+      await LectureEntity.createQueryBuilder('lecture')
+        .leftJoinAndSelect('lecture.class', 'class')
+        .where('class.uuid = :uuid', { uuid })
+        .getMany();
     lectureEntityArr.map(lec => this.addLecture(lec));
   }
 
@@ -55,7 +73,11 @@ class Class {
     return newMember;
   }
 
-  public getMember(userId: number): Member | undefined {
+  public getMemberAll(): Member[] {
+    return this.connectedMembers;
+  }
+
+  public getMemberById(userId: number): Member | undefined {
     return this.connectedMembers.find(({ id }) => id === userId);
   }
 

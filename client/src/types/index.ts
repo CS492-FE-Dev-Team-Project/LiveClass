@@ -12,6 +12,13 @@ export interface Lecture {
   playlist: string;
 }
 
+export interface Member {
+  id: number;
+  userName: string;
+  memberType: MemberType;
+  language: string;
+}
+
 export enum MemberType {
   INSTRUCTOR = 'instructor',
   STUDENT = 'student'

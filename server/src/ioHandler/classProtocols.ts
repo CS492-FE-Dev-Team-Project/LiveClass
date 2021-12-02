@@ -1,3 +1,4 @@
+import Member from '../data/member';
 import LectureEntity from '../entity/lectureEntity';
 import Lecture from '../data/lecture';
 import Class from '../data/class';
@@ -66,4 +67,20 @@ const OnJoinLecture =
     socket.emit('JoinLecture', { lecture, status });
   };
 
-export default { OnJoinClass, OnGetLectures, OnCreateLecture, OnJoinLecture };
+const OnGetMembers =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { classUuid } = JSON.parse(request);
+    const cls: Class = await classManager.getOrCreateClass(classUuid);
+
+    const allMembersList: Member[] = cls.getMemberAll();
+    socket.emit('GetMembers', { allMembersList });
+  };
+
+export default {
+  OnJoinClass,
+  OnGetLectures,
+  OnCreateLecture,
+  OnJoinLecture,
+  OnGetMembers
+};

@@ -6,7 +6,7 @@ import LeftMenu from '../components/leftmenu/leftmenu';
 import menus from '../data/leftmenuData';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
-import { Lecture } from '../types';
+import { Lecture, Member } from '../types';
 import { useSocket } from '../context/socket';
 
 // 🐛 나중에 lecture grid로 대체
@@ -15,15 +15,21 @@ import ClassCard from '../components/lobbyPage/classCard';
 const ClassPage = () => {
   const { classUuid, memberType } = useParams();
   const { socket, connected } = useSocket();
+  const [memberList, setMemberList] = useState<Member[]>([]);
   const [lectureList, setLectureList] = useState<Lecture[]>([]);
 
   useEffect(() => {
-    // get all lectures in the classroom
+    const payload = JSON.stringify({ classUuid });
+
+    // get all members and lectures in the classroom
+    socket?.on('GetMembers', memberArr => {
+      setMemberList(memberArr);
+    });
     socket?.on('GetLectures', lectureArr => {
       setLectureList(lectureArr);
     });
 
-    const payload = JSON.stringify({ classUuid });
+    socket?.emit('GetMembers', payload);
     socket?.emit('GetLectures', payload);
   }, [connected]);
 

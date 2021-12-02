@@ -5,6 +5,14 @@ import Class from './class';
 class ClassManager {
   private classMap: Map<classUuid, Class> = new Map<classUuid, Class>();
 
+  public async initClasses() {
+    const classEntityArr: ClassEntity[] = await ClassEntity.createQueryBuilder(
+      'class'
+    ).getMany();
+    classEntityArr.map(cls => this.addClass(cls));
+  }
+
+  // Join class
   public async getOrCreateClass(uuid: classUuid): Promise<Class> {
     if (this.classMap.has(uuid)) return this.classMap.get(uuid)!;
 
@@ -24,7 +32,7 @@ class ClassManager {
   public findUserClass(id: number): Class | undefined {
     let result;
     this.classMap.forEach(cls => {
-      if (cls.getMember(id)) {
+      if (cls.getMemberById(id)) {
         result = cls;
       }
     });
