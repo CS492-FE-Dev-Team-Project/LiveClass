@@ -5,6 +5,13 @@ export interface Class {
   memberType: MemberType;
 }
 
+export interface Lecture {
+  id: number;
+  lectureDate: string;
+  lectureName: string;
+  playlist: string;
+}
+
 export enum MemberType {
   INSTRUCTOR = 'instructor',
   STUDENT = 'student'
