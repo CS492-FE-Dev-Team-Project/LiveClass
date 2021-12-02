@@ -21,7 +21,6 @@ const ClassPage = () => {
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh">
           <YouTube
-            userName={userName}
             memberType={(memberType ?? MemberType.STUDENT) as MemberType}
             room={classUuid ?? 'uuid error'}
             videoId="j1_5ttGRzFs"
@@ -29,7 +28,7 @@ const ClassPage = () => {
             height="100%"
           />
         </Box>
-        <Chat hasHeader />
+        <Chat room={/* 🐛 lectureId */ classUuid!} hasHeader />
       </Flex>
     </>
   );

@@ -67,7 +67,7 @@ const ClassPage = () => {
             )
           }
         </Box>
-        <Chat room={uuid} hasHeader />
+        <Chat room={classUuid!} hasHeader />
       </Flex>
     </>
   );

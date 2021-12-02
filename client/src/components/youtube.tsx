@@ -10,7 +10,6 @@ import Marker from './timeMarker';
 import { MarkerType, MemberType } from '../types';
 
 interface userInfo {
-  userName: string;
   memberType: MemberType;
   room: string;
   videoId: string;
@@ -34,7 +33,6 @@ export interface markerInfo {
 }
 
 const YouTubePlayer = ({
-  userName,
   memberType,
   room,
   videoId,
