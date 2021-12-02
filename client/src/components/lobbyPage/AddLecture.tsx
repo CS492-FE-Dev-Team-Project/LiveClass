@@ -1,49 +1,30 @@
 import React from 'react';
-import { IconButton, useDisclosure, Heading } from '@chakra-ui/react';
 import {
-  Box,
-  Input,
-  InputGroup,
+  IconButton,
+  useDisclosure,
+  Heading,
   Button,
-  FormControl,
-  FormLabel
-} from '@chakra-ui/react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton
-} from '@chakra-ui/react';
-import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
-  Td,
-  TableCaption
+  Center,
+  Stack
 } from '@chakra-ui/react';
-import { Center, Square, Circle } from '@chakra-ui/react';
-import { Stack, HStack, VStack } from '@chakra-ui/react';
-import { Textarea } from '@chakra-ui/react';
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import YoutubePlayer from 'youtube-player';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 import ClassTitle from './createLecture/classTitle';
 import ClassNotice from './createLecture/classnotice';
 import ClassTime from './createLecture/classTime';
-import ClassPlayList from './createLecture/createplaylist';
+import AddPlayList from './createLecture/addplaylist';
+import AddQuizModal from './createLecture/addquizmodal';
 
 const AddLecturePage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: isOpenremove,
-    onOpen: onOpenremove,
-    onClose: onCloseremove
+    isOpen: isAddopen,
+    onOpen: onAddopen,
+    onClose: onAddclose
   } = useDisclosure();
   const [Lecturetitle, setLecturetitle] = React.useState('');
   const [Lecturemonth, setLecturemonth] = React.useState('');
@@ -55,61 +36,33 @@ const AddLecturePage = () => {
   const [Lecturequiztime, setLecturequiztime] = React.useState('');
   const [Lectureproblem, setLectureproblem] = React.useState('');
   const [Lectureanswer, setLectureanswer] = React.useState('');
-  const [Removenumber, setRemovenumber] = React.useState('');
-  const [Firstflag, setFirstflag] = React.useState(0);
-  const [Youtubeplaylist, setYoutubeplaylist] = React.useState('');
+  const [Qurrentnumber, setQurrentnumber] = React.useState('');
   const [Lecturequizhead, setLecturequizhead] = React.useState([
     {
       id: 0,
+      playlist: Lecturelink,
       link: 'Lecture Link',
+      title: 'Video Title',
       quiztime: 'Lecture Quiz Time',
       problem: 'Lecture Problem',
-      answer: 'Lecture Answer'
+      answer: 'Lecture Answer',
+      mark: 0
     }
   ]);
   const [Lecturequizlist, setLecturequizlist] = React.useState([
     {
       id: 1,
+      playlist: Lecturelink,
       link: ' ',
+      title: ' ',
       quiztime: ' ',
       problem: ' ',
-      answer: ' '
+      answer: ' ',
+      mark: 0
     }
   ]);
-  const onChangeLecturequiz = () => {
-    if (Firstflag === 0) {
-      const newquiz = {
-        id: Lecturequizlist.length,
-        link: Lecturelink,
-        quiztime: Lecturequiztime,
-        problem: Lectureproblem,
-        answer: Lectureanswer
-      };
-      setLecturequizlist([newquiz]);
-      setFirstflag(1);
-    } else {
-      const newquiz = {
-        id: Lecturequizlist.length + 1,
-        link: Lecturelink,
-        quiztime: Lecturequiztime,
-        problem: Lectureproblem,
-        answer: Lectureanswer
-      };
-      setLecturequizlist([...Lecturequizlist, newquiz]);
-    }
-    onClose();
-  };
-  const onChangeRemovenumber = (e: any) => {
-    let value;
-    value = e.target.value;
-    value *= 1;
-    setRemovenumber(value);
-  };
-  const onChangeRemove = () => {
-    setLecturequizlist(
-      Lecturequizlist.filter((item: any) => item.id !== Removenumber)
-    );
-    onCloseremove();
+  const onChangeCreate = () => {
+    setLecturequizlist(Lecturequizlist.filter((item: any) => item.mark !== 0));
   };
   const onChangeLecturetitle = (e: any) => {
     setLecturetitle(e.target.value);
@@ -129,13 +82,6 @@ const AddLecturePage = () => {
   const onChangeLecturenotice = (e: any) => {
     setLecturenotice(e.target.value);
   };
-  const onChangeYoutubeplaylist = (e: any) => {
-    // this function gets youtubeplaylist address
-    setYoutubeplaylist(e.target.value);
-    // add here to create youtube playlist : array
-    // using setYoutubeplaylist to save playlist array
-    // ex setYoutubeplaylist([playlist])
-  };
   const onChangeLectureproblem = (e: any) => {
     setLectureproblem(e.target.value);
   };
@@ -145,19 +91,66 @@ const AddLecturePage = () => {
   const onChangeLecturequiztime = (e: any) => {
     setLecturequiztime(e.target.value);
   };
+  const onChangeLecturelink = (e: any) => {
+    setLecturelink(e.target.value);
+  };
+  const onClickRemove = (e: any) => {
+    removequiz(e.target.id);
+  };
+  const removequiz = (i: number) => {
+    const tempquizlist = [...Lecturequizlist];
+    tempquizlist[i - 1].quiztime = ' ';
+    tempquizlist[i - 1].problem = ' ';
+    tempquizlist[i - 1].answer = ' ';
+    tempquizlist[i - 1].mark = 0;
+    setLecturequizlist(tempquizlist);
+  };
   const showQuiz = Lecturequizlist.map((item: any) => {
     return (
-      <Table variant="simple">
+      <Table variant="simple" size="sm">
         <Tbody>
-          <Tr>
-            <Td>{item.id}</Td>
-            <Td>{item.link}</Td>
-            <Td>{item.quiztime}</Td>
-            <Td>{item.problem}</Td>
-            <Td>{item.answer}</Td>
-            <Td>
-              <IconButton aria-label="Add to friends" icon={<MinusIcon />} />
-            </Td>
+          <Tr align="left">
+            <Th align="left" width="5%">
+              {item.id}
+            </Th>
+            <Th align="left" width="15%">
+              {item.title}
+            </Th>
+            <Th align="left" width="10%">
+              {item.quiztime}
+            </Th>
+            <Th align="left" width="15%">
+              {item.problem}
+            </Th>
+            <Th align="left" width="5%">
+              {item.answer}
+            </Th>
+            <Th align="center" width="5%">
+              <AddQuizModal
+                id={item.id}
+                isAddopen={isAddopen}
+                onAddopen={onAddopen}
+                onAddclose={onAddclose}
+                onChangeLectureproblem={onChangeLectureproblem}
+                onChangeLectureanswer={onChangeLectureanswer}
+                onChangeLecturequiztime={onChangeLecturequiztime}
+                Lectureproblem={Lectureproblem}
+                Lectureanswer={Lectureanswer}
+                Lecturequiztime={Lecturequiztime}
+                setQurrentnumber={setQurrentnumber}
+                Lecturequizlist={Lecturequizlist}
+                Qurrentnumber={Qurrentnumber}
+                setLecturequizlist={setLecturequizlist}
+              />
+            </Th>
+            <Th align="center" width="5%">
+              <IconButton
+                id={item.id}
+                aria-label="Add to friends"
+                icon={<DeleteIcon />}
+                onClick={onClickRemove}
+              />
+            </Th>
           </Tr>
         </Tbody>
       </Table>
@@ -166,15 +159,31 @@ const AddLecturePage = () => {
   const showQuizhead = Lecturequizhead.map((item: any) => {
     return (
       <Table variant="simple">
-        <Tbody>
-          <Tr>
-            <Td>{item.id}</Td>
-            <Td>{item.link}</Td>
-            <Td>{item.quiztime}</Td>
-            <Td>{item.problem}</Td>
-            <Td>{item.answer}</Td>
+        <Thead>
+          <Tr align="left">
+            <Th align="left" width="5%">
+              {item.id}
+            </Th>
+            <Th align="left" width="15%">
+              {item.title}
+            </Th>
+            <Th align="left" width="10%">
+              {item.quiztime}
+            </Th>
+            <Th align="left" width="15%">
+              {item.problem}
+            </Th>
+            <Th align="left" width="5%">
+              {item.answer}
+            </Th>
+            <Th align="center" width="5%">
+              Add
+            </Th>
+            <Th align="center" width="5%">
+              Remove
+            </Th>
           </Tr>
-        </Tbody>
+        </Thead>
       </Table>
     );
   });
@@ -191,26 +200,20 @@ const AddLecturePage = () => {
         onChangeLecturehour={onChangeLecturehour}
         onChangeLecturemin={onChangeLecturemin}
       />
+      <AddPlayList
+        Lecturequizlist={Lecturequizlist}
+        onChangeLecturelink={onChangeLecturelink}
+        Lecturelink={Lecturelink}
+        setLecturequizlist={setLecturequizlist}
+      />
       <Heading size="md" pl="30px">
         Quiz List
       </Heading>
       <ol>{showQuizhead}</ol>
       <ol>{showQuiz}</ol>
-      <ClassPlayList
-        onOpen={onOpen}
-        isOpen={isOpen}
-        onClose={onClose}
-        onChangeYoutubeplaylist={onChangeYoutubeplaylist}
-        onChangeLectureproblem={onChangeLectureproblem}
-        onChangeLectureanswer={onChangeLectureanswer}
-        onChangeLecturequiztime={onChangeLecturequiztime}
-        onChangeLecturequiz={onChangeLecturequiz}
-        onOpenremove={onOpenremove}
-        isOpenremove={isOpenremove}
-        onCloseremove={onCloseremove}
-        onChangeRemovenumber={onChangeRemovenumber}
-        onChangeRemove={onChangeRemove}
-      />
+      <Button colorScheme="blue" mr={3} onClick={onChangeCreate}>
+        Create Lecture
+      </Button>
     </Stack>
   );
 };
