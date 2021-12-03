@@ -22,6 +22,7 @@ import {
   Spacer
 } from '@chakra-ui/react';
 
+import { useNavigate } from 'react-router-dom';
 import { LanguageType } from '../../types';
 import LeftMenuTab from './leftmenutab';
 import Header from '../common/Header';
@@ -57,6 +58,7 @@ interface LeftMenuProps {
 
 const LeftMenu = ({ menus }: LeftMenuProps) => {
   const { language, setLanguage } = useContext(LangContext);
+  const navigate = useNavigate();
 
   return (
     <Flex w="190px" h="100vh" flexDir="column">
@@ -93,7 +95,7 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
             <PopoverContent w={180}>
               <PopoverArrow />
               <PopoverBody>
-                <Button colorScheme="red" w={150}>
+                <Button colorScheme="red" w={150} onClick={() => navigate(-1)}>
                   Quit Class
                 </Button>
               </PopoverBody>
