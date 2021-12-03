@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Flex, Button } from '@chakra-ui/react';
+import { Box, Flex, Button, useClipboard, useToast } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import menus from '../data/leftmenuData';
+import menus from '../data/leftmenuData_class';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
 import { Lecture, Member } from '../types';
 import { useSocket } from '../context/socket';
-
+import { ClipboardButton } from '../components/common/Button';
 // 🐛 나중에 lecture grid로 대체
 import ClassCard from '../components/lobbyPage/classCard';
 
@@ -17,6 +17,9 @@ const ClassPage = () => {
   const { socket, connected } = useSocket();
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [lectureList, setLectureList] = useState<Lecture[]>([]);
+
+  const { hasCopied, onCopy } = useClipboard(classUuid!);
+  const toast = useToast();
 
   useEffect(() => {
     const payload = JSON.stringify({ classUuid });
@@ -38,6 +41,22 @@ const ClassPage = () => {
       }
     });
   }, [connected]);
+
+  const clickClipboard = () => {
+    onCopy();
+    toast({
+      title: 'ClassId copied to your clipboard!',
+      status: 'success',
+      duration: 1500,
+      isClosable: true
+    });
+  };
+
+  const sampleLectureList = [
+    { lectureId: 1 },
+    { lectureId: 2 },
+    { lectureId: 3 }
+  ];
 
   return (
     <>
@@ -67,6 +86,9 @@ const ClassPage = () => {
           <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
             <Button>Create new lecture</Button>
           </Link>
+          <ClipboardButton onClick={clickClipboard}>
+            Copy Class Id
+          </ClipboardButton>
         </Box>
         {/* <Chat classUuid={classUuid!} hasHeader /> */}
       </Flex>
