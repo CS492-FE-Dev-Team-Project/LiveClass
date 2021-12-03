@@ -36,8 +36,19 @@ export enum MarkerType {
   DISCUSSION = 'Discussion'
 }
 
-export interface Message {
-  id: number;
+export interface MessageResponse {
+  messageId: number;
+  senderId: number;
+  senderName: string;
+  dateStr: string;
+}
+
+export interface TextMessageResponse extends MessageResponse {
+  text: string;
+}
+
+export interface AudioMessageResponse extends MessageResponse {
+  url: string;
 }
 
 export interface Marker {
@@ -45,5 +56,5 @@ export interface Marker {
   markerType: MarkerType;
   time: number;
   videoIndex: number;
-  messages: Message[];
+  messages: MessageResponse[];
 }

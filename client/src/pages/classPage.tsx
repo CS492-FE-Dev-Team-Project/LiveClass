@@ -76,7 +76,7 @@ const ClassPage = () => {
             <Button>Create new lecture</Button>
           </Link>
         </Box>
-        <Chat room={classUuid!} hasHeader />
+        {/* <Chat classUuid={classUuid!} hasHeader /> */}
       </Flex>
     </>
   );
