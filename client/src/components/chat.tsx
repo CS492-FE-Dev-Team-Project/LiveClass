@@ -51,7 +51,7 @@ const Chat = ({
     chatMode: ChatMode.Live
   });
   const currentMarkerId = useRef<number>(-1);
-  const { id: myId, userName: myName } = useMe();
+  const { id: myId } = useMe();
 
   // Set Chat header title
   const pickHeader = (chatStat: ChatStatus) => {
@@ -78,29 +78,29 @@ const Chat = ({
       (markerId: number, markerType: MarkerType) => {
         // 🐛 (API) Fetch timeMarker thread messages
         currentMarkerId.current = markerId;
-        // setChatMode(markerType as number);
-        // setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
       }
     );
 
     // Live chat event - get live chat message
     socket?.on('LiveChatTextMessage', ({ message, status }) => {
-      const {
-        dateStr,
-        senderId,
-        senderName,
-        text,
-        messageId
-      }: TextMessageResponse = message;
-      const dateObj = new Date(dateStr);
-      const messageObj: Message = {
-        messageId,
-        userName: senderName,
-        message: text,
-        time: `${dateObj.getHours()}:${dateObj.getMinutes()}`,
-        isMy: senderId === myId
-      };
-      setMessages(arr => [...arr, messageObj]);
+      if (status === 200) {
+        const {
+          dateStr,
+          senderId,
+          senderName,
+          text,
+          messageId
+        }: TextMessageResponse = message;
+        const dateObj = new Date(dateStr);
+        const messageObj: Message = {
+          messageId,
+          userName: senderName,
+          message: text,
+          time: `${dateObj.getHours()}:${dateObj.getMinutes()}`,
+          isMy: senderId === myId
+        };
+        setMessages(arr => [...arr, messageObj]);
+      }
     });
   }, [connected]);
 
