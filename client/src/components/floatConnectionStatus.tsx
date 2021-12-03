@@ -1,6 +1,10 @@
-import React from 'react';
-import { Flex, Text } from '@chakra-ui/react';
+import React, { useEffect, useContext } from 'react';
+import { Flex, Text, Button } from '@chakra-ui/react';
+import { useParams } from 'react-router';
 import { useSocket } from '../context/socket';
+
+// import useClasses from '../hooks/useClasses';
+// import UserContext from '../context/user/userContext';
 
 const FloatConnectionStatus = () => {
   const { connected } = useSocket();

@@ -1,7 +1,9 @@
 import ClassEntity from '../entity/classEntity';
-import ClassMember from '../entity/classMemberEntity';
 import { classUuid } from '../types';
 import Member from './member';
+
+import LectureEntity from '../entity/lectureEntity';
+import Lecture from './lecture';
 
 class Class {
   public readonly uuid: classUuid;
@@ -10,40 +12,46 @@ class Class {
 
   public readonly subtitle: string;
 
-  private connectedMembers: Member[] = [];
+  private members: Member[] = [];
 
   private chatMassages: { studentId: number; time: Date; message: string }[] =
     [];
 
   private LiveStatus: boolean = false;
 
+  // Lecture related variable
+  private lectures: Lecture[] = [];
+
   constructor(classEntity: ClassEntity) {
     const { uuid, title, subtitle } = classEntity;
     this.uuid = uuid;
     this.title = title;
     this.subtitle = subtitle;
+    this.members = classEntity.members.map(clsMember => new Member(clsMember));
+    this.lectures = classEntity.lectures.map(lecture => new Lecture(lecture));
   }
 
-  public addMember(member: ClassMember): Member {
-    if (!member.member) {
-      throw new Error('Need to fetch User');
+  public getMembers(): Member[] {
+    return this.members;
+  }
+
+  public getMemberById(memberId: number): Member {
+    const memberFound = this.members.find(({ userId }) => userId === memberId);
+    if (!memberFound) {
+      throw new Error('Member Not Found');
     }
-    const newMember = new Member(member);
-    this.connectedMembers.push(newMember);
-
-    return newMember;
-  }
-
-  public getMember(userId: number): Member | undefined {
-    return this.connectedMembers.find(({ id }) => id === userId);
+    return memberFound;
   }
 
   public exitUser(userId: number): boolean {
-    const students = this.connectedMembers.filter(({ id }) => id !== userId);
-    const success = students.length < this.connectedMembers.length;
-    this.connectedMembers = students;
+    const member = this.getMemberById(userId);
 
-    return success;
+    if (!member) {
+      return false;
+    }
+    member?.setConnectStatus(false);
+
+    return true;
   }
 
   public getMessages(offset: number, length: number) {
@@ -62,6 +70,30 @@ class Class {
     this.LiveStatus = liveStatus;
     return this.LiveStatus;
   }
+
+  // Lecture related methods
+  public getLectures(): Lecture[] {
+    return this.lectures;
+  }
+
+  public getLectureById(lectureId: number): Lecture {
+    const lecture = this.lectures.find(({ id }) => id === lectureId);
+    if (!lecture) {
+      throw new Error('No Such Lecture');
+    }
+    return lecture;
+  }
+
+  public addLecture(lecture: LectureEntity): Lecture {
+    const newLecture = new Lecture(lecture);
+    this.lectures.push(newLecture);
+
+    return newLecture;
+  }
+
+  // public joinLecture(lectureId: number): Lecture | undefined {
+  //   return this.availableLectures.find(({ id }) => id === lectureId);
+  // }
 }
 
 export default Class;

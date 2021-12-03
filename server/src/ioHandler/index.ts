@@ -5,16 +5,7 @@ import { CustomSocket } from '../types';
 import ChatProtocols from './chatProtocols';
 import ClassProtocols from './classProtocols';
 import YoutubeProtocols from './youtubeProtocols';
-
-// const OnTimeMarkerClicked =
-//   (socket: Socket, classManager: ClassManager) => async (request: string) => {
-//     const { classUuid, markerId } = JSON.parse(request);
-//     const cls = await classManager.getOrCreateClass(classUuid);
-//     socket.emit('TimeMarkerClicked', {
-//       messages: { markerId, cls }
-//     });
-//     // Listening on 'client/src/components/chat.tsx'
-//   };
+import MarkerProtocols from './markerProtocols';
 
 export default (io: SocketIOServer, classManager: ClassManager) => {
   io.on('connection', (socket: CustomSocket) => {
@@ -26,7 +17,7 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
         `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
       );
     });
-    
+
     socket.on('disconnect', () => {
       socket.disconnect();
       if (user) {
@@ -40,8 +31,14 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
 
     socket.on('JoinClass', ClassProtocols.OnJoinClass(socket, classManager));
     socket.on(
-      'ChatTextMessage',
-      ChatProtocols.OnChatTextMessage(socket, classManager)
+      'LiveChatTextMessage',
+      ChatProtocols.OnLiveChatTextMessage(socket, classManager)
+    );
+    // client/components/timeMarker.tsx
+    socket.on(
+      'TimeMarkerClicked',
+      // ChatProtocols.OnTimeMarkerClicked(socket, classManager)
+      ChatProtocols.OnTimeMarkerClicked(socket)
     );
 
     // client/components/youtube.tsx
@@ -58,7 +55,39 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       YoutubeProtocols.OnInstructorPlayPause(socket, false, classManager)
     );
 
-    // client/components/timeMarker.tsx
-    // socket.on('TimeMarkerClicked', OnTimeMarkerClicked(socket, classManager));
+    // In Class API
+    // lecture related
+    socket.on(
+      'GetLectures',
+      ClassProtocols.OnGetLectures(socket, classManager)
+    );
+    socket.on(
+      'CreateLecture',
+      ClassProtocols.OnCreateLecture(socket, classManager)
+    );
+    socket.on(
+      'JoinLecture',
+      ClassProtocols.OnJoinLecture(socket, classManager)
+    );
+    socket.on(
+      'GetClassMembers',
+      ClassProtocols.OnGetClassMembers(socket, classManager)
+    );
+
+    // Marker Protocols
+    socket.on(
+      'CreateMarker',
+      MarkerProtocols.OnCreateMarker(socket, classManager)
+    );
+    socket.on(
+      'DeleteMarker',
+      MarkerProtocols.OnDeleteMarker(socket, classManager)
+    );
+    socket.on(
+      'MarkerTextMessage',
+      MarkerProtocols.OnMarkerTextMessage(socket, classManager)
+    );
+    socket.on('GetMarkerMessages', MarkerProtocols.OnGetMarkerMessages(socket));
+    socket.on('GetMarkers', MarkerProtocols.OnGetMarkers(socket, classManager));
   });
 };

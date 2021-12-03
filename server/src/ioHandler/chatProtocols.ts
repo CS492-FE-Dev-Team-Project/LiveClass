@@ -1,17 +1,38 @@
 import ClassManager from '../data/classManager';
 import { CustomSocket } from '../types';
 
-const OnChatTextMessage =
+const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
   async (request: string) => {
-    const { classUuid, textMessage } = JSON.parse(request);
+    const { classUuid, text, lectureId } = JSON.parse(request);
     const cls = await classManager.getOrCreateClass(classUuid);
-    const clsRoomName = cls.getSocketRoomName();
-    socket.emit('ChatTextMessage', {
-      time: new Date().toISOString(),
-      textMessage
+    const lecture = cls.getLectureById(lectureId);
+    const { userName, id } = socket.request.user!;
+
+    const message = {
+      dateStr: new Date().toISOString(),
+      text,
+      senderName: userName,
+      senderId: id
+    };
+    socket.emit('LiveChatTextMessage', {
+      message,
+      status: 200
     });
-    socket.to(clsRoomName).emit(textMessage);
+    socket.to(lecture.getSocketRoomName()).emit('LiveChatTextMessage', {
+      message,
+      status: 200
+    });
   };
 
-export default { OnChatTextMessage };
+const OnTimeMarkerClicked =
+  (socket: CustomSocket) =>
+  // (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { markerId, markerType } = JSON.parse(request);
+    // const cls = await classManager.getOrCreateClass(classUuid);
+    socket.emit('TimeMarkerClicked', markerId, markerType);
+    // Listening on 'client/src/components/chat.tsx'
+  };
+
+export default { OnLiveChatTextMessage, OnTimeMarkerClicked };
