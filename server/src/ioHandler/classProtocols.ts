@@ -57,9 +57,7 @@ const OnJoinLecture =
   async (request: string) => {
     const { classUuid, lectureId } = JSON.parse(request);
     const cls: Class = await classManager.getOrCreateClass(classUuid);
-    const lecture: Lecture | undefined = cls.getLectureById(
-      parseInt(lectureId, 10)
-    );
+    const lecture: Lecture | undefined = cls.getLectureById(lectureId);
 
     let status: number = 200;
     if (!lecture) {
@@ -69,11 +67,11 @@ const OnJoinLecture =
       status = 404;
     }
 
-    lecture!.addParticipant(cls.getMemberById(socket.request.user!.id));
+    lecture.addParticipant(cls.getMemberById(socket.request.user!.id));
     Logger.debug(`Join Lecture:\nLecture: ${JSON.stringify(lecture, null, 2)}`);
-    socket.join(lecture!.getSocketRoomName());
+    socket.join(lecture.getSocketRoomName());
     socket
-      .to(lecture!.getSocketRoomName())
+      .to(lecture.getSocketRoomName())
       .emit('JoinLecture', { user: socket.request.user, lecture, status });
     socket.emit('JoinLecture', { user: socket.request.user, lecture, status });
   };

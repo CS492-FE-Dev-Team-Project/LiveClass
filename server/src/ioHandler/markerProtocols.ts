@@ -24,7 +24,7 @@ const OnCreateMarker =
     markerEntity.creator = await member.getEntity();
     markerEntity.lecture = await lecture.getEntity();
     const savedMarker = await markerEntity.save();
-    const marker = lecture.addMarker(savedMarker);
+    const marker = await lecture.addMarker(savedMarker);
 
     const payload = { marker, status: 200 };
     socket.to(lecture.getSocketRoomName()).emit('CreateMarker', payload);
@@ -38,7 +38,8 @@ const OnDeleteMarker =
 
     const cls = await classManager.getOrCreateClass(classUuid);
     const lecture = cls.getLectureById(lectureId);
-    lecture.deleteMarker(markerId);
+
+    await lecture.deleteMarker(markerId);
 
     MarkerEntity.delete(markerId);
 
@@ -56,7 +57,7 @@ const OnMarkerTextMessage =
     const { user } = socket.request;
 
     const { markerId, message }: MarkerTextMessageInterface = markerTextMessage;
-    const marker = lecture.getMarker(markerId);
+    const marker = await lecture.getMarker(markerId);
 
     const markerTextMessageEntity = new MarkerTextMessageEntity();
     markerTextMessageEntity.marker = await marker.getEntity();
@@ -79,9 +80,23 @@ const OnGetMarkerMessages =
     socket.emit('MarkerMessages', { textMessages, status: 200 });
   };
 
+const OnGetMarkers =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: any) => {
+    const { classUuid, lectureId } = request;
+    const cls = await classManager.getOrCreateClass(classUuid);
+    const lecture = cls.getLectureById(lectureId);
+    const markers = await lecture.getMarkers();
+    socket.emit('GetMarkers', {
+      markers,
+      status: 200
+    });
+  };
+
 export default {
   OnCreateMarker,
   OnDeleteMarker,
   OnMarkerTextMessage,
-  OnGetMarkerMessages
+  OnGetMarkerMessages,
+  OnGetMarkers
 };

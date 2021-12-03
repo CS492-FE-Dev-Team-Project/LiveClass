@@ -88,5 +88,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       MarkerProtocols.OnMarkerTextMessage(socket, classManager)
     );
     socket.on('GetMarkerMessages', MarkerProtocols.OnGetMarkerMessages(socket));
+    socket.on('GetMarkers', MarkerProtocols.OnGetMarkers(socket, classManager));
   });
 };

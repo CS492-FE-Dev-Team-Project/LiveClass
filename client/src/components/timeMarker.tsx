@@ -1,25 +1,29 @@
-import React, { useEffect } from 'react';
-import { markerInfo } from './youtube'; // props type
+import React from 'react';
 import { useSocket } from '../context/socket';
-import { MarkerType } from '../types';
+import { Marker, MarkerType } from '../types';
 
-const timeline = ({ id, time, type }: markerInfo) => {
+const TimeMarker = ({
+  id,
+  time,
+  markerType,
+  videoIndex
+}: Omit<Marker, 'messages'>) => {
   const { socket } = useSocket();
 
   // Click handler - Send click event through Socket, to Chat component
   const onClickEvt = () => {
-    const payload = JSON.stringify({ markerId: id, markerType: type });
+    const payload = JSON.stringify({ markerId: id, markerType });
 
     // send 'markerId' of clicked marker to Chat component
     socket?.emit('TimeMarkerClicked', payload);
   };
 
-  const colorPick = (markerType: MarkerType) => {
-    switch (markerType) {
+  const colorPick = (markerT: MarkerType) => {
+    switch (markerT) {
       case MarkerType.DISCUSSION:
-        return 'blue.500';
+        return 'blue';
       case MarkerType.QUESTION:
-        return 'red.500';
+        return 'red';
       default:
         throw new Error('Invalid MarkerType');
     }
@@ -30,7 +34,7 @@ const timeline = ({ id, time, type }: markerInfo) => {
       className="timeline-marker"
       style={{
         left: `${time}%` /* ratio of current time to video duration */,
-        backgroundColor: colorPick(type)
+        backgroundColor: colorPick(markerType)
       }}
       type="button"
       aria-label="timeline"
@@ -39,4 +43,4 @@ const timeline = ({ id, time, type }: markerInfo) => {
   );
 };
 
-export default timeline;
+export default TimeMarker;
