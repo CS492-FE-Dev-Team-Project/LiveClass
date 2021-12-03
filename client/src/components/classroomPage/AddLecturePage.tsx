@@ -10,9 +10,12 @@ import {
   Tr,
   Th,
   Center,
-  Stack
+  Stack,
+  Flex,
+  Spacer,
+  useToast
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
@@ -69,6 +72,7 @@ const AddLecturePage = () => {
   const { socket, connected } = useSocket();
   const { classUuid } = useParams();
   const navigate = useNavigate(); // react-router-dom : go back to previous page
+  const toast = useToast();
 
   const onChangeCreate = () => {
     // setLecturequizlist(Lecturequizlist.filter((item: any) => item.mark !== 0));
@@ -81,6 +85,13 @@ const AddLecturePage = () => {
     });
     socket?.emit('CreateLecture', payload);
     navigate(-1);
+
+    toast({
+      title: 'New lecture created',
+      status: 'success',
+      duration: 1500,
+      isClosable: true
+    });
   };
 
   const onChangeLectureTitle = (e: any) => {
@@ -195,28 +206,57 @@ const AddLecturePage = () => {
     );
   });
   return (
-    <Stack spacing="24px">
-      <Center bg="black" h="100px" color="white" fontSize="2xl">
-        Create Lecture
-      </Center>
-      <LectureTitle onChangeLecturetitle={onChangeLectureTitle} />
-      <LectureNotice onChangeLectureNotice={onChangeLectureNotice} />
-      <LectureTime lectureDate={lectureDate} setLectureDate={setLectureDate} />
-      <AddPlayList
-        Lecturequizlist={Lecturequizlist}
-        onChangeLecturePlaylist={onChangeLecturePlaylist}
-        Lecturelink={lecturePlaylist}
-        setLecturequizlist={setLecturequizlist}
-      />
-      <Heading size="md" pl="30px">
-        Quiz List
-      </Heading>
-      <ol>{showQuizhead}</ol>
-      <ol>{showQuiz}</ol>
-      <Button colorScheme="blue" mr={3} onClick={onChangeCreate}>
-        Create Lecture
-      </Button>
-    </Stack>
+    <>
+      <Stack spacing="24px">
+        <Center bg="black" h="100px" color="white" fontSize="2xl">
+          Create Lecture
+        </Center>
+        <LectureTitle onChangeLecturetitle={onChangeLectureTitle} />
+        <LectureNotice onChangeLectureNotice={onChangeLectureNotice} />
+        <LectureTime
+          lectureDate={lectureDate}
+          setLectureDate={setLectureDate}
+        />
+        <AddPlayList
+          Lecturequizlist={Lecturequizlist}
+          onChangeLecturePlaylist={onChangeLecturePlaylist}
+          Lecturelink={lecturePlaylist}
+          setLecturequizlist={setLecturequizlist}
+        />
+        <Heading size="md" pl="30px">
+          Quiz List
+        </Heading>
+        <ol>{showQuizhead}</ol>
+        <ol>{showQuiz}</ol>
+      </Stack>
+      <br />
+      <br />
+      <br />
+      <Flex>
+        <Spacer />
+        <Button
+          leftIcon={<CheckIcon />}
+          colorScheme="blue"
+          mr={3}
+          w={150}
+          h={50}
+          onClick={onChangeCreate}
+        >
+          Create Lecture
+        </Button>
+        <Button
+          leftIcon={<CloseIcon />}
+          colorScheme="red"
+          mr={50}
+          w={150}
+          h={50}
+          onClick={() => navigate(-1)}
+        >
+          Cancel
+        </Button>
+      </Flex>
+      <br />
+    </>
   );
 };
 

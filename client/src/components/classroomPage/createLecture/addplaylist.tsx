@@ -78,17 +78,17 @@ const AddPlayList = ({
         <br />
         Just input PLFt2h1jjxKxwQAQr6Dv5kYP4Uu5cGX1iH
       </Text>
-      <HStack spacing="30px" pl="30px">
+      <HStack spacing="5px" pl="30px">
         <Input
           placeholder="Youtube Material link"
           onChange={evt => onChangeLecturePlaylist(evt)}
           focusBorderColor="black"
           w="500px"
         />
-        <Button colorScheme="blue" mr={3} onClick={onClickAdd}>
+        <Button colorScheme="blue" w={100} onClick={onClickAdd}>
           Add
         </Button>
-        <Button colorScheme="red" mr={3} onClick={onClickRemove}>
+        <Button colorScheme="red" w={100} onClick={onClickRemove}>
           Remove All
         </Button>
       </HStack>
