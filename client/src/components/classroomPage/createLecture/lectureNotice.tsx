@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heading, FormControl, Stack, Textarea } from '@chakra-ui/react';
 
-const ClassNotice = (onChangeLecturenotice: any) => {
+const LectureNotice = ({ onChangeLectureNotice }: any) => {
   return (
     <Stack spacing="24px">
       <Heading size="md" pl="30px">
@@ -10,7 +10,7 @@ const ClassNotice = (onChangeLecturenotice: any) => {
       <FormControl pl="30px">
         <Textarea
           placeholder="Description"
-          onChange={onChangeLecturenotice}
+          onChange={evt => onChangeLectureNotice(evt)}
           focusBorderColor="black"
           w="500px"
         />
@@ -19,4 +19,4 @@ const ClassNotice = (onChangeLecturenotice: any) => {
   );
 };
 
-export default ClassNotice;
+export default LectureNotice;
