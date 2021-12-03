@@ -4,21 +4,23 @@ import { CustomSocket } from '../types';
 const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
   async (request: string) => {
-    const { classUuid, currentUserName, textMessage, lectureId } =
-      JSON.parse(request);
+    const { classUuid, text, lectureId } = JSON.parse(request);
     const cls = await classManager.getOrCreateClass(classUuid);
     const lecture = cls.getLectureById(lectureId);
-    const payload = {
+    const { userName, id } = socket.request.user!;
+
+    const message = {
       dateStr: new Date().toISOString(),
-      textMessage,
-      chatUserName: currentUserName
+      text,
+      senderName: userName,
+      senderId: id
     };
     socket.emit('LiveChatTextMessage', {
-      message: { ...payload, isMy: true },
+      message,
       status: 200
     });
     socket.to(lecture.getSocketRoomName()).emit('LiveChatTextMessage', {
-      message: { ...payload, isMy: false },
+      message,
       status: 200
     });
   };
