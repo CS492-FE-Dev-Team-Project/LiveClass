@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import menus from '../data/leftmenuData';
+import menus from '../data/leftmenuData_lecture';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
