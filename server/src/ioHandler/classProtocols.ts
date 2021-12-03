@@ -43,10 +43,8 @@ const OnCreateLecture =
     newLectureEntity.lectureDate = lectureDate;
     newLectureEntity.lectureName = lectureName;
     newLectureEntity.playlist = playlist;
-    newLectureEntity.class = new ClassEntity();
+    newLectureEntity.class = await ClassEntity.findOne(classUuid); // 🐛 FIXME!: Do it without querying DB
 
-    // FIXME!: Do it without querying DB
-    newLectureEntity.class.uuid = await ClassEntity.findOne(classUuid);
     const savedLectureEntity = await newLectureEntity.save();
 
     cls.addLecture(savedLectureEntity); // return - created Lecture instance

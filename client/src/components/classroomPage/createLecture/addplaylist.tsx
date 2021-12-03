@@ -3,12 +3,16 @@ import { Heading, Text, Stack, HStack, Input, Button } from '@chakra-ui/react';
 
 import axios from 'axios';
 
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 const AddPlayList = ({
-  onChangeLecturelink,
+  onChangeLecturePlaylist,
   Lecturelink,
   setLecturequizlist
 }: any) => {
-  let Youtubelist = [
+  const Youtubelist = [
     {
       id: 1,
       link: '',
@@ -18,7 +22,7 @@ const AddPlayList = ({
       answer: ''
     }
   ];
-  const getPlayListItems = async (playlistID: any) => {
+  const getPlayListItems = async (playlistID: string) => {
     const result = await axios.get(
       `https://www.googleapis.com/youtube/v3/playlistItems`,
       {
@@ -34,39 +38,22 @@ const AddPlayList = ({
   };
   const onClickAdd = () => {
     getPlayListItems(Lecturelink).then(data => {
-      let i = 1;
-      data.items.forEach((element: any) => {
-        if (i === 1) {
-          const newquiz = [
-            {
-              id: 1 + 1 - 1,
-              link: element.snippet.resourceId.videoId,
-              title: element.snippet.title,
-              quiztime: ' ',
-              problem: ' ',
-              answer: ' ',
-              mark: 0
-            }
-          ];
-          Youtubelist = newquiz;
-          i += 1;
-        } else {
-          const newquiz = {
-            id: i,
-            link: element.snippet.resourceId.videoId,
-            title: element.snippet.title,
-            quiztime: ' ',
-            problem: ' ',
-            answer: ' ',
-            mark: 0
-          };
-          Youtubelist.push(newquiz);
-          i += 1;
-        }
+      data.items.forEach((element: any, idx: number) => {
+        const newquiz = {
+          id: idx,
+          link: element.snippet.resourceId.videoId,
+          title: element.snippet.title,
+          quiztime: ' ',
+          problem: ' ',
+          answer: ' ',
+          mark: 0
+        };
+        Youtubelist.push(newquiz);
       });
       setLecturequizlist(Youtubelist);
     });
   };
+
   const onClickRemove = () => {
     setLecturequizlist([
       {
@@ -91,22 +78,21 @@ const AddPlayList = ({
         <br />
         Just input PLFt2h1jjxKxwQAQr6Dv5kYP4Uu5cGX1iH
       </Text>
-      <HStack spacing="30px" pl="30px">
+      <HStack spacing="5px" pl="30px">
         <Input
           placeholder="Youtube Material link"
-          onChange={onChangeLecturelink}
+          onChange={evt => onChangeLecturePlaylist(evt)}
           focusBorderColor="black"
           w="500px"
         />
-        <Button colorScheme="blue" mr={3} onClick={onClickAdd}>
+        <Button colorScheme="blue" w={100} onClick={onClickAdd}>
           Add
         </Button>
-        <Button colorScheme="red" mr={3} onClick={onClickRemove}>
+        <Button colorScheme="red" w={100} onClick={onClickRemove}>
           Remove All
         </Button>
       </HStack>
     </Stack>
   );
 };
-
 export default AddPlayList;

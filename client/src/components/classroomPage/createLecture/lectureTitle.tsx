@@ -1,17 +1,21 @@
 import React from 'react';
 import { Heading, Input, FormControl, Stack } from '@chakra-ui/react';
 
-const ClassTitle = (onChangeLecturetitle: any) => {
+// interface changeEventHandlerProps {
+//   handler: (event: React.ChangeEventHandler<HTMLInputElement>) => void;
+// }
+
+const LectureTitle = ({ onChangeLecturetitle }: any) => {
   return (
     <Stack spacing="24px">
       <Heading size="lg" pl="30px">
-        Class Title
+        Lecture Title
       </Heading>
       <FormControl pl="30px">
         <Input
           type="text"
-          placeholder="Class Title"
-          onChange={onChangeLecturetitle}
+          placeholder="Lecture Title"
+          onChange={evt => onChangeLecturetitle(evt)}
           w="500px"
           focusBorderColor="black"
         />
@@ -20,4 +24,4 @@ const ClassTitle = (onChangeLecturetitle: any) => {
   );
 };
 
-export default ClassTitle;
+export default LectureTitle;

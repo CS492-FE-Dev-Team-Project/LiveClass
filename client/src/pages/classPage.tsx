@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Button } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import LeftMenu from '../components/leftmenu/leftmenu';
@@ -75,6 +75,9 @@ const ClassPage = () => {
               )
             )
           }
+          <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
+            <Button>Create new lecture</Button>
+          </Link>
         </Box>
         <Chat room={classUuid!} hasHeader />
       </Flex>
