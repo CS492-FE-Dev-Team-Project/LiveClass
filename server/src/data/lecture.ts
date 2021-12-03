@@ -15,7 +15,7 @@ class Lecture {
 
   private participants: Member[] = [];
 
-  private availableMarkers: Marker[] = [];
+  private markers: Marker[] = [];
 
   private LiveStatus: boolean = false; // Live를 lecture 쪽에서(도) 설정해주는게 맞을 듯 - 어느 lecture가 현재 live인지
 
@@ -28,17 +28,22 @@ class Lecture {
   }
 
   public addMarker(marker: MarkerEntity): Marker {
-    // if (!Marker.Marker) {
-    //   throw new Error('Need to fetch User');
-    // }
     const newMarker = new Marker(marker);
-    this.availableMarkers.push(newMarker);
+    this.markers.push(newMarker);
 
     return newMarker;
   }
 
-  public getMarker(userId: number): Marker | undefined {
-    return this.availableMarkers.find(({ id }) => id === userId);
+  public deleteMarker(markerId: number) {
+    this.markers = this.markers.filter(({ id }) => id === markerId);
+  }
+
+  public getMarker(userId: number): Marker {
+    const marker = this.markers.find(({ id }) => id === userId);
+    if (!marker) {
+      throw new Error('No Such Marker');
+    }
+    return marker;
   }
 
   public isLive() {
@@ -56,6 +61,15 @@ class Lecture {
 
   public addParticipant(member: Member) {
     this.participants.push(member);
+    member.setParticipatingLecture(this.id);
+  }
+
+  public async getEntity(): Promise<LectureEntity> {
+    const entity = await LectureEntity.findOne(this.id);
+    if (!entity) {
+      throw new Error('No Such Lecture');
+    }
+    return entity;
   }
 }
 

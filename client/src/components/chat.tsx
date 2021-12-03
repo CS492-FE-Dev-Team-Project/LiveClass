@@ -11,6 +11,19 @@ import { useSocket } from '../context/socket';
 import useMe from '../hooks/useMe';
 import dummyMessages from '../data/chatMessages'; // 🐛 Dummy message - call DB API to get real data
 
+enum ChatMode {
+  Marker = 'Marker',
+  Live = 'Live',
+  Individual = 'Individual'
+}
+
+type ChatStatus =
+  | {
+      chatMode: ChatMode.Live;
+    }
+  | { chatMode: ChatMode.Marker; markerType: MarkerType }
+  | { chatMode: ChatMode.Individual; peer: { id: number; name: string } };
+
 interface ChatProps {
   hasHeader: boolean;
   room: string;
@@ -26,28 +39,31 @@ interface Message {
   isMy: boolean;
 }
 
-// 0 : live chatting, 1 : discussion mode (timeMarker), 2 : ...
-enum ChatMode {
-  QUESTION,
-  QUIZ,
-  NOTICE,
-  DISCUSSION,
-  LIVE
-}
-
 const Chat = ({ hasHeader, room, customHeader = '' }: ChatProps) => {
   const { socket, connected } = useSocket();
   const [messages, setMessages] = useState<Array<Message>>([]);
-  const [chatMode, setChatMode] = useState<ChatMode>(ChatMode.LIVE);
+  const [chatStatus, setChatStatus] = useState<ChatStatus>({
+    chatMode: ChatMode.Live
+  });
   const currentMarkerId = useRef<number>(-1);
   const { userName: currentUserName } = useMe();
 
   // Set Chat header title
-  const pickHeader = ['Question', 'Quiz', 'Notice', 'Discussion'];
-  let header = customHeader;
-  if (header === '') {
-    header = chatMode === ChatMode.LIVE ? 'Live Chat' : pickHeader[chatMode];
-  }
+  const pickHeader = (chatStat: ChatStatus) => {
+    switch (chatStat.chatMode) {
+      case ChatMode.Live:
+        return 'Live Chat';
+      case ChatMode.Marker:
+        return chatStat.markerType === MarkerType.QUESTION
+          ? 'Question'
+          : 'Discussion';
+      case ChatMode.Individual:
+        return chatStat.peer.name;
+      default:
+        throw new Error('Invalid ChatStatus');
+    }
+  };
+  const header = pickHeader(chatStatus);
 
   // Socket listeners
   useEffect(() => {
@@ -57,7 +73,7 @@ const Chat = ({ hasHeader, room, customHeader = '' }: ChatProps) => {
       (markerId: number, markerType: MarkerType) => {
         // 🐛 (API) Fetch timeMarker thread messages
         currentMarkerId.current = markerId;
-        setChatMode(markerType as number);
+        // setChatMode(markerType as number);
         setMessages(dummyMessages.slice(markerId * 3, markerId * 3 + 3));
       }
     );
@@ -84,7 +100,7 @@ const Chat = ({ hasHeader, room, customHeader = '' }: ChatProps) => {
   // 1) chatMode.current == discussion mode : change to Live mode; fetch Live chat messages
   // 2) chatMode.current == Live chatting : clear chat
   const backToLiveChat = () => {
-    setChatMode(ChatMode.LIVE);
+    setChatStatus({ chatMode: ChatMode.Live });
     setMessages([]); // 🐛 (API?) Fetch Live chat message
   };
 
@@ -110,19 +126,14 @@ const Chat = ({ hasHeader, room, customHeader = '' }: ChatProps) => {
     );
 
     // Update DB
-    switch (chatMode) {
-      case ChatMode.DISCUSSION:
+    switch (chatStatus.chatMode) {
+      case ChatMode.Marker:
         console.log('(DB API) Create markerDiscussion message');
         break;
       default:
         // ChatMode.LIVE - No need to store messages on DB
         console.log('Create Live message');
     }
-  };
-
-  const changeMarkerType = (markerType: MarkerType) => {
-    // 🐛 Use API to change the type of the marker
-    setChatMode(markerType as number);
   };
 
   return (

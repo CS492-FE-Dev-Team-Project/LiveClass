@@ -45,7 +45,9 @@ const LecturePage = () => {
         <Box w="100%" h="100vh">
           <YouTube
             memberType={(memberType ?? MemberType.STUDENT) as MemberType}
-            room={classUuid ?? 'uuid error'}
+            classUuid={classUuid ?? 'uuid error'}
+            lectureId={parseInt(lectureId ?? 'lectureId Error', 10)}
+            videoIndex={0}
             videoId="j1_5ttGRzFs"
             width="100%"
             height="100%"

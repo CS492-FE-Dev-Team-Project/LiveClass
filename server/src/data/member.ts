@@ -1,4 +1,4 @@
-import ClassMember, { MemberType } from '../entity/classMemberEntity';
+import ClassMemberEntity, { MemberType } from '../entity/classMemberEntity';
 import { Language } from '../types';
 
 class Member {
@@ -8,11 +8,15 @@ class Member {
 
   public readonly memberType: MemberType;
 
+  private id: number;
+
   private connectStatus: boolean;
+
+  private participatingLectureId: number;
 
   private language: Language;
 
-  constructor(member: ClassMember, language: Language = Language.EN) {
+  constructor(member: ClassMemberEntity, language: Language = Language.EN) {
     const {
       memberType,
       member: { userName, id }
@@ -22,6 +26,7 @@ class Member {
     this.memberType = memberType;
     this.language = language;
     this.connectStatus = false;
+    this.id = member.id;
   }
 
   public getLanguage() {
@@ -39,6 +44,18 @@ class Member {
 
   public setConnectStatus(status: boolean) {
     this.connectStatus = status;
+  }
+
+  public async getEntity(): Promise<ClassMemberEntity> {
+    const memberEntity = await ClassMemberEntity.findOne(this.id);
+    if (!memberEntity) {
+      throw new Error("This User Doesn't Exist");
+    }
+    return memberEntity;
+  }
+
+  public setParticipatingLecture(lectureId: number) {
+    this.participatingLectureId = lectureId;
   }
 }
 

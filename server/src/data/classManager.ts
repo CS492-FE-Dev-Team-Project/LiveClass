@@ -11,7 +11,7 @@ class ClassManager {
     if (this.classMap.has(uuid)) return this.classMap.get(uuid)!;
 
     const classEntity = await ClassEntity.findOne(uuid, {
-      relations: ['lectures', 'members', 'members.member']
+      relations: ['lectures', 'members', 'members.member', 'lectures.markers']
     });
 
     Logger.debug(
