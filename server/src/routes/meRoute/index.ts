@@ -7,6 +7,7 @@ export default (app: Router) => {
 
   meRouter.get('/', authenticateUser, (req, res) => {
     const userName = req.user?.userName;
-    res.json({ userName, status: 200 });
+    const id = req.user?.id;
+    res.json({ userName, id, status: 200 });
   });
 };
