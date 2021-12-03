@@ -5,6 +5,7 @@ import { SocketProvider } from './context/socket';
 import ClassPage from './pages/classPage';
 import LecturePage from './pages/lecturePage';
 import LobbyPage from './pages/lobbyPage';
+import AddLecturePage from './components/classroomPage/AddLecturePage';
 
 const App = (): React.ReactElement<any, any> => {
   return (
@@ -17,6 +18,10 @@ const App = (): React.ReactElement<any, any> => {
             <Route
               path="class/:classUuid/:memberType"
               element={<ClassPage />}
+            />
+            <Route
+              path="class/:classUuid/:memberType/createLecture"
+              element={<AddLecturePage />}
             />
             <Route
               path="class/:classUuid/:memberType/:lectureId"
