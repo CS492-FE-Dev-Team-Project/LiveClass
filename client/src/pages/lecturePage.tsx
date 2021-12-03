@@ -14,6 +14,8 @@ const LecturePage = () => {
   const { socket, connected } = useSocket();
   const [lecture, setLecture] = useState<Lecture>();
 
+  const parsedLectureId = parseInt(lectureId!, 10);
+
   useEffect(() => {
     socket?.on('JoinLecture', ({ lecture: lec, status }) => {
       if (status === 404) {
@@ -24,7 +26,7 @@ const LecturePage = () => {
         setLecture(lec);
       }
     });
-    const payload = JSON.stringify({ classUuid, lectureId });
+    const payload = JSON.stringify({ classUuid, lectureId: parsedLectureId });
     socket?.emit('JoinLecture', payload);
   }, [connected]);
 
@@ -46,7 +48,7 @@ const LecturePage = () => {
           <YouTube
             memberType={(memberType ?? MemberType.STUDENT) as MemberType}
             classUuid={classUuid ?? 'uuid error'}
-            lectureId={parseInt(lectureId ?? 'lectureId Error', 10)}
+            lectureId={parsedLectureId}
             videoIndex={0}
             videoId="j1_5ttGRzFs"
             width="100%"

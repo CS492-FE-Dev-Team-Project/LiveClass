@@ -21,7 +21,7 @@ const ClassPage = () => {
   useEffect(() => {
     const payload = JSON.stringify({ classUuid });
 
-    socket?.on('JoinClass', data => {
+    socket?.on('JoinClass', () => {
       socket?.emit('GetClassMembers', payload);
       socket?.emit('GetLectures', payload);
     });
@@ -31,16 +31,13 @@ const ClassPage = () => {
     socket?.on('GetClassMembers', memberArr => {
       setMemberList(memberArr);
     });
-    socket?.on('GetLectures', lectureArr => {
-      setLectureList(lectureArr);
+    socket?.on('GetLectures', response => {
+      const { lectures, status } = response;
+      if (status === 200) {
+        setLectureList(lectures);
+      }
     });
   }, [connected]);
-
-  const sampleLectureList = [
-    { lectureId: 1 },
-    { lectureId: 2 },
-    { lectureId: 3 }
-  ];
 
   // 🐛 대기 화면 - lecture grid로 대체
   const imgURL =
@@ -59,15 +56,15 @@ const ClassPage = () => {
         <Box w="100%" h="100vh" style={coverStyles}>
           {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
           {
-            /* 🐛 lectureList로 바꾸기 */ sampleLectureList.map(
-              ({ lectureId }) => (
+            /* 🐛 lectureList로 바꾸기 */ lectureList.map(
+              ({ id: lectureId, lectureName, lectureDate }) => (
                 <Link
                   to={`/class/${classUuid}/${memberType}/${lectureId}`}
                   key={lectureId}
                 >
                   <ClassCard
-                    title={`Lecture${lectureId}`}
-                    subTitle={`Test${lectureId}`}
+                    title={lectureName}
+                    subTitle={lectureDate}
                     color="white"
                     backgroundColor="black"
                   />
