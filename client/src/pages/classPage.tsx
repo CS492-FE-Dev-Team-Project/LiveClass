@@ -58,6 +58,25 @@ const ClassPage = () => {
     { lectureId: 3 }
   ];
 
+  const content =
+    connected &&
+    lectureList.length &&
+    lectureList.map(
+      ({ id: lectureId, lectureDate, lectureName, LiveStatus }) => (
+        <Link
+          to={`/class/${classUuid}/${memberType}/${lectureId}`}
+          key={lectureId}
+        >
+          <ClassCard
+            title={`${lectureName}#${lectureId}`}
+            subTitle={`${LiveStatus ? 'LIVE' : 'NotLive'}-${lectureDate}`}
+            color="white"
+            backgroundColor="black"
+          />
+        </Link>
+      )
+    );
+
   return (
     <>
       <FloatConnectionStatus />
@@ -66,23 +85,7 @@ const ClassPage = () => {
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh">
           {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
-          {
-            /* 🐛 lectureList로 바꾸기 */ lectureList.map(
-              ({ id: lectureId, lectureName, lectureDate }) => (
-                <Link
-                  to={`/class/${classUuid}/${memberType}/${lectureId}`}
-                  key={lectureId}
-                >
-                  <ClassCard
-                    title={lectureName}
-                    subTitle={lectureDate}
-                    color="white"
-                    backgroundColor="black"
-                  />
-                </Link>
-              )
-            )
-          }
+          {content}
           <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
             <Button>Create new lecture</Button>
           </Link>
