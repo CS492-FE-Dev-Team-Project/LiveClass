@@ -1,7 +1,7 @@
 import ClassManager from '../data/classManager';
 import { CustomSocket } from '../types';
 
-const OnChatTextMessage =
+const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
   async (request: string) => {
     const { classUuid, currentUserName, textMessage } = JSON.parse(request);
@@ -12,10 +12,13 @@ const OnChatTextMessage =
       textMessage,
       chatUserName: currentUserName
     };
-    socket.emit('ChatTextMessage', JSON.stringify({ ...payload, isMy: true }));
+    socket.emit(
+      'LiveChatTextMessage',
+      JSON.stringify({ ...payload, isMy: true })
+    );
     socket
       .to(clsRoomName)
-      .emit('ChatTextMessage', JSON.stringify({ ...payload, isMy: false }));
+      .emit('LiveChatTextMessage', JSON.stringify({ ...payload, isMy: false }));
   };
 
 const OnTimeMarkerClicked =
@@ -28,4 +31,4 @@ const OnTimeMarkerClicked =
     // Listening on 'client/src/components/chat.tsx'
   };
 
-export default { OnChatTextMessage, OnTimeMarkerClicked };
+export default { OnLiveChatTextMessage, OnTimeMarkerClicked };
