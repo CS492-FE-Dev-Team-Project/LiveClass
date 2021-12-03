@@ -5,9 +5,8 @@ import '../style/youtube.css';
 import { Progress } from '@chakra-ui/react';
 import { CreateMarkerButtons } from './common/Button';
 import { useSocket } from '../context/socket';
-
-import Marker from './timeMarker';
-import { MarkerType, MemberType } from '../types';
+import TimeMarker from './timeMarker';
+import { Marker, MarkerType, MemberType } from '../types';
 
 interface userInfo {
   memberType: MemberType;
@@ -26,12 +25,6 @@ enum VideoState {
   PAUSED,
   BUFFERING,
   CUED = 5
-}
-
-export interface markerInfo {
-  id: number;
-  time: number;
-  type: MarkerType;
 }
 
 const YouTubePlayer = ({
@@ -55,10 +48,7 @@ const YouTubePlayer = ({
   const videoTimelineWrapper = useRef<HTMLDivElement>(null);
 
   // -- 🐛 Mockup data--
-  const [markerInfoArr, setMarkerInfoArr] = useState<Array<markerInfo>>([
-    { id: 0, time: 30, type: MarkerType.DISCUSSION },
-    { id: 1, time: -1, type: MarkerType.QUESTION }
-  ]); // get real 'markerInfoArr' data by calling DB API 🐛
+  const [markers, setMarkers] = useState<Marker[]>([]); // get real 'markerInfoArr' data by calling DB API 🐛
 
   // Cover/uncover video - for ad time or buffering
   const cover = () => videoWrapper.current?.classList.add('coverVideo');
@@ -92,7 +82,13 @@ const YouTubePlayer = ({
           video?.pauseVideo();
         });
       }
-      console.log('Send JoinClass', connected, video);
+
+      socket?.emit('GetMarkers', { classUuid, lectureId });
+      socket?.on('GetMarkers', ({ markers: responseMarkers, status }) => {
+        if (status === 200) {
+          setMarkers(responseMarkers);
+        }
+      });
     }
   }, [connected, video]);
 
@@ -115,6 +111,7 @@ const YouTubePlayer = ({
 
     const JO = JSON.stringify({
       classUuid,
+      lectureId,
       newtime: player.getCurrentTime()
     });
 
@@ -131,7 +128,6 @@ const YouTubePlayer = ({
     }
   };
 
-  // 🐛 Call API to create timeMarker
   const createTimeMarker = (markerType: MarkerType) => {
     const payload = {
       classUuid,
@@ -140,16 +136,11 @@ const YouTubePlayer = ({
     };
     console.log(payload, video);
     socket?.emit('CreateMarker', JSON.stringify(payload));
-    // const id =
-    //   markerInfoArr.length === 0
-    //     ? 0
-    //     : markerInfoArr.reduce((prev, cur) => {
-    //         return prev.id < cur.id ? cur : prev;
-    //       }).id + 1; // get maxId
-    // setMarkerInfoArr(arr => [
-    //   ...arr,
-    //   { id, time: videoCurrent, type: markerType }
-    // ]);
+    socket?.on('CreateMarker', ({ marker, status }) => {
+      if (status === 200) {
+        setMarkers(markerArr => [...markerArr, marker]);
+      }
+    });
   };
 
   // Options for 'react-youtube' library component
@@ -174,6 +165,8 @@ const YouTubePlayer = ({
     backgroundSize: '100% 100%'
   };
 
+  console.log('Youtube Rerendered');
+
   return (
     <div
       className={memberType === MemberType.INSTRUCTOR ? 'teacher' : 'student'}
@@ -193,20 +186,21 @@ const YouTubePlayer = ({
       {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
         <CreateMarkerButtons onClick={createTimeMarker} />
-        {markerInfoArr.map((info, idx) => {
+        {markers.map(({ id, markerType, time }) => {
           if (videoDuration.current === 0) return <div />;
 
           // edge cases for time - outside [0, videoDuration]
-          let { time } = info;
-          if (info.time > videoDuration.current)
-            time = videoDuration.current - 5;
-          else if (info.time < 0) time = 0;
+          const currentTime =
+            time > videoDuration.current ? videoDuration.current - 5 : time;
+
+          console.log('CurrentTime', currentTime);
 
           return (
-            <Marker
-              id={info.id}
-              time={(time / videoDuration.current) * 100}
-              type={info.type}
+            <TimeMarker
+              id={id}
+              time={(currentTime / videoDuration.current) * 100}
+              markerType={markerType}
+              videoIndex={videoIndex}
             />
           );
         })}
