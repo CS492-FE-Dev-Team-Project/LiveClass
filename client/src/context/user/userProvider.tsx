@@ -6,6 +6,7 @@ import UserContext from './userContext';
 const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   const [userName, setUserName] = useState('');
   const [status, setUserStatus] = useState(UserLoadStatus.LOADING);
+  const [id, setId] = useState(-1);
 
   useEffect(() => {
     if (status === UserLoadStatus.LOADING) {
@@ -19,6 +20,7 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
           } else if (r.status === 200) {
             console.log('Logged IN');
             setUserName(r.userName);
+            setId(r.id);
             setUserStatus(UserLoadStatus.LOADED);
           }
         })
@@ -27,7 +29,7 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userName, status }}>
+    <UserContext.Provider value={{ userName, status, id }}>
       {children}
     </UserContext.Provider>
   );
