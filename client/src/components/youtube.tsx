@@ -11,8 +11,10 @@ import { MarkerType, MemberType } from '../types';
 
 interface userInfo {
   memberType: MemberType;
-  room: string;
+  classUuid: string;
+  lectureId: number;
   videoId: string;
+  videoIndex: number;
   width?: number | string; // 100px or '65%'
   height?: number | string;
 }
@@ -34,8 +36,10 @@ export interface markerInfo {
 
 const YouTubePlayer = ({
   memberType,
-  room,
+  classUuid,
+  lectureId,
   videoId,
+  videoIndex,
   width = '100%',
   height = '100%'
 }: userInfo) => {
@@ -110,7 +114,7 @@ const YouTubePlayer = ({
     const player = evt.target;
 
     const JO = JSON.stringify({
-      classUuid: room,
+      classUuid,
       newtime: player.getCurrentTime()
     });
 
@@ -129,18 +133,23 @@ const YouTubePlayer = ({
 
   // 🐛 Call API to create timeMarker
   const createTimeMarker = (markerType: MarkerType) => {
-    // alert(videoCurrent);
-
-    const id =
-      markerInfoArr.length === 0
-        ? 0
-        : markerInfoArr.reduce((prev, cur) => {
-            return prev.id < cur.id ? cur : prev;
-          }).id + 1; // get maxId
-    setMarkerInfoArr(arr => [
-      ...arr,
-      { id, time: videoCurrent, type: markerType }
-    ]);
+    const payload = {
+      classUuid,
+      lectureId,
+      marker: { markerType, time: video.getCurrentTime(), videoIndex }
+    };
+    console.log(payload, video);
+    socket?.emit('CreateMarker', JSON.stringify(payload));
+    // const id =
+    //   markerInfoArr.length === 0
+    //     ? 0
+    //     : markerInfoArr.reduce((prev, cur) => {
+    //         return prev.id < cur.id ? cur : prev;
+    //       }).id + 1; // get maxId
+    // setMarkerInfoArr(arr => [
+    //   ...arr,
+    //   { id, time: videoCurrent, type: markerType }
+    // ]);
   };
 
   // Options for 'react-youtube' library component
