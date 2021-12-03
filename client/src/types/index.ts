@@ -31,8 +31,6 @@ export enum UserLoadStatus {
 }
 
 export enum MarkerType {
-  QUESTION,
-  QUIZ,
-  NOTICE,
-  DISCUSSION
+  QUESTION = 'Question',
+  DISCUSSION = 'Discussion'
 }

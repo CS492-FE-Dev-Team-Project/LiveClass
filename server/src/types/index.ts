@@ -16,8 +16,19 @@ export interface CustomSocket extends Socket {
 }
 
 export enum MarkerType {
-  QUESTION,
-  QUIZ,
-  NOTICE,
-  DISCUSSION
+  QUESTION = 'Question',
+  DISCUSSION = 'Discussion'
+}
+
+export interface MarkerMessageInterface {
+  markerId: number;
+  date: Date;
+}
+
+export interface MarkerTextMessageInterface extends MarkerMessageInterface {
+  message: string;
+}
+
+export interface MarkerAudioMessageInterface extends MarkerMessageInterface {
+  url: string;
 }
