@@ -5,6 +5,7 @@ import { CustomSocket } from '../types';
 import ChatProtocols from './chatProtocols';
 import ClassProtocols from './classProtocols';
 import YoutubeProtocols from './youtubeProtocols';
+import MarkerProtocols from './markerProtocols';
 
 export default (io: SocketIOServer, classManager: ClassManager) => {
   io.on('connection', (socket: CustomSocket) => {
@@ -30,8 +31,8 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
 
     socket.on('JoinClass', ClassProtocols.OnJoinClass(socket, classManager));
     socket.on(
-      'ChatTextMessage',
-      ChatProtocols.OnChatTextMessage(socket, classManager)
+      'LiveChatTextMessage',
+      ChatProtocols.OnLiveChatTextMessage(socket, classManager)
     );
     // client/components/timeMarker.tsx
     socket.on(
@@ -69,8 +70,23 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       ClassProtocols.OnJoinLecture(socket, classManager)
     );
     socket.on(
-      'GetMembers',
+      'GetClassMembers',
       ClassProtocols.OnGetClassMembers(socket, classManager)
     );
+
+    // Marker Protocols
+    socket.on(
+      'CreateMarker',
+      MarkerProtocols.OnCreateMarker(socket, classManager)
+    );
+    socket.on(
+      'DeleteMarker',
+      MarkerProtocols.OnDeleteMarker(socket, classManager)
+    );
+    socket.on(
+      'MarkerTextMessage',
+      MarkerProtocols.OnMarkerTextMessage(socket, classManager)
+    );
+    socket.on('GetMarkerMessages', MarkerProtocols.OnGetMarkerMessages(socket));
   });
 };
