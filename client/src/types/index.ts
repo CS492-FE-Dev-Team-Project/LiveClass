@@ -10,6 +10,7 @@ export interface Lecture {
   lectureDate: string;
   lectureName: string;
   playlist: string;
+  LiveStatus: boolean;
 }
 
 export interface Member {
@@ -33,4 +34,16 @@ export enum UserLoadStatus {
 export enum MarkerType {
   QUESTION = 'Question',
   DISCUSSION = 'Discussion'
+}
+
+export interface Message {
+  id: number;
+}
+
+export interface Marker {
+  id: number;
+  markerType: MarkerType;
+  time: number;
+  videoIndex: number;
+  messages: Message[];
 }
