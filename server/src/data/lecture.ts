@@ -19,31 +19,54 @@ class Lecture {
 
   private LiveStatus: boolean = false; // Live를 lecture 쪽에서(도) 설정해주는게 맞을 듯 - 어느 lecture가 현재 live인지
 
+  private markerLoadPromise: Promise<void>;
+
   constructor(lectureEntity: LectureEntity) {
     const { id, lectureDate, lectureName, playlist } = lectureEntity;
     this.id = id;
     this.lectureDate = lectureDate;
     this.lectureName = lectureName;
     this.playlist = playlist;
+    this.markerLoadPromise = this.loadMarkers();
   }
 
-  public addMarker(marker: MarkerEntity): Marker {
+  public async addMarker(marker: MarkerEntity): Promise<Marker> {
     const newMarker = new Marker(marker);
+    await this.markerLoadPromise;
+
     this.markers.push(newMarker);
 
     return newMarker;
   }
 
-  public deleteMarker(markerId: number) {
-    this.markers = this.markers.filter(({ id }) => id === markerId);
+  public async deleteMarker(markerId: number) {
+    await this.markerLoadPromise;
+
+    this.markers = this.markers.filter(({ id }) => id !== markerId);
   }
 
-  public getMarker(userId: number): Marker {
-    const marker = this.markers.find(({ id }) => id === userId);
+  public async getMarker(markerId: number): Promise<Marker> {
+    await this.markerLoadPromise;
+
+    const marker = this.markers.find(({ id }) => id === markerId);
     if (!marker) {
       throw new Error('No Such Marker');
     }
     return marker;
+  }
+
+  public async loadMarkers(): Promise<void> {
+    const markers = await MarkerEntity.find({
+      where: { lecture: { id: this.id } }
+    });
+
+    this.markers = markers.map(markerEntity => new Marker(markerEntity));
+  }
+
+  public async getMarkers() {
+    await this.markerLoadPromise;
+
+    return this.markers;
   }
 
   public isLive() {
