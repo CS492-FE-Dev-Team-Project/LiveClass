@@ -39,21 +39,13 @@ const ClassPage = () => {
     });
   }, [connected]);
 
-  // 🐛 대기 화면 - lecture grid로 대체
-  const imgURL =
-    'https://previews.123rf.com/images/sevenozz/sevenozz1812/sevenozz181200056/127054720-vintage-tv-test-screen-please-stand-by-television-calibration-pattern.jpg';
-  const coverStyles = {
-    backgroundImage: `url(${imgURL})`,
-    backgroundSize: '100% 100%'
-  };
-
   return (
     <>
       <FloatConnectionStatus />
       <Flex>
         <LeftMenu menus={menus} />
         <Box w="8px" h="100vh" />
-        <Box w="100%" h="100vh" style={coverStyles}>
+        <Box w="100%" h="100vh">
           {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
           {
             /* 🐛 lectureList로 바꾸기 */ lectureList.map(
