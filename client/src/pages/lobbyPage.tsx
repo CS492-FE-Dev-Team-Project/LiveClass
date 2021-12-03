@@ -17,7 +17,6 @@ import Header from '../components/common/Header';
 import useClasses from '../hooks/useClasses';
 import { MemberType } from '../types';
 import LogoAsset from '../assets/logo2.svg';
-import AddLecturePage from '../components/lobbyPage/AddLecture';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({

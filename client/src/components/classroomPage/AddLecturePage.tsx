@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IconButton,
   useDisclosure,
@@ -14,11 +14,15 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
-import ClassTitle from './createLecture/classTitle';
-import ClassNotice from './createLecture/classnotice';
-import ClassTime from './createLecture/classTime';
-import AddPlayList from './createLecture/addplaylist';
-import AddQuizModal from './createLecture/addquizmodal';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import LectureTitle from './createLecture/lectureTitle';
+import LectureNotice from './createLecture/lectureNotice';
+import LectureTime from './createLecture/lectureTime';
+import AddPlayList from './createLecture/addPlaylist';
+import AddQuizModal from './createLecture/addQuizModal';
+
+import { useSocket } from '../../context/socket';
 
 const AddLecturePage = () => {
   const {
@@ -26,21 +30,21 @@ const AddLecturePage = () => {
     onOpen: onAddopen,
     onClose: onAddclose
   } = useDisclosure();
-  const [Lecturetitle, setLecturetitle] = React.useState('');
-  const [Lecturemonth, setLecturemonth] = React.useState('');
-  const [Lectureday, setLectureday] = React.useState('');
-  const [Lecturehour, setLecturehour] = React.useState('');
-  const [Lecturemin, setLecturemin] = React.useState('');
-  const [Lecturenotice, setLecturenotice] = React.useState('');
-  const [Lecturelink, setLecturelink] = React.useState('');
-  const [Lecturequiztime, setLecturequiztime] = React.useState('');
-  const [Lectureproblem, setLectureproblem] = React.useState('');
-  const [Lectureanswer, setLectureanswer] = React.useState('');
-  const [Qurrentnumber, setQurrentnumber] = React.useState('');
-  const [Lecturequizhead, setLecturequizhead] = React.useState([
+
+  const [lectureDate, setLectureDate] = useState<Date>(new Date());
+
+  const [lectureTitle, setLectureTitle] = useState<string>('');
+  const [lectureNotice, setLectureNotice] = useState<string>('');
+  const [lecturePlaylist, setLecturePlaylist] = useState<string>('');
+
+  const [Lecturequiztime, setLecturequiztime] = useState('');
+  const [Lectureproblem, setLectureproblem] = useState('');
+  const [Lectureanswer, setLectureanswer] = useState('');
+  const [Qurrentnumber, setQurrentnumber] = useState('');
+  const [Lecturequizhead, setLecturequizhead] = useState([
     {
       id: 0,
-      playlist: Lecturelink,
+      playlist: lecturePlaylist,
       link: 'Lecture Link',
       title: 'Video Title',
       quiztime: 'Lecture Quiz Time',
@@ -49,10 +53,10 @@ const AddLecturePage = () => {
       mark: 0
     }
   ]);
-  const [Lecturequizlist, setLecturequizlist] = React.useState([
+  const [Lecturequizlist, setLecturequizlist] = useState([
     {
       id: 1,
-      playlist: Lecturelink,
+      playlist: lecturePlaylist,
       link: ' ',
       title: ' ',
       quiztime: ' ',
@@ -61,26 +65,29 @@ const AddLecturePage = () => {
       mark: 0
     }
   ]);
+
+  const { socket, connected } = useSocket();
+  const { classUuid } = useParams();
+  const navigate = useNavigate(); // react-router-dom : go back to previous page
+
   const onChangeCreate = () => {
-    setLecturequizlist(Lecturequizlist.filter((item: any) => item.mark !== 0));
+    // setLecturequizlist(Lecturequizlist.filter((item: any) => item.mark !== 0));
+
+    const payload = JSON.stringify({
+      classUuid,
+      lectureDate,
+      lectureName: lectureTitle,
+      playlist: lecturePlaylist
+    });
+    socket?.emit('CreateLecture', payload);
+    navigate(-1);
   };
-  const onChangeLecturetitle = (e: any) => {
-    setLecturetitle(e.target.value);
+
+  const onChangeLectureTitle = (e: any) => {
+    setLectureTitle(e.target.value);
   };
-  const onChangeLecturemonth = (e: any) => {
-    setLecturemonth(e.target.value);
-  };
-  const onChangeLectureday = (e: any) => {
-    setLectureday(e.target.value);
-  };
-  const onChangeLecturehour = (e: any) => {
-    setLecturehour(e.target.value);
-  };
-  const onChangeLecturemin = (e: any) => {
-    setLecturemin(e.target.value);
-  };
-  const onChangeLecturenotice = (e: any) => {
-    setLecturenotice(e.target.value);
+  const onChangeLectureNotice = (e: any) => {
+    setLectureNotice(e.target.value);
   };
   const onChangeLectureproblem = (e: any) => {
     setLectureproblem(e.target.value);
@@ -91,8 +98,8 @@ const AddLecturePage = () => {
   const onChangeLecturequiztime = (e: any) => {
     setLecturequiztime(e.target.value);
   };
-  const onChangeLecturelink = (e: any) => {
-    setLecturelink(e.target.value);
+  const onChangeLecturePlaylist = (e: any) => {
+    setLecturePlaylist(e.target.value);
   };
   const onClickRemove = (e: any) => {
     removequiz(e.target.id);
@@ -192,18 +199,13 @@ const AddLecturePage = () => {
       <Center bg="black" h="100px" color="white" fontSize="2xl">
         Create Lecture
       </Center>
-      <ClassTitle onChangeLecturetitle={onChangeLecturetitle} />
-      <ClassNotice onChangeLecturenotice={onChangeLecturenotice} />
-      <ClassTime
-        onChangeLecturemonth={onChangeLecturemonth}
-        onChangeLectureday={onChangeLectureday}
-        onChangeLecturehour={onChangeLecturehour}
-        onChangeLecturemin={onChangeLecturemin}
-      />
+      <LectureTitle onChangeLecturetitle={onChangeLectureTitle} />
+      <LectureNotice onChangeLectureNotice={onChangeLectureNotice} />
+      <LectureTime lectureDate={lectureDate} setLectureDate={setLectureDate} />
       <AddPlayList
         Lecturequizlist={Lecturequizlist}
-        onChangeLecturelink={onChangeLecturelink}
-        Lecturelink={Lecturelink}
+        onChangeLecturePlaylist={onChangeLecturePlaylist}
+        Lecturelink={lecturePlaylist}
         setLecturequizlist={setLecturequizlist}
       />
       <Heading size="md" pl="30px">
