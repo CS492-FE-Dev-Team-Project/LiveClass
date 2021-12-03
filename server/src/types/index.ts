@@ -22,7 +22,6 @@ export enum MarkerType {
 
 export interface MarkerMessageInterface {
   markerId: number;
-  date: Date;
 }
 
 export interface MarkerTextMessageInterface extends MarkerMessageInterface {
