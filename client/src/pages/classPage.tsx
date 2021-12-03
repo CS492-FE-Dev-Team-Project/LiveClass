@@ -3,10 +3,10 @@ import { Box, Flex, Button, useClipboard, useToast } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import menus from '../data/leftmenuData_class';
+import defaultMenu from '../data/leftmenuData';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
-import { Lecture, Member } from '../types';
+import { Lecture, Member, TabSegment, TabType, UserTabEntry } from '../types';
 import { useSocket } from '../context/socket';
 import { ClipboardButton } from '../components/common/Button';
 // 🐛 나중에 lecture grid로 대체
@@ -21,6 +21,8 @@ const ClassPage = () => {
   const { hasCopied, onCopy } = useClipboard(classUuid!);
   const toast = useToast();
 
+  const [menu, setMenu] = useState<TabSegment[]>(defaultMenu);
+
   useEffect(() => {
     const payload = JSON.stringify({ classUuid });
 
@@ -31,8 +33,25 @@ const ClassPage = () => {
     socket?.emit('JoinClass', payload);
 
     // get all members and lectures in the classroom
-    socket?.on('GetClassMembers', memberArr => {
-      setMemberList(memberArr);
+    socket?.on('GetClassMembers', response => {
+      const { members, status } = response;
+      if (status === 200) {
+        // setMemberList(members);
+
+        // Formulate tabEntries for
+        const memberTabSegment: TabSegment = {
+          tabTitle: 'Classmates',
+          tabContents: members.map(
+            (mem: Member): UserTabEntry => ({
+              tabName: mem.userName,
+              type: TabType.USER,
+              userId: mem.id
+            })
+          )
+        };
+        setMenu([...defaultMenu, memberTabSegment]);
+        // menus = [...menus, memberTabSegment];
+      }
     });
     socket?.on('GetLectures', response => {
       const { lectures, status } = response;
@@ -52,15 +71,9 @@ const ClassPage = () => {
     });
   };
 
-  const sampleLectureList = [
-    { lectureId: 1 },
-    { lectureId: 2 },
-    { lectureId: 3 }
-  ];
-
   const content =
     connected &&
-    lectureList.length &&
+    lectureList.length > 0 &&
     lectureList.map(
       ({ id: lectureId, lectureDate, lectureName, LiveStatus }) => (
         <Link
@@ -81,7 +94,7 @@ const ClassPage = () => {
     <>
       <FloatConnectionStatus />
       <Flex>
-        <LeftMenu menus={menus} />
+        <LeftMenu menus={menu} />
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh">
           {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}

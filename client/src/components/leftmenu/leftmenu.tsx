@@ -42,18 +42,10 @@ const GlobeIcon = createIcon({
   )
 });
 
-export interface TabContent {
-  tabName: string;
-  link: string;
-}
-
-export interface Menu {
-  tabTitle: string;
-  tabContents: TabContent[];
-}
+import { TabSegment } from '../../types';
 
 interface LeftMenuProps {
-  menus: Menu[];
+  menus: TabSegment[];
 }
 
 const LeftMenu = ({ menus }: LeftMenuProps) => {
@@ -70,7 +62,7 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
             w="190px"
             align="stretch"
           >
-            {menus.map((menu: Menu) => (
+            {menus.map((menu: TabSegment) => (
               <LeftMenuTab
                 tabTitle={menu.tabTitle}
                 tabContents={menu.tabContents}

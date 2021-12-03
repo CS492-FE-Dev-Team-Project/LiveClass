@@ -1,9 +1,9 @@
 import React from 'react';
 import { Stack, Box, Button } from '@chakra-ui/react';
-import { Menu, TabContent } from './leftmenu';
+import { TabSegment, TabEntry } from '../../types';
 import LeftMenuButton from './leftmenubutton';
 
-const LeftMenuTab = ({ tabTitle, tabContents }: Menu) => {
+const LeftMenuTab = ({ tabTitle, tabContents }: TabSegment) => {
   return (
     <Box w="175px">
       <Stack spacing={0}>
@@ -18,12 +18,14 @@ const LeftMenuTab = ({ tabTitle, tabContents }: Menu) => {
           {tabTitle}
         </Box>
         <Box w="100%" h="3px" />
-        {tabContents.map((tab: TabContent) => (
-          <>
-            <LeftMenuButton text={tab.tabName} />
-            <Box w="100%" h="3px" />
-          </>
-        ))}
+        {tabContents.map((tab: TabEntry) => {
+          return (
+            <>
+              <LeftMenuButton entry={tab} />
+              <Box w="100%" h="3px" />
+            </>
+          );
+        })}
       </Stack>
     </Box>
   );
