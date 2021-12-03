@@ -76,8 +76,12 @@ class Class {
     return this.lectures;
   }
 
-  public getLectureById(lectureId: number): Lecture | undefined {
-    return this.lectures.find(({ id }) => id === lectureId);
+  public getLectureById(lectureId: number): Lecture {
+    const lecture = this.lectures.find(({ id }) => id === lectureId);
+    if (!lecture) {
+      throw new Error('No Such Lecture');
+    }
+    return lecture;
   }
 
   public addLecture(lecture: LectureEntity): Lecture {
