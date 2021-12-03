@@ -55,7 +55,7 @@ const LecturePage = () => {
             height="100%"
           />
         </Box>
-        <Chat room={/* 🐛 lectureId */ classUuid!} hasHeader />
+        <Chat classUuid={classUuid!} lectureId={parsedLectureId} hasHeader />
       </Flex>
     </>
   );
