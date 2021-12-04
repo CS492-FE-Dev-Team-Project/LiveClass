@@ -13,7 +13,7 @@
     "server": "cd server && yarn lint-staged",
     "prepare": "husky install",
     "build:client": "cd client && yarn build",
-    "clean": "docker volume rm server_cs492c && rm -rf ./server/client && mkdir ./server/client && cd server && yarn down",
+    "clean": "rm -rf ./server/client && mkdir ./server/client && cd server && yarn down && docker volume rm server_cs492c",
     "build:server": "yarn prebuild:server && cd server && yarn build",
     "run:server": "cd server && yarn up",
     "build:run": "yarn build:server && yarn run:server",
