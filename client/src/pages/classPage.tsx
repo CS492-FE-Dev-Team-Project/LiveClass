@@ -10,7 +10,7 @@ import { Lecture, Member } from '../types';
 import { useSocket } from '../context/socket';
 
 // 🐛 나중에 lecture grid로 대체
-import ClassCard from '../components/lobbyPage/classCard';
+import LectureCarousel from '../components/lecturecarousel/lecturecarousel';
 
 const ClassPage = () => {
   const { classUuid, memberType } = useParams();
@@ -39,39 +39,14 @@ const ClassPage = () => {
     });
   }, [connected]);
 
-  // 🐛 대기 화면 - lecture grid로 대체
-  const imgURL =
-    'https://previews.123rf.com/images/sevenozz/sevenozz1812/sevenozz181200056/127054720-vintage-tv-test-screen-please-stand-by-television-calibration-pattern.jpg';
-  const coverStyles = {
-    backgroundImage: `url(${imgURL})`,
-    backgroundSize: '100% 100%'
-  };
-
   return (
     <>
       <FloatConnectionStatus />
       <Flex>
         <LeftMenu menus={menus} />
         <Box w="8px" h="100vh" />
-        <Box w="100%" h="100vh" style={coverStyles}>
-          {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
-          {
-            /* 🐛 lectureList로 바꾸기 */ lectureList.map(
-              ({ id: lectureId, lectureName, lectureDate }) => (
-                <Link
-                  to={`/class/${classUuid}/${memberType}/${lectureId}`}
-                  key={lectureId}
-                >
-                  <ClassCard
-                    title={lectureName}
-                    subTitle={lectureDate}
-                    color="white"
-                    backgroundColor="black"
-                  />
-                </Link>
-              )
-            )
-          }
+        <Box w="100%" h="100vh" bgColor="gray.100">
+          <LectureCarousel lectureList={lectureList} />
           <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
             <Button>Create new lecture</Button>
           </Link>
