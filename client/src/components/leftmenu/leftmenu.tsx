@@ -6,25 +6,26 @@ import {
   createIcon
 } from '@chakra-ui/icons';
 import {
-  Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody,
   Box,
   Button,
   Flex,
   StackDivider,
   VStack,
   IconButton,
+  Portal,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverArrow,
   Spacer
 } from '@chakra-ui/react';
 
+import { LanguageType } from '../../types';
 import LeftMenuTab from './leftmenutab';
 import Header from '../common/Header';
 import LangContext from '../../context/language/languageContext';
-import { LanguageType } from '../../types';
 
 const GlobeIcon = createIcon({
   displayName: 'GlobeIcon',
@@ -54,7 +55,7 @@ interface LeftMenuProps {
   menus: Menu[];
 }
 
-const LeftMenu = ({ className, menus }: LeftMenuProps) => {
+const LeftMenu = ({ menus }: LeftMenuProps) => {
   const { language, setLanguage } = useContext(LangContext);
 
   return (
