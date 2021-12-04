@@ -28,7 +28,7 @@ const ClassCard = ({
 
   return (
     <Box
-      maxW="280px"
+      w="270px"
       h={150}
       overflow="hidden"
       position="relative"
