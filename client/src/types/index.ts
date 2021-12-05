@@ -58,3 +58,8 @@ export interface Marker {
   videoIndex: number;
   messages: MessageResponse[];
 }
+
+export enum LanguageType {
+  EN,
+  KO
+}
