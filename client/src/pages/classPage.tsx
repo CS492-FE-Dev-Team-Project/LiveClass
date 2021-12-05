@@ -80,7 +80,7 @@ const ClassPage = () => {
 
   const content =
     connected &&
-    lectureList.length > 0 &&
+    lectureList &&
     lectureList.map(
       ({ id: lectureId, lectureDate, lectureName, LiveStatus }) => (
         <Link

@@ -55,7 +55,7 @@ const OnCreateLecture =
       status: 200
     });
 
-    socket.emit('CreateLecture', { id: savedLectureEntity.id, status: 200 });
+    socket.emit('CreateLecture', { lecture, status: 200 });
   };
 
 const OnJoinLecture =
