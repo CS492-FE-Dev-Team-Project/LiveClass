@@ -82,6 +82,7 @@ export interface UserTabEntry extends BaseTabEntry {
 
 export interface VideoTabEntry extends BaseTabEntry {
   videoIdx: number;
+  link: string;
 }
 
 export interface NoticeTabEntry extends BaseTabEntry {

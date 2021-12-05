@@ -3,7 +3,7 @@ import { Box, Flex, Button, useClipboard, useToast } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import defaultMenu from '../data/leftmenuData';
+import noticeTabSegment from '../data/leftmenuData';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
 import { Lecture, Member, TabSegment, TabType, UserTabEntry } from '../types';
@@ -15,17 +15,21 @@ import ClassCard from '../components/lobbyPage/classCard';
 const ClassPage = () => {
   const { classUuid, memberType } = useParams();
   const { socket, connected } = useSocket();
-  const [memberList, setMemberList] = useState<Member[]>([]);
   const [lectureList, setLectureList] = useState<Lecture[]>([]);
 
   const { hasCopied, onCopy } = useClipboard(classUuid!);
   const toast = useToast();
 
-  const [menu, setMenu] = useState<TabSegment[]>(defaultMenu);
+  const [memberArr, setMemberArr] = useState<UserTabEntry[]>([]);
+  const memberTabSegment: TabSegment = {
+    tabTitle: 'Classmates',
+    tabContents: memberArr
+  };
 
   useEffect(() => {
     const payload = JSON.stringify({ classUuid });
 
+    // Initialize
     socket?.on('JoinClass', () => {
       socket?.emit('GetClassMembers', payload);
       socket?.emit('GetLectures', payload);
@@ -36,21 +40,15 @@ const ClassPage = () => {
     socket?.on('GetClassMembers', response => {
       const { members, status } = response;
       if (status === 200) {
-        // setMemberList(members);
-
-        // Formulate tabEntries for
-        const memberTabSegment: TabSegment = {
-          tabTitle: 'Classmates',
-          tabContents: members.map(
-            (mem: Member): UserTabEntry => ({
-              tabName: mem.userName,
-              type: TabType.USER,
-              userId: mem.id
-            })
-          )
-        };
-        setMenu([...defaultMenu, memberTabSegment]);
-        // menus = [...menus, memberTabSegment];
+        // Formulate tabEntries for members
+        const newMemList = members.map(
+          (mem: Member): UserTabEntry => ({
+            tabName: mem.userName,
+            type: TabType.USER,
+            userId: mem.id
+          })
+        );
+        setMemberArr(newMemList);
       }
     });
     socket?.on('GetLectures', response => {
@@ -94,7 +92,7 @@ const ClassPage = () => {
     <>
       <FloatConnectionStatus />
       <Flex>
-        <LeftMenu menus={menu} />
+        <LeftMenu menus={[noticeTabSegment, memberTabSegment]} />
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh">
           {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
