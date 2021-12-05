@@ -1,21 +1,19 @@
 import { TabSegment, TabType } from '../types';
 
-const menus: Array<TabSegment> = [
-  {
-    tabTitle: 'CS330',
-    tabContents: [
-      {
-        tabName: 'Notice',
-        type: TabType.NOTICE,
-        message: ''
-      },
-      {
-        tabName: 'Materials',
-        type: TabType.NOTICE,
-        message: ''
-      }
-    ]
-  }
-];
+const noticeTabSegment: TabSegment = {
+  tabTitle: 'CS330',
+  tabContents: [
+    {
+      tabName: 'Notice',
+      type: TabType.NOTICE,
+      message: 'Notice message'
+    },
+    {
+      tabName: 'Materials',
+      type: TabType.NOTICE,
+      message: 'Materials message'
+    }
+  ]
+};
 
-export default menus;
+export default noticeTabSegment;
