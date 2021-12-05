@@ -23,10 +23,14 @@ import {
 } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
-import { LanguageType } from '../../types';
+import { LanguageType, TabSegment } from '../../types';
 import LeftMenuTab from './leftmenutab';
 import Header from '../common/Header';
 import LangContext from '../../context/language/languageContext';
+
+interface LeftMenuProps {
+  menus: TabSegment[];
+}
 
 const GlobeIcon = createIcon({
   displayName: 'GlobeIcon',
@@ -41,12 +45,6 @@ const GlobeIcon = createIcon({
     </svg>
   )
 });
-
-import { TabSegment } from '../../types';
-
-interface LeftMenuProps {
-  menus: TabSegment[];
-}
 
 const LeftMenu = ({ menus }: LeftMenuProps) => {
   const { language, setLanguage } = useContext(LangContext);
