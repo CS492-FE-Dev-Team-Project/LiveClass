@@ -36,6 +36,15 @@ const ClassPage = () => {
     });
     socket?.emit('JoinClass', payload);
 
+    // Whenever new lecture is created - update lecture list
+    socket?.on('CreateLecture', response => {
+      const { lecture, status } = response;
+      if (status === 200) {
+        // socket?.emit('GetLectures', payload);
+        setLectureList(lecList => [...lecList, lecture]);
+      }
+    });
+
     // get all members and lectures in the classroom
     socket?.on('GetClassMembers', response => {
       const { members, status } = response;
