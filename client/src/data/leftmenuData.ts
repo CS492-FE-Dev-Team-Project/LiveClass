@@ -1,64 +1,19 @@
-const menus = [
-  {
-    tabTitle: 'CS330',
-    tabContents: [
-      {
-        tabName: 'Notice',
-        link: ''
-      },
-      {
-        tabName: 'Materials',
-        link: ''
-      }
-    ]
-  },
-  {
-    tabTitle: 'Playlist',
-    tabContents: [
-      {
-        tabName: 'Menu Item',
-        link: ''
-      },
-      {
-        tabName: 'Menu Item',
-        link: ''
-      }
-    ]
-  },
-  {
-    tabTitle: 'Participants',
-    tabContents: [
-      {
-        tabName: 'JungIn',
-        link: ''
-      },
-      {
-        tabName: 'JaeHo',
-        link: ''
-      },
-      {
-        tabName: 'HyunChul',
-        link: ''
-      },
-      {
-        tabName: 'Sanghyun',
-        link: ''
-      }
-    ]
-  },
-  {
-    tabTitle: 'Lectures',
-    tabContents: [
-      {
-        tabName: 'October 23',
-        link: ''
-      },
-      {
-        tabName: 'October 27',
-        link: ''
-      }
-    ]
-  }
-];
+import { TabSegment, TabType } from '../types';
 
-export default menus;
+const noticeTabSegment: TabSegment = {
+  tabTitle: 'CS330',
+  tabContents: [
+    {
+      tabName: 'Notice',
+      type: TabType.NOTICE,
+      message: 'Notice message'
+    },
+    {
+      tabName: 'Materials',
+      type: TabType.NOTICE,
+      message: 'Materials message'
+    }
+  ]
+};
+
+export default noticeTabSegment;

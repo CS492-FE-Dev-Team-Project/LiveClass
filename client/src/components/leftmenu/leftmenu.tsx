@@ -22,10 +22,15 @@ import {
   Spacer
 } from '@chakra-ui/react';
 
-import { LanguageType } from '../../types';
+import { useNavigate } from 'react-router-dom';
+import { LanguageType, TabSegment } from '../../types';
 import LeftMenuTab from './leftmenutab';
 import Header from '../common/Header';
 import LangContext from '../../context/language/languageContext';
+
+interface LeftMenuProps {
+  menus: TabSegment[];
+}
 
 const GlobeIcon = createIcon({
   displayName: 'GlobeIcon',
@@ -41,22 +46,9 @@ const GlobeIcon = createIcon({
   )
 });
 
-export interface TabContent {
-  tabName: string;
-  link: string;
-}
-
-export interface Menu {
-  tabTitle: string;
-  tabContents: TabContent[];
-}
-
-interface LeftMenuProps {
-  menus: Menu[];
-}
-
 const LeftMenu = ({ menus }: LeftMenuProps) => {
   const { language, setLanguage } = useContext(LangContext);
+  const navigate = useNavigate();
 
   return (
     <Flex w="190px" h="100vh" flexDir="column">
@@ -68,7 +60,7 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
             w="190px"
             align="stretch"
           >
-            {menus.map((menu: Menu) => (
+            {menus.map((menu: TabSegment) => (
               <LeftMenuTab
                 tabTitle={menu.tabTitle}
                 tabContents={menu.tabContents}
@@ -93,7 +85,7 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
             <PopoverContent w={180}>
               <PopoverArrow />
               <PopoverBody>
-                <Button colorScheme="red" w={150}>
+                <Button colorScheme="red" w={150} onClick={() => navigate(-1)}>
                   Quit Class
                 </Button>
               </PopoverBody>

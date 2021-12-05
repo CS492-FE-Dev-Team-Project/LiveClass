@@ -1,11 +1,7 @@
 import React from 'react';
 import { Heading, Text, Stack, HStack, Input, Button } from '@chakra-ui/react';
 
-import axios from 'axios';
-
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { getPlayListItems } from '../../common/playlist';
 
 const AddPlayList = ({
   onChangeLecturePlaylist,
@@ -22,20 +18,7 @@ const AddPlayList = ({
       answer: ''
     }
   ];
-  const getPlayListItems = async (playlistID: string) => {
-    const result = await axios.get(
-      `https://www.googleapis.com/youtube/v3/playlistItems`,
-      {
-        params: {
-          part: 'id,snippet',
-          maxResults: 10,
-          playlistId: playlistID,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY
-        }
-      }
-    );
-    return result.data;
-  };
+
   const onClickAdd = () => {
     getPlayListItems(Lecturelink).then(data => {
       data.items.forEach((element: any, idx: number) => {
