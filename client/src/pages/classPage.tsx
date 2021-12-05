@@ -106,9 +106,11 @@ const ClassPage = () => {
         <Box w="100%" h="100vh">
           {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
           {content}
-          <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
-            <Button>Create new lecture</Button>
-          </Link>
+          {memberType === 'instructor' && (
+            <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
+              <Button>Create new lecture</Button>
+            </Link>
+          )}
           <ClipboardButton onClick={clickClipboard}>
             Copy Class Id
           </ClipboardButton>
