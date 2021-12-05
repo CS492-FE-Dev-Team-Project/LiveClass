@@ -26,6 +26,8 @@ const LeftMenuButton = ({ entry }: any) => {
     }
   };
 
+  const MAX_TITLE_LEN = 12;
+
   return (
     <Box
       as="button"
@@ -52,7 +54,7 @@ const LeftMenuButton = ({ entry }: any) => {
       }}
       onClick={eventHandler}
     >
-      {entry.tabName}
+      {entry.tabName.slice(0, MAX_TITLE_LEN)}
     </Box>
   );
 };
