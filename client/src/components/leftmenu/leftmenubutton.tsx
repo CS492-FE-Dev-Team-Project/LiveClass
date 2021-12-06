@@ -1,7 +1,33 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 
-const LeftMenuButton = ({ text }: { text: string }) => {
+import {
+  TabEntry,
+  TabType,
+  UserTabEntry,
+  VideoTabEntry,
+  NoticeTabEntry
+} from '../../types';
+
+const LeftMenuButton = ({ entry }: any) => {
+  const eventHandler = () => {
+    switch (entry.type) {
+      case TabType.USER:
+        alert(entry.userId);
+        break;
+      case TabType.VIDEO:
+        alert(entry.videoIdx);
+        break;
+      case TabType.NOTICE:
+        alert(entry.message);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const MAX_TITLE_LEN = 12;
+
   return (
     <Box
       as="button"
@@ -26,8 +52,9 @@ const LeftMenuButton = ({ text }: { text: string }) => {
         boxShadow:
           '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
       }}
+      onClick={eventHandler}
     >
-      {text}
+      {entry.tabName.slice(0, MAX_TITLE_LEN)}
     </Box>
   );
 };

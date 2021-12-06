@@ -47,9 +47,15 @@ const OnCreateLecture =
 
     const savedLectureEntity = await newLectureEntity.save();
 
-    cls.addLecture(savedLectureEntity); // return - created Lecture instance
+    const lecture: Lecture = cls.addLecture(savedLectureEntity); // return - created Lecture instance
 
-    socket.emit('CreateLecture', { id: savedLectureEntity.id, status: 200 });
+    // Notify other participants in the class that new lecture is created - update menu
+    socket.to(cls.getSocketRoomName()).emit('CreateLecture', {
+      lecture,
+      status: 200
+    });
+
+    socket.emit('CreateLecture', { lecture, status: 200 });
   };
 
 const OnJoinLecture =

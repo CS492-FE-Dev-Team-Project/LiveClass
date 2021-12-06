@@ -1,5 +1,6 @@
 import React from 'react';
 import { createIcon, Button, Box } from '@chakra-ui/react';
+import { CopyIcon } from '@chakra-ui/icons';
 import { MarkerType } from '../../types';
 
 const FlagIcon = createIcon({
@@ -31,6 +32,21 @@ interface ButtonProps {
   onClick: (arg?: any | void) => void;
 }
 
+const ClipboardButton = ({
+  children,
+  onClick
+}: React.PropsWithChildren<ButtonProps>) => (
+  <Button
+    className="ClipboardButton"
+    leftIcon={<CopyIcon />}
+    aria-label="Settings"
+    m={0.5}
+    onClick={onClick}
+  >
+    {children}
+  </Button>
+);
+
 const FlagButton = ({
   children,
   onClick
@@ -61,4 +77,4 @@ const CreateMarkerButtons: React.FC<ButtonProps> = ({ onClick }) => (
   </Box>
 );
 
-export { FlagButton, CreateMarkerButtons };
+export { FlagButton, ClipboardButton, CreateMarkerButtons };

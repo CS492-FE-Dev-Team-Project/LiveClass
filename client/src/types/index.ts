@@ -58,3 +58,40 @@ export interface Marker {
   videoIndex: number;
   messages: MessageResponse[];
 }
+
+export enum LanguageType {
+  EN,
+  KO
+}
+
+// LeftMenu tabs
+export enum TabType {
+  USER = 'user',
+  VIDEO = 'video',
+  NOTICE = 'notice'
+}
+
+interface BaseTabEntry {
+  tabName: string;
+  type: TabType;
+}
+
+export interface UserTabEntry extends BaseTabEntry {
+  userId: number;
+}
+
+export interface VideoTabEntry extends BaseTabEntry {
+  videoIdx: number;
+  link: string;
+}
+
+export interface NoticeTabEntry extends BaseTabEntry {
+  message: string;
+}
+
+export type TabEntry = UserTabEntry | VideoTabEntry | NoticeTabEntry;
+
+export interface TabSegment {
+  tabTitle: string;
+  tabContents: TabEntry[];
+}

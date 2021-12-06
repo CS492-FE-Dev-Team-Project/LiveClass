@@ -6,12 +6,15 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import UserProvider from './context/user/userProvider';
+import LangProvider from './context/language/languageProvider';
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>
       <UserProvider>
-        <App />
+        <LangProvider>
+          <App />
+        </LangProvider>
       </UserProvider>
     </ChakraProvider>
   </React.StrictMode>,
