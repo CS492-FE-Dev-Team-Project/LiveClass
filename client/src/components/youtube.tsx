@@ -43,6 +43,8 @@ const YouTubePlayer = ({
   const videoDuration = useRef<number>(0); // total video length
   const intervalID = useRef<NodeJS.Timeout | null>(null); // setInterval return value for tracking current running time
 
+  const [isLive, setIsLive] = useState(true);
+
   // DOM ref
   const videoWrapper = useRef<HTMLDivElement>(null);
   const videoTimelineWrapper = useRef<HTMLDivElement>(null);
@@ -62,6 +64,14 @@ const YouTubePlayer = ({
   */
   // Initialize
   const onReady = (evt: any) => {
+    console.log(
+      'On ready vid',
+      evt.target,
+      evt.target.playVideo,
+      evt.target.pauseVideo
+    ); // ⚡️
+    // evt.target.playVideo(); // ⚡️ 여기도 잘됨
+
     setVideo(evt.target);
     videoDuration.current = evt.target.playerInfo.duration;
   };
@@ -71,6 +81,8 @@ const YouTubePlayer = ({
     // If not instructor, sync video time, play, and pause
     if (connected && !!video) {
       if (memberType === MemberType.STUDENT) {
+        console.log('didvideo change? ', video); // ⚡️
+
         socket?.on('InstructorTimeChange', (newtime: number) => {
           video?.seekTo(newtime);
         });
@@ -78,9 +90,19 @@ const YouTubePlayer = ({
           video?.playVideo();
         });
         socket?.on('InstructorPause', () => {
+          console.log(video); // ⚡️
+          console.log(video.pauseVideo); // ⚡️
+
           video?.pauseVideo();
         });
       }
+
+      socket?.on('SetLectureLiveStatus', response => {
+        const { liveStatus, status } = response;
+        if (status === 200) {
+          setIsLive(liveStatus);
+        }
+      });
 
       socket?.emit('GetMarkers', { classUuid, lectureId });
       socket?.on('GetMarkers', ({ markers: responseMarkers, status }) => {
@@ -91,9 +113,15 @@ const YouTubePlayer = ({
     }
   }, [connected, video]);
 
+  useEffect(() => {
+    if (isLive) videoWrapper.current?.classList.add('live');
+    else videoWrapper.current?.classList.remove('live');
+  }, [isLive]);
+
   // (For progress bar time) Set new setInterval on play
   const onPlay = (evt: any) => {
     intervalID.current = setInterval(() => {
+      // video.pauseVideo(); // ⚡️ 여기서 호출하면 잘됨
       setVideoCurrent(video.getCurrentTime());
     }, 100);
   };
@@ -149,9 +177,13 @@ const YouTubePlayer = ({
     playerVars: {
       autoplay: 0 as const,
       controls:
-        memberType === MemberType.INSTRUCTOR ? (1 as const) : (0 as const),
+        memberType === MemberType.INSTRUCTOR || !isLive
+          ? (1 as const)
+          : (0 as const),
       disablekb:
-        memberType === MemberType.INSTRUCTOR ? (0 as const) : (1 as const),
+        memberType === MemberType.INSTRUCTOR || !isLive
+          ? (0 as const)
+          : (1 as const),
       rel: 0 as const
     }
   };
@@ -199,7 +231,7 @@ const YouTubePlayer = ({
             />
           );
         })}
-        {memberType === MemberType.STUDENT ? (
+        {memberType === MemberType.STUDENT && isLive ? (
           <Progress
             colorScheme="red"
             position="absolute"

@@ -40,7 +40,7 @@
 }
 
 /* Disable all mouse pointer events for participants (students) */
-.student#youtube-wrapper .video-container {
+.student#youtube-wrapper.live .video-container {
   pointer-events: none;
 }
 
