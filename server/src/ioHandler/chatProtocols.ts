@@ -43,9 +43,10 @@ const OnLiveChatAudioMessage =
     const cls = await classManager.getOrCreateClass(classUuid);
     const lecture = cls.getLectureById(lectureId);
 
-    socket
-      .to(lecture.getSocketRoomName())
-      .emit('LiveChatAudioMessage', arrayBuffer);
+    socket.to(lecture.getSocketRoomName()).emit('LiveChatAudioMessage', {
+      senderId: socket.request.user?.id,
+      arrayBuffer
+    });
   };
 
 export default {

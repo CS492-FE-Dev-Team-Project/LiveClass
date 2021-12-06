@@ -18,12 +18,21 @@ const AudioRecorder = () => {
 
   useEffect(() => {
     if (connected && socket) {
-      socket.on('LiveChatAudioMessage', (audioMessage: ArrayBuffer) => {
-        const blob = new Blob([new Uint8Array(audioMessage)]);
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        audio.play();
-      });
+      socket.on(
+        'LiveChatAudioMessage',
+        ({
+          arrayBuffer,
+          senderId
+        }: {
+          arrayBuffer: ArrayBuffer;
+          senderId: number;
+        }) => {
+          const blob = new Blob([new Uint8Array(arrayBuffer)]);
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          audio.play();
+        }
+      );
     }
   }, [connected]);
 
