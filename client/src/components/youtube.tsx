@@ -63,14 +63,6 @@ const YouTubePlayer = ({
   */
   // Initialize
   const onReady = (evt: any) => {
-    console.log(
-      'On ready vid',
-      evt.target,
-      evt.target.playVideo,
-      evt.target.pauseVideo
-    ); // ⚡️
-    // evt.target.playVideo(); // ⚡️ 여기도 잘됨
-
     setVideo(evt.target);
     videoDuration.current = evt.target.playerInfo.duration;
   };
@@ -80,19 +72,13 @@ const YouTubePlayer = ({
     // If not instructor, sync video time, play, and pause
     if (connected && !!video) {
       if (isControled) {
-        console.log('didvideo change? ', video); // ⚡️
-
         socket?.on('InstructorTimeChange', (newtime: number) => {
-          console.log('InstructorTimeChange', video);
           video?.seekTo(newtime);
         });
         socket?.on('InstructorPlay', () => {
-          console.log('InstructorPlay', video);
           video?.playVideo();
         });
         socket?.on('InstructorPause', () => {
-          console.log('InstructorPlay', video);
-
           video?.pauseVideo();
         });
       }
@@ -104,18 +90,22 @@ const YouTubePlayer = ({
         }
       });
     }
+
+    return () => {
+      clearInterval(intervalID.current as NodeJS.Timeout);
+      socket?.off('InstructorTimeChange');
+      socket?.off('InstructorPlay');
+      socket?.off('InstructorPause');
+      socket?.off('GetMarkers');
+    };
   }, [connected, video]);
 
   if (isControled) videoWrapper.current?.classList.add('live');
   else videoWrapper.current?.classList.remove('live');
-  // useEffect(() => {
-
-  // }, [ic]);
 
   // (For progress bar time) Set new setInterval on play
   const onPlay = (evt: any) => {
     intervalID.current = setInterval(() => {
-      // video.pauseVideo(); // ⚡️ 여기서 호출하면 잘됨
       setVideoCurrent(video.getCurrentTime());
     }, 100);
   };
@@ -170,8 +160,8 @@ const YouTubePlayer = ({
     width: width.toString(),
     playerVars: {
       autoplay: 0 as const,
-      controls: isControled ? (1 as const) : (0 as const),
-      disablekb: isControled ? (0 as const) : (1 as const),
+      controls: isControled ? (0 as const) : (1 as const),
+      disablekb: isControled ? (1 as const) : (0 as const),
       rel: 0 as const
     }
   };
