@@ -3,7 +3,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { type } from 'os';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import defaultNoticeTabSegment from '../data/leftmenuData';
+import defaultNoticeTabEntries from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
@@ -24,9 +24,9 @@ const LecturePage = () => {
   const { classUuid, memberType, lectureId } = useParams();
   const { socket, connected } = useSocket();
   const [lecture, setLecture] = useState<Lecture>();
-  const [videoArr, setVideoArr] = useState<VideoTabEntry[]>([]);
   const [isLive, setIsLive] = useState<boolean>(false);
 
+  const [videoArr, setVideoArr] = useState<VideoTabEntry[]>([]);
   const videoTabSegment: TabSegment = {
     tabTitle: 'Playlist',
     tabContents: videoArr
@@ -37,7 +37,13 @@ const LecturePage = () => {
     tabContents: memberArr
   };
 
-  const noticeTabSegment: TabSegment = defaultNoticeTabSegment;
+  const [noticeArr, setNoticeArr] = useState<NoticeTabEntry[]>(
+    defaultNoticeTabEntries
+  );
+  const noticeTabSegment: TabSegment = {
+    tabTitle: 'Lecture room',
+    tabContents: noticeArr
+  };
   useEffect(() => {
     if (memberType === MemberType.INSTRUCTOR) {
       const payload = JSON.stringify({
@@ -45,15 +51,25 @@ const LecturePage = () => {
         lectureId,
         status: !isLive
       });
-      const toggleLive: NoticeTabEntry = {
-        tabName: `${isLive ? '⚪ Off' : '🔴 Go'} Live`,
+      const toggleLiveButton: NoticeTabEntry = {
+        tabName: `${isLive ? '⚫ Off' : '🔴 Go'} Live`,
         type: TabType.NOTICE,
         message: 'toggleLive',
         onClickHandler: () => {
           socket?.emit('SetLectureLiveStatus', payload);
         }
       };
-      noticeTabSegment.tabContents.push(toggleLive);
+      setNoticeArr([...defaultNoticeTabEntries, toggleLiveButton]);
+    } else {
+      const notifyLiveButton: NoticeTabEntry = {
+        tabName: isLive ? '🔴 On-Live' : '⚫ Off-Live',
+        type: TabType.NOTICE,
+        message: 'notifyLive',
+        onClickHandler: () => {
+          // Do nothing here
+        }
+      };
+      setNoticeArr([...defaultNoticeTabEntries, notifyLiveButton]);
     }
   }, [isLive]);
 
