@@ -50,9 +50,6 @@ const LecturePage = () => {
       });
 
       setVideoArr(videoList);
-
-      const payload = { classUuid, lectureId };
-      socket?.emit('GetActiveLectureMember', payload);
     });
   }, [lecture]);
 
@@ -67,10 +64,13 @@ const LecturePage = () => {
           type: TabType.USER,
           userId: user.id
         };
+
         setMemberArr(arr => [...arr, newUser]);
+        const payload = { classUuid, lectureId: parsedLectureId };
+        socket?.emit('GetActiveLectureMember', payload);
       }
     });
-    const payload = JSON.stringify({ classUuid, lectureId: parsedLectureId });
+    const payload = { classUuid, lectureId: parsedLectureId };
     socket?.emit('JoinLecture', payload);
 
     // get members participating in the lecture
