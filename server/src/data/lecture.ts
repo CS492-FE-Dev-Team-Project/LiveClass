@@ -1,5 +1,6 @@
 import LectureEntity from '../entity/lectureEntity';
 import MarkerEntity from '../entity/markerEntity';
+import Logger from '../loader/logger';
 // import { classUuid } from '../types';
 import Marker from './marker';
 import Member from './member';
@@ -82,9 +83,28 @@ class Lecture {
     return `lecture_${this.id}`;
   }
 
-  public addParticipant(member: Member) {
-    this.participants.push(member);
-    member.setParticipatingLecture(this.id);
+  public addParticipant(member: Member): boolean {
+    if (!this.participants.find(({ userId }) => userId === member.userId)) {
+      this.participants.push(member);
+      Logger.info(`User ${member?.userName} Join Class ${this.lectureName}`);
+      member.setParticipatingLecture(this.id);
+      return true;
+    }
+    Logger.info(
+      `User ${member?.userName} is Already in Class ${this.lectureName}`
+    );
+    return false;
+  }
+
+  public exitParticipant(id: number): Member | undefined {
+    const member = this.participants.find(({ userId }) => id === userId);
+    if (member) {
+      Logger.info(`User ${member?.userName} Exit Class ${this.lectureName}`);
+      this.participants = this.participants.filter(
+        ({ userId }) => id !== userId
+      );
+    }
+    return member;
   }
 
   public async getEntity(): Promise<LectureEntity> {
@@ -93,6 +113,10 @@ class Lecture {
       throw new Error('No Such Lecture');
     }
     return entity;
+  }
+
+  public getParticipants(): Member[] {
+    return this.participants;
   }
 }
 
