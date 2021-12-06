@@ -141,6 +141,8 @@ const LecturePage = () => {
   // 1. Get lecture list and construct 'menus' for leftmenu
   // 2. Use lectureDate and lectureName somehow?
 
+  console.log(isLive, memberType, isLive && memberType === MemberType.STUDENT);
+
   return (
     <>
       <FloatConnectionStatus />
@@ -158,6 +160,7 @@ const LecturePage = () => {
             videoId="j1_5ttGRzFs"
             width="100%"
             height="100%"
+            isControled={isLive && memberType === MemberType.STUDENT}
           />
         </Box>
         <Chat classUuid={classUuid!} lectureId={parsedLectureId} hasHeader />

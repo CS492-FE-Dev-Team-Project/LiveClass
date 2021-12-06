@@ -34,16 +34,15 @@ const YouTubePlayer = ({
   videoId,
   videoIndex,
   width = '100%',
-  height = '100%'
-}: userInfo) => {
+  height = '100%',
+  isControled
+}: userInfo & { isControled?: boolean }) => {
   const { socket, connected } = useSocket();
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
 
   const [videoCurrent, setVideoCurrent] = useState<number>(0); // current running time of the video
   const videoDuration = useRef<number>(0); // total video length
   const intervalID = useRef<NodeJS.Timeout | null>(null); // setInterval return value for tracking current running time
-
-  const [isLive, setIsLive] = useState(true);
 
   // DOM ref
   const videoWrapper = useRef<HTMLDivElement>(null);
@@ -80,29 +79,23 @@ const YouTubePlayer = ({
   useEffect(() => {
     // If not instructor, sync video time, play, and pause
     if (connected && !!video) {
-      if (memberType === MemberType.STUDENT) {
+      if (isControled) {
         console.log('didvideo change? ', video); // ⚡️
 
         socket?.on('InstructorTimeChange', (newtime: number) => {
+          console.log('InstructorTimeChange', video);
           video?.seekTo(newtime);
         });
         socket?.on('InstructorPlay', () => {
+          console.log('InstructorPlay', video);
           video?.playVideo();
         });
         socket?.on('InstructorPause', () => {
-          console.log(video); // ⚡️
-          console.log(video.pauseVideo); // ⚡️
+          console.log('InstructorPlay', video);
 
           video?.pauseVideo();
         });
       }
-
-      socket?.on('SetLectureLiveStatus', response => {
-        const { liveStatus, status } = response;
-        if (status === 200) {
-          setIsLive(liveStatus);
-        }
-      });
 
       socket?.emit('GetMarkers', { classUuid, lectureId });
       socket?.on('GetMarkers', ({ markers: responseMarkers, status }) => {
@@ -113,10 +106,11 @@ const YouTubePlayer = ({
     }
   }, [connected, video]);
 
-  useEffect(() => {
-    if (isLive) videoWrapper.current?.classList.add('live');
-    else videoWrapper.current?.classList.remove('live');
-  }, [isLive]);
+  if (isControled) videoWrapper.current?.classList.add('live');
+  else videoWrapper.current?.classList.remove('live');
+  // useEffect(() => {
+
+  // }, [ic]);
 
   // (For progress bar time) Set new setInterval on play
   const onPlay = (evt: any) => {
@@ -132,7 +126,7 @@ const YouTubePlayer = ({
 
   // Take care of sync logic here
   const onStateChange = (evt: any) => {
-    if (memberType === MemberType.STUDENT) return;
+    if (isControled) return;
 
     const player = evt.target;
 
@@ -176,14 +170,8 @@ const YouTubePlayer = ({
     width: width.toString(),
     playerVars: {
       autoplay: 0 as const,
-      controls:
-        memberType === MemberType.INSTRUCTOR || !isLive
-          ? (1 as const)
-          : (0 as const),
-      disablekb:
-        memberType === MemberType.INSTRUCTOR || !isLive
-          ? (0 as const)
-          : (1 as const),
+      controls: isControled ? (1 as const) : (0 as const),
+      disablekb: isControled ? (0 as const) : (1 as const),
       rel: 0 as const
     }
   };
@@ -231,7 +219,7 @@ const YouTubePlayer = ({
             />
           );
         })}
-        {memberType === MemberType.STUDENT && isLive ? (
+        {isControled ? (
           <Progress
             colorScheme="red"
             position="absolute"
