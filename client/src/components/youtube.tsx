@@ -60,7 +60,6 @@ const YouTubePlayer = ({
     uncover();
   }, 2000);
   */
-
   // Initialize
   const onReady = (evt: any) => {
     setVideo(evt.target);
@@ -165,8 +164,6 @@ const YouTubePlayer = ({
     backgroundSize: '100% 100%'
   };
 
-  console.log('Youtube Rerendered');
-
   return (
     <div
       className={memberType === MemberType.INSTRUCTOR ? 'teacher' : 'student'}
@@ -183,17 +180,15 @@ const YouTubePlayer = ({
         videoTimelineWrapper.current?.classList.remove('showTimeline');
       }}
     >
+      <CreateMarkerButtons onClick={createTimeMarker} />
       {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
-        <CreateMarkerButtons onClick={createTimeMarker} />
         {markers.map(({ id, markerType, time }) => {
           if (videoDuration.current === 0) return <div />;
 
           // edge cases for time - outside [0, videoDuration]
           const currentTime =
             time > videoDuration.current ? videoDuration.current - 5 : time;
-
-          console.log('CurrentTime', currentTime);
 
           return (
             <TimeMarker
