@@ -40,12 +40,17 @@ const LecturePage = () => {
   const noticeTabSegment: TabSegment = defaultNoticeTabSegment;
   useEffect(() => {
     if (memberType === MemberType.INSTRUCTOR) {
+      const payload = JSON.stringify({
+        classUuid,
+        lectureId,
+        status: !isLive
+      });
       const toggleLive: NoticeTabEntry = {
         tabName: `${isLive ? '⚪ Off' : '🔴 Go'} Live`,
         type: TabType.NOTICE,
         message: 'toggleLive',
         onClickHandler: () => {
-          console.log('Hello');
+          socket?.emit('SetLectureLiveStatus', payload);
         }
       };
       noticeTabSegment.tabContents.push(toggleLive);
@@ -104,6 +109,14 @@ const LecturePage = () => {
           })
         );
         setMemberArr(newMemList);
+      }
+    });
+
+    // lecture live status change
+    socket?.on('SetLectureLiveStatus', response => {
+      const { liveStatus, status } = response;
+      if (status === 200) {
+        setIsLive(liveStatus);
       }
     });
   }, [connected]);

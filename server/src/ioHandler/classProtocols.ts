@@ -6,6 +6,7 @@ import ClassManager from '../data/classManager';
 import Logger from '../loader/logger';
 import { CustomSocket } from '../types';
 import ClassEntity from '../entity/classEntity';
+import ClassMemberEntity from '../entity/classMemberEntity';
 
 const OnJoinClass =
   (socket: CustomSocket, classManager: ClassManager) =>
@@ -13,7 +14,25 @@ const OnJoinClass =
     const { classUuid } = JSON.parse(request);
     const { user } = socket.request;
     const cls = await classManager.getOrCreateClass(classUuid);
-    cls.getMemberById(user!.id).setConnectStatus(true);
+
+    // Revisiting the class
+    if (cls.checkMemberExists(user!.id)) {
+      cls.getMemberById(user!.id).setConnectStatus(true);
+    }
+    // New to class
+    else {
+      const newMemberEntity: ClassMemberEntity | undefined =
+        await ClassMemberEntity.findOne({
+          where: {
+            member: { id: user!.id },
+            class: { uuid: classUuid }
+          },
+          relations: ['member', 'class']
+        });
+      if (!newMemberEntity)
+        throw new Error('Invalid user! Not properly joined the class');
+      cls.addMember(newMemberEntity);
+    }
 
     const clsRoomName = cls.getSocketRoomName();
     socket.join(clsRoomName);
@@ -66,6 +85,21 @@ const OnGetClassMembers =
 
     const members: Member[] = cls.getMembers();
     socket.emit('GetClassMembers', { members, status: 200 });
+  };
+
+const OnSetLectureLiveStatus =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { classUuid, lectureId, status } = JSON.parse(request);
+    const cls: Class = await classManager.getOrCreateClass(classUuid);
+
+    const lecture: Lecture = cls.getLectureById(lectureId);
+    const liveStatus = lecture.setLiveStatus(status);
+
+    socket
+      .to(lecture.getSocketRoomName())
+      .emit('SetLectureLiveStatus', { liveStatus, status: 200 });
+    socket.emit('SetLectureLiveStatus', { liveStatus, status: 200 });
   };
 
 export default {

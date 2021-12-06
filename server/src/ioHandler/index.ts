@@ -72,6 +72,10 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'GetClassMembers',
       ClassProtocols.OnGetClassMembers(socket, classManager)
     );
+    socket.on(
+      'SetLectureLiveStatus',
+      ClassProtocols.OnSetLectureLiveStatus(socket, classManager)
+    );
 
     // Marker Protocols
     socket.on(
