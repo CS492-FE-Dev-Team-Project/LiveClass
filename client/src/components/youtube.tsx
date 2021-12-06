@@ -213,7 +213,7 @@ const YouTubePlayer = ({
           <Progress
             colorScheme="red"
             position="absolute"
-            bottom="5px"
+            bottom="35px"
             height="5px"
             width="100%"
             value={
