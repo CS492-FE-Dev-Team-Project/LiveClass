@@ -58,26 +58,6 @@ const OnCreateLecture =
     socket.emit('CreateLecture', { lecture, status: 200 });
   };
 
-const OnJoinLecture =
-  (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
-    const { classUuid, lectureId } = JSON.parse(request);
-    const cls: Class = await classManager.getOrCreateClass(classUuid);
-    const lecture: Lecture = cls.getLectureById(lectureId);
-
-    lecture.addParticipant(cls.getMemberById(socket.request.user!.id));
-    Logger.debug(`Join Lecture:\nLecture: ${JSON.stringify(lecture, null, 2)}`);
-    socket.join(lecture.getSocketRoomName());
-    socket
-      .to(lecture.getSocketRoomName())
-      .emit('JoinLecture', { user: socket.request.user, lecture, status: 200 });
-    socket.emit('JoinLecture', {
-      user: socket.request.user,
-      lecture,
-      status: 200
-    });
-  };
-
 const OnGetClassMembers =
   (socket: CustomSocket, classManager: ClassManager) =>
   async (request: string) => {
@@ -92,6 +72,5 @@ export default {
   OnJoinClass,
   OnGetLectures,
   OnCreateLecture,
-  OnJoinLecture,
   OnGetClassMembers
 };

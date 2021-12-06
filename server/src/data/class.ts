@@ -4,6 +4,7 @@ import Member from './member';
 
 import LectureEntity from '../entity/lectureEntity';
 import Lecture from './lecture';
+import Logger from '../loader/logger';
 
 class Class {
   public readonly uuid: classUuid;
@@ -45,10 +46,12 @@ class Class {
 
   public exitUser(userId: number): boolean {
     const member = this.getMemberById(userId);
-
+    Logger.info(`User ${member.userName} Exit Class ${this.title}`);
     if (!member) {
       return false;
     }
+    this.lectures.forEach(lecture => lecture.exitParticipant(userId));
+
     member?.setConnectStatus(false);
 
     return true;
@@ -90,10 +93,6 @@ class Class {
 
     return newLecture;
   }
-
-  // public joinLecture(lectureId: number): Lecture | undefined {
-  //   return this.availableLectures.find(({ id }) => id === lectureId);
-  // }
 }
 
 export default Class;

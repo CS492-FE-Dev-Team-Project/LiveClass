@@ -6,6 +6,7 @@ import ChatProtocols from './chatProtocols';
 import ClassProtocols from './classProtocols';
 import YoutubeProtocols from './youtubeProtocols';
 import MarkerProtocols from './markerProtocols';
+import LectureProtocols from './lectureProtocols';
 
 export default (io: SocketIOServer, classManager: ClassManager) => {
   io.on('connection', (socket: CustomSocket) => {
@@ -59,7 +60,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     );
 
     // In Class API
-    // lecture related
     socket.on(
       'GetLectures',
       ClassProtocols.OnGetLectures(socket, classManager)
@@ -67,10 +67,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     socket.on(
       'CreateLecture',
       ClassProtocols.OnCreateLecture(socket, classManager)
-    );
-    socket.on(
-      'JoinLecture',
-      ClassProtocols.OnJoinLecture(socket, classManager)
     );
     socket.on(
       'GetClassMembers',
@@ -97,6 +93,16 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     socket.on(
       'LiveChatAudioMessage',
       ChatProtocols.OnLiveChatAudioMessage(socket, classManager)
+    );
+
+    // Lecture Protocols
+    socket.on(
+      'GetActiveLectureMember',
+      LectureProtocols.GetActiveLectureMember(socket, classManager)
+    );
+    socket.on(
+      'JoinLecture',
+      LectureProtocols.OnJoinLecture(socket, classManager)
     );
   });
 };
