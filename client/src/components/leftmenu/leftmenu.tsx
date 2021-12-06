@@ -86,7 +86,7 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
               <PopoverArrow />
               <PopoverBody>
                 <Button colorScheme="red" w={150} onClick={() => navigate(-1)}>
-                  Quit Class
+                  Quit room
                 </Button>
               </PopoverBody>
             </PopoverContent>
