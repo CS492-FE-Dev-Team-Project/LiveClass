@@ -14,7 +14,10 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
 
     socket.onAny((eventName, ...args) => {
       Logger.debug(
-        `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
+        `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`.slice(
+          0,
+          500
+        )
       );
     });
 
@@ -89,5 +92,11 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     );
     socket.on('GetMarkerMessages', MarkerProtocols.OnGetMarkerMessages(socket));
     socket.on('GetMarkers', MarkerProtocols.OnGetMarkers(socket, classManager));
+
+    // Audio Protocols
+    socket.on(
+      'LiveChatAudioMessage',
+      ChatProtocols.OnLiveChatAudioMessage(socket, classManager)
+    );
   });
 };

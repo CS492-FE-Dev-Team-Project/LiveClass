@@ -31,3 +31,16 @@ export interface MarkerTextMessageInterface extends MarkerMessageInterface {
 export interface MarkerAudioMessageInterface extends MarkerMessageInterface {
   url: string;
 }
+
+export interface InClassRequestInterface {
+  classUuid: string;
+}
+
+export interface InLectureRequestInterface extends InClassRequestInterface {
+  lectureId: number;
+}
+
+export interface LiveChatAudioMessageInterface
+  extends InLectureRequestInterface {
+  arrayBuffer: ArrayBuffer;
+}
