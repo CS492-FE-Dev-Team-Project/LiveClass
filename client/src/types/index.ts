@@ -74,6 +74,7 @@ export enum TabType {
 interface BaseTabEntry {
   tabName: string;
   type: TabType;
+  onClickHandler?: (...args: any[]) => void;
 }
 
 export interface UserTabEntry extends BaseTabEntry {
@@ -87,7 +88,6 @@ export interface VideoTabEntry extends BaseTabEntry {
 
 export interface NoticeTabEntry extends BaseTabEntry {
   message: string;
-  onClickHandler?: (...args: any[]) => void;
 }
 
 export type TabEntry = UserTabEntry | VideoTabEntry | NoticeTabEntry;
@@ -96,3 +96,5 @@ export interface TabSegment {
   tabTitle: string;
   tabContents: TabEntry[];
 }
+
+/* Lecture context */

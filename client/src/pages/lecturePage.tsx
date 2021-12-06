@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { type } from 'os';
@@ -19,12 +19,14 @@ import {
 } from '../types';
 import { useSocket } from '../context/socket';
 import { getPlayListItems } from '../components/common/playlist';
+import LectureContext from '../context/lecture/lectureContext';
 
 const LecturePage = () => {
   const { classUuid, memberType, lectureId } = useParams();
   const { socket, connected } = useSocket();
   const [lecture, setLecture] = useState<Lecture>();
   const [isLive, setIsLive] = useState<boolean>(false);
+  const { selectedVidIdx, setSelectedVidIdx } = useContext(LectureContext);
 
   const [videoArr, setVideoArr] = useState<VideoTabEntry[]>([]);
   const videoTabSegment: TabSegment = {
@@ -85,7 +87,11 @@ const LecturePage = () => {
           tabName: element.snippet.title,
           type: TabType.VIDEO,
           videoIdx: idx,
-          link: element.snippet.resourceId.videoId
+          link: element.snippet.resourceId.videoId,
+          onClickHandler: () => {
+            console.log(idx);
+            setSelectedVidIdx(idx);
+          }
         });
       });
 
@@ -157,7 +163,9 @@ const LecturePage = () => {
             classUuid={classUuid ?? 'uuid error'}
             lectureId={parsedLectureId}
             videoIndex={0}
-            videoId="j1_5ttGRzFs"
+            videoId={
+              videoArr.length > 0 ? videoArr[selectedVidIdx].link : 'NULL'
+            }
             width="100%"
             height="100%"
             isControled={isLive && memberType === MemberType.STUDENT}

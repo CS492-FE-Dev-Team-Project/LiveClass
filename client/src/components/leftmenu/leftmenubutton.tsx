@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box } from '@chakra-ui/react';
 
 import {
@@ -9,21 +9,31 @@ import {
   NoticeTabEntry
 } from '../../types';
 
+import LectureContext from '../../context/lecture/lectureContext';
+
 const LeftMenuButton = ({ entry }: any) => {
+  const { selectedVidIdx } = useContext(LectureContext);
+
+  let shouldHighlight = false;
+  if (entry.type === TabType.VIDEO)
+    shouldHighlight = entry.videoIdx === selectedVidIdx;
+
   const eventHandler = () => {
-    switch (entry.type) {
-      case TabType.USER:
-        alert(entry.userId);
-        break;
-      case TabType.VIDEO:
-        alert(entry.videoIdx);
-        break;
-      case TabType.NOTICE:
-        if (entry.onClickHandler) entry.onClickHandler();
-        else alert(entry.message);
-        break;
-      default:
-        break;
+    if (entry.onClickHandler) entry.onClickHandler();
+    else {
+      switch (entry.type) {
+        case TabType.USER:
+          alert(entry.userId);
+          break;
+        case TabType.VIDEO:
+          alert(entry.videoIdx);
+          break;
+        case TabType.NOTICE:
+          alert(entry.message);
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -41,7 +51,7 @@ const LeftMenuButton = ({ entry }: any) => {
       fontSize="20px"
       textAlign="start"
       bg="white"
-      borderColor="white"
+      borderColor={shouldHighlight ? '#FF4A3E' : 'white'}
       color="black"
       _hover={{ bg: '#ebedf0' }}
       _active={{

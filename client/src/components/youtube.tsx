@@ -61,6 +61,11 @@ const YouTubePlayer = ({
     uncover();
   }, 2000);
   */
+
+  // Cover youtube component before any video is selected
+  if (videoId === 'NULL') cover();
+  else uncover();
+
   // Initialize
   const onReady = (evt: any) => {
     setVideo(evt.target);
