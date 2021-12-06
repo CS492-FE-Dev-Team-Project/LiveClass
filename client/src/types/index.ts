@@ -87,6 +87,7 @@ export interface VideoTabEntry extends BaseTabEntry {
 
 export interface NoticeTabEntry extends BaseTabEntry {
   message: string;
+  onClickHandler?: (...args: any[]) => void;
 }
 
 export type TabEntry = UserTabEntry | VideoTabEntry | NoticeTabEntry;

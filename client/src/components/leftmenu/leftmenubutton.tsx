@@ -19,7 +19,8 @@ const LeftMenuButton = ({ entry }: any) => {
         alert(entry.videoIdx);
         break;
       case TabType.NOTICE:
-        alert(entry.message);
+        if (entry.onClickHandler) entry.onClickHandler();
+        else alert(entry.message);
         break;
       default:
         break;

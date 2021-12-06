@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router';
+import { type } from 'os';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import noticeTabSegment from '../data/leftmenuData';
+import defaultNoticeTabSegment from '../data/leftmenuData';
 import YouTube from '../components/youtube';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
@@ -13,7 +14,8 @@ import {
   TabSegment,
   TabType,
   UserTabEntry,
-  VideoTabEntry
+  VideoTabEntry,
+  NoticeTabEntry
 } from '../types';
 import { useSocket } from '../context/socket';
 import { getPlayListItems } from '../components/common/playlist';
@@ -23,6 +25,8 @@ const LecturePage = () => {
   const { socket, connected } = useSocket();
   const [lecture, setLecture] = useState<Lecture>();
   const [videoArr, setVideoArr] = useState<VideoTabEntry[]>([]);
+  const [isLive, setIsLive] = useState<boolean>(false);
+
   const videoTabSegment: TabSegment = {
     tabTitle: 'Playlist',
     tabContents: videoArr
@@ -32,6 +36,21 @@ const LecturePage = () => {
     tabTitle: 'Participants',
     tabContents: memberArr
   };
+
+  const noticeTabSegment: TabSegment = defaultNoticeTabSegment;
+  useEffect(() => {
+    if (memberType === MemberType.INSTRUCTOR) {
+      const toggleLive: NoticeTabEntry = {
+        tabName: `${isLive ? '⚪ Off' : '🔴 Go'} Live`,
+        type: TabType.NOTICE,
+        message: 'toggleLive',
+        onClickHandler: () => {
+          console.log('Hello');
+        }
+      };
+      noticeTabSegment.tabContents.push(toggleLive);
+    }
+  }, [isLive]);
 
   const parsedLectureId = parseInt(lectureId!, 10);
 
