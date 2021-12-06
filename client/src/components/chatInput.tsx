@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { IconButton, Textarea, Flex } from '@chakra-ui/react';
 import { ChatIcon, TimeIcon } from '@chakra-ui/icons';
+import AudioRecorder from './audioRecorder';
 
 const ChatInput = ({ sendMessage }: any) => {
   const [message, setMessage] = useState('');
@@ -37,6 +38,7 @@ const ChatInput = ({ sendMessage }: any) => {
           aria-label="Send Message"
           m={0.5}
         />
+        <AudioRecorder />
       </Flex>
     </Flex>
   );
