@@ -55,7 +55,7 @@ const LecturePage = () => {
     if (memberType === MemberType.INSTRUCTOR) {
       const payload = JSON.stringify({
         classUuid,
-        lectureId,
+        lectureId: parsedLectureId,
         status: !isLive
       });
       const toggleLiveButton: NoticeTabEntry = {
@@ -93,14 +93,11 @@ const LecturePage = () => {
           link: element.snippet.resourceId.videoId,
           onClickHandler: () => {
             // only the instructor gets to choose video on LIVE
-            socket?.emit(
-              'SelectVideo',
-              JSON.stringify({
-                classUuid,
-                lectureId,
-                selectedVideoIdx: idx
-              })
-            );
+            socket?.emit('SelectVideo', {
+              classUuid,
+              lectureId: parsedLectureId,
+              selectedVideoIdx: idx
+            });
           }
         });
       });
