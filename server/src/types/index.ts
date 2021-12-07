@@ -37,7 +37,15 @@ export interface InClassRequestInterface {
 }
 
 export interface InLectureRequestInterface extends InClassRequestInterface {
-  lectureId: string;
+  lectureId: number;
+}
+
+export interface SelectVideoRequest extends InLectureRequestInterface {
+  selectedVideoIdx: number;
+}
+
+export interface LiveChatTextMessageRequest extends InLectureRequestInterface {
+  text: string;
 }
 
 export interface LiveChatAudioMessageInterface

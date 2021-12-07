@@ -93,9 +93,8 @@ class Class {
     return this.lectures;
   }
 
-  public getLectureById(lecIdStr: string): Lecture {
-    const lecId = parseInt(lecIdStr, 10);
-    const lecture = this.lectures.find(({ id }) => id === lecId);
+  public getLectureById(lectureId: number): Lecture {
+    const lecture = this.lectures.find(({ id }) => id === lectureId);
     if (!lecture) {
       throw new Error('No Such Lecture');
     }

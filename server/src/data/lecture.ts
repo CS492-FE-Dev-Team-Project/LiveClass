@@ -22,6 +22,8 @@ class Lecture {
 
   private markerLoadPromise: Promise<void>;
 
+  private videoIdx: number = 0;
+
   constructor(lectureEntity: LectureEntity) {
     const { id, lectureDate, lectureName, playlist } = lectureEntity;
     this.id = id;
@@ -117,6 +119,10 @@ class Lecture {
 
   public getParticipants(): Member[] {
     return this.participants;
+  }
+
+  public setVideoIdx(idx: number) {
+    this.videoIdx = idx;
   }
 }
 

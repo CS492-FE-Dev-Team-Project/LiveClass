@@ -91,7 +91,7 @@ const YouTubePlayer = ({
           setMarkers(responseMarkers);
         }
       });
-      socket?.emit('GetMarkers', { classUuid, lectureId });
+      socket?.emit('GetMarkers', { classUuid, lectureId, videoIndex });
     }
 
     socket?.on('CreateMarker', ({ marker, status }) => {
@@ -108,7 +108,7 @@ const YouTubePlayer = ({
       socket?.off('GetMarkers');
       socket?.off('CreateMarker');
     };
-  }, [connected, video]);
+  }, [connected, video, videoIndex]);
 
   if (isControled) videoWrapper.current?.classList.add('live');
   else videoWrapper.current?.classList.remove('live');

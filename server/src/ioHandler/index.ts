@@ -58,6 +58,10 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'InstructorPause',
       YoutubeProtocols.OnInstructorPlayPause(socket, false, classManager)
     );
+    socket.on(
+      'SelectVideo',
+      YoutubeProtocols.OnSelectVideo(socket, classManager)
+    );
 
     // In Class API
     socket.on(
@@ -82,10 +86,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     socket.on(
       'SetLectureLiveStatus',
       LectureProtocols.OnSetLectureLiveStatus(socket, classManager)
-    );
-    socket.on(
-      'SelectVideo',
-      LectureProtocols.OnSelectVideo(socket, classManager)
     );
 
     // Marker Protocols
