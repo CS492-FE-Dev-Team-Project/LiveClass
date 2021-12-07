@@ -9,6 +9,7 @@ import {
   OneToMany
 } from 'typeorm';
 import ClassMember from './classMemberEntity';
+import MarkerTextMessageEntity from './markerTextMessageEntity';
 
 @Entity()
 export default class UserEntity extends BaseEntity {
@@ -29,4 +30,7 @@ export default class UserEntity extends BaseEntity {
 
   @OneToMany(() => ClassMember, classMember => classMember.member)
   public classes: ClassMember[];
+
+  @OneToMany(() => MarkerTextMessageEntity, message => message.user)
+  markerMessages: MarkerTextMessageEntity[];
 }

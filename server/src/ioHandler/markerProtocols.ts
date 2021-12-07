@@ -63,6 +63,7 @@ const OnMarkerTextMessage =
     const markerTextMessageEntity = new MarkerTextMessageEntity();
     markerTextMessageEntity.marker = await marker.getEntity();
     markerTextMessageEntity.message = message;
+    markerTextMessageEntity.user = socket.request.user!;
     const savedMessageEntity = await markerTextMessageEntity.save();
     marker.addTextMessage(savedMessageEntity, user!.id);
 
@@ -70,8 +71,8 @@ const OnMarkerTextMessage =
       messageId: savedMessageEntity.id,
       dateStr: new Date(savedMessageEntity.createdAt).toISOString(),
       text: savedMessageEntity.message,
-      senderName: socket.request.user!.userName, // ⚡️ creator of this message - user relation 필요
-      senderId: socket.request.user!.id // ⚡️ creator of this message - user relation 필요
+      senderName: savedMessageEntity.user.userName, // ⚡️ creator of this message - user relation 필요
+      senderId: savedMessageEntity.user.id // ⚡️ creator of this message - user relation 필요
     };
 
     const payload = {
@@ -88,15 +89,15 @@ const OnGetMarkerMessages =
     const { markerId } = JSON.parse(request);
     const textMessageEntities = await MarkerTextMessageEntity.find({
       where: { marker: { id: markerId } },
-      relations: ['marker']
+      relations: ['marker', 'user']
     });
 
     const textMessages = textMessageEntities.map(msgEntity => ({
       messageId: msgEntity.id,
       dateStr: new Date(msgEntity.createdAt).toISOString(),
       text: msgEntity.message,
-      senderName: socket.request.user!.userName, // ⚡️ creator of this message - user relation 필요
-      senderId: socket.request.user!.id // ⚡️ creator of this message - user relation 필요
+      senderName: msgEntity.user.userName, // ⚡️ creator of this message - user relation 필요
+      senderId: msgEntity.user.id // ⚡️ creator of this message - user relation 필요
     }));
 
     socket.emit('GetMarkerMessages', { textMessages, status: 200 });
