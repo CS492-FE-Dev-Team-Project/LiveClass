@@ -47,7 +47,7 @@ const Chat = ({
 }: ChatProps) => {
   const { socket, connected } = useSocket();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [chatStatus, setChatStatus] = useState<ChatStatus>({
+  const chatStatus = useRef<ChatStatus>({
     chatMode: ChatMode.Live
   });
   const currentMarkerId = useRef<number>(-1);
@@ -68,7 +68,27 @@ const Chat = ({
         throw new Error('Invalid ChatStatus');
     }
   };
-  const header = pickHeader(chatStatus);
+  const header = pickHeader(chatStatus.current);
+
+  // @args {MarkerTextMessageEntity} message - message response from the server
+  const createNewMessageObj = (messageResponse: any): Message => {
+    const {
+      dateStr,
+      senderId,
+      senderName,
+      text,
+      messageId
+    }: TextMessageResponse = messageResponse;
+    const dateObj = new Date(dateStr);
+    const messageObj: Message = {
+      messageId, // Live chat doesn't have messageId
+      userName: senderName,
+      message: text,
+      time: `${dateObj.getHours()}:${dateObj.getMinutes()}`,
+      isMy: senderId === myId
+    };
+    return messageObj;
+  };
 
   // Socket listeners
   useEffect(() => {
@@ -76,31 +96,37 @@ const Chat = ({
     socket?.on(
       'TimeMarkerClicked',
       (markerId: number, markerType: MarkerType) => {
-        // 🐛 (API) Fetch timeMarker thread messages
         currentMarkerId.current = markerId;
-        setChatStatus({ chatMode: ChatMode.Marker, markerType });
+        chatStatus.current = { chatMode: ChatMode.Marker, markerType };
+        socket?.emit('GetMarkerMessages', JSON.stringify({ markerId }));
       }
     );
 
+    // Retrieve saved marker messages
+    socket?.on('GetMarkerMessages', ({ textMessages, status }) => {
+      setMessages(arr => []); // clear
+
+      const retrievedMessages: Message[] = textMessages.map(
+        (messageResponse: any) => createNewMessageObj(messageResponse)
+      );
+      setMessages(arr => [...arr, ...retrievedMessages]);
+    });
+
     // Live chat event - get live chat message
     socket?.on('LiveChatTextMessage', ({ message, status }) => {
-      if (status === 200) {
-        const {
-          dateStr,
-          senderId,
-          senderName,
-          text,
-          messageId
-        }: TextMessageResponse = message;
-        const dateObj = new Date(dateStr);
-        const messageObj: Message = {
-          messageId,
-          userName: senderName,
-          message: text,
-          time: `${dateObj.getHours()}:${dateObj.getMinutes()}`,
-          isMy: senderId === myId
-        };
-        setMessages(arr => [...arr, messageObj]);
+      if (status === 200 && chatStatus.current.chatMode === ChatMode.Live) {
+        setMessages(arr => [...arr, createNewMessageObj(message)]);
+      }
+    });
+
+    // Marker chat event - get marker chat message
+    socket?.on('MarkerTextMessage', ({ markerId, savedMessage, status }) => {
+      if (
+        status === 200 &&
+        chatStatus.current.chatMode === ChatMode.Marker &&
+        currentMarkerId.current === markerId
+      ) {
+        setMessages(arr => [...arr, createNewMessageObj(savedMessage)]);
       }
     });
   }, [connected]);
@@ -109,41 +135,51 @@ const Chat = ({
   // 1) chatMode.current == discussion mode : change to Live mode; fetch Live chat messages
   // 2) chatMode.current == Live chatting : clear chat
   const backToLiveChat = () => {
-    setChatStatus({ chatMode: ChatMode.Live });
+    chatStatus.current = { chatMode: ChatMode.Live };
     setMessages([]); // 🐛 (API?) Fetch Live chat message
   };
 
   const createMessage = (text: string) => {
-    // 🐛 (API) Create message
-    // Providing info : message (string)
+    if (text.trim().length === 0) return; // ignore empty string
 
-    // Send message
-    socket?.emit(
-      'LiveChatTextMessage',
-      JSON.stringify({
-        classUuid,
-        lectureId,
-        text
-      })
-    );
-
-    // Update DB
-    switch (chatStatus.chatMode) {
+    // Create and send message
+    switch (chatStatus.current.chatMode) {
+      case ChatMode.Live:
+        socket?.emit(
+          'LiveChatTextMessage',
+          JSON.stringify({
+            classUuid,
+            lectureId,
+            text
+          })
+        );
+        break;
       case ChatMode.Marker:
-        console.log('(DB API) Create markerDiscussion message');
+        socket?.emit(
+          'MarkerTextMessage',
+          JSON.stringify({
+            classUuid,
+            lectureId,
+            markerTextMessage: {
+              markerId: currentMarkerId.current,
+              message: text
+            }
+          })
+        );
+        break;
+      case ChatMode.Individual:
         break;
       default:
-        // ChatMode.LIVE - No need to store messages on DB
-        console.log('Create Live message');
+        throw new Error('Invalid ChatStatus');
     }
   };
 
   const colorPick = () => {
-    switch (chatStatus.chatMode) {
+    switch (chatStatus.current.chatMode) {
       case ChatMode.Live:
         return 'gray.50';
       case ChatMode.Marker:
-        return chatStatus.markerType === MarkerType.QUESTION
+        return chatStatus.current.markerType === MarkerType.QUESTION
           ? '#FF4A3E'
           : '#3D9AFC';
       case ChatMode.Individual:

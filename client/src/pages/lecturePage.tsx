@@ -180,7 +180,7 @@ const LecturePage = () => {
             memberType={(memberType ?? MemberType.STUDENT) as MemberType}
             classUuid={classUuid ?? 'uuid error'}
             lectureId={parsedLectureId}
-            videoIndex={0}
+            videoIndex={selectedVidIdx}
             videoId={
               videoArr.length > 0 ? videoArr[selectedVidIdx].link : 'NULL'
             }

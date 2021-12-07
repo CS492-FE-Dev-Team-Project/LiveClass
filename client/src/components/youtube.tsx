@@ -48,8 +48,7 @@ const YouTubePlayer = ({
   const videoWrapper = useRef<HTMLDivElement>(null);
   const videoTimelineWrapper = useRef<HTMLDivElement>(null);
 
-  // -- 🐛 Mockup data--
-  const [markers, setMarkers] = useState<Marker[]>([]); // get real 'markerInfoArr' data by calling DB API 🐛
+  const [markers, setMarkers] = useState<Marker[]>([]); // get real 'markerInfoArr' data by calling DB API
 
   // Cover/uncover video - for ad time or buffering
   const cover = () => videoWrapper.current?.classList.add('coverVideo');
@@ -69,7 +68,6 @@ const YouTubePlayer = ({
   // Initialize
   const onReady = (evt: any) => {
     setVideo(evt.target);
-    videoDuration.current = evt.target.playerInfo.duration;
   };
 
   // Set socket listeners and join room
@@ -88,13 +86,19 @@ const YouTubePlayer = ({
         });
       }
 
-      socket?.emit('GetMarkers', { classUuid, lectureId });
       socket?.on('GetMarkers', ({ markers: responseMarkers, status }) => {
         if (status === 200) {
           setMarkers(responseMarkers);
         }
       });
+      socket?.emit('GetMarkers', { classUuid, lectureId });
     }
+
+    socket?.on('CreateMarker', ({ marker, status }) => {
+      if (status === 200) {
+        setMarkers(markerArr => [...markerArr, marker]);
+      }
+    });
 
     return () => {
       clearInterval(intervalID.current as NodeJS.Timeout);
@@ -102,6 +106,7 @@ const YouTubePlayer = ({
       socket?.off('InstructorPlay');
       socket?.off('InstructorPause');
       socket?.off('GetMarkers');
+      socket?.off('CreateMarker');
     };
   }, [connected, video]);
 
@@ -110,6 +115,10 @@ const YouTubePlayer = ({
 
   // (For progress bar time) Set new setInterval on play
   const onPlay = (evt: any) => {
+    if (video) {
+      videoDuration.current = video.playerInfo.duration;
+    }
+
     intervalID.current = setInterval(() => {
       setVideoCurrent(video.getCurrentTime());
     }, 100);
@@ -145,18 +154,21 @@ const YouTubePlayer = ({
   };
 
   const createTimeMarker = (markerType: MarkerType) => {
+    // edge cases for time - outside [0, videoDuration]
+    let curTime = video.getCurrentTime();
+    curTime =
+      curTime > videoDuration.current ? videoDuration.current - 5 : curTime;
+
     const payload = {
       classUuid,
       lectureId,
-      marker: { markerType, time: video.getCurrentTime(), videoIndex }
-    };
-    console.log(payload, video);
-    socket?.emit('CreateMarker', JSON.stringify(payload));
-    socket?.on('CreateMarker', ({ marker, status }) => {
-      if (status === 200) {
-        setMarkers(markerArr => [...markerArr, marker]);
+      marker: {
+        markerType,
+        time: (curTime / videoDuration.current) * 100, // location of marker to be placed on the video
+        videoIndex
       }
-    });
+    };
+    socket?.emit('CreateMarker', JSON.stringify(payload));
   };
 
   // Options for 'react-youtube' library component
@@ -198,17 +210,13 @@ const YouTubePlayer = ({
       <CreateMarkerButtons onClick={createTimeMarker} />
       {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
-        {markers.map(({ id, markerType, time }) => {
+        {markers.map(({ id, markerType, time: location }) => {
           if (videoDuration.current === 0) return <div />;
-
-          // edge cases for time - outside [0, videoDuration]
-          const currentTime =
-            time > videoDuration.current ? videoDuration.current - 5 : time;
 
           return (
             <TimeMarker
               id={id}
-              time={(currentTime / videoDuration.current) * 100}
+              time={location}
               markerType={markerType}
               videoIndex={videoIndex}
             />
