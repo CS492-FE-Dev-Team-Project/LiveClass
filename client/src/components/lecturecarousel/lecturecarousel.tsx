@@ -1,7 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Mousewheel,
+  Keyboard
+} from 'swiper';
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
@@ -10,7 +17,7 @@ import './carousel.css';
 
 import LectureCard from './lecturecard';
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Mousewheel, Keyboard]);
 
 const LectureCarousel = ({ classUuid, memberType, lectureList }: any) => {
   const pagination = {
@@ -27,6 +34,8 @@ const LectureCarousel = ({ classUuid, memberType, lectureList }: any) => {
         spaceBetween={50}
         slidesPerView={4}
         navigation
+        mousewheel
+        keyboard
         pagination={pagination}
       >
         {lectureList.map(

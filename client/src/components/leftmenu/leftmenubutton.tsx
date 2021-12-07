@@ -52,6 +52,8 @@ const LeftMenuButton = ({ entry }: any) => {
       bg="white"
       borderColor={shouldHighlight ? '#FF4A3E' : 'white'}
       color="black"
+      overflow="hidden"
+      whiteSpace="nowrap"
       _hover={{ bg: '#ebedf0' }}
       _active={{
         bg: '#dddfe2',
