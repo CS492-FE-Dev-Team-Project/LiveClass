@@ -25,7 +25,9 @@ const translate = async (source: Language, target: Language, text: string) => {
   });
 
   const {
-    message: { result: translatedText }
+    message: {
+      result: { translatedText }
+    }
   }: PapagoTranslateResponse = data;
 
   return { result: translatedText, status };
