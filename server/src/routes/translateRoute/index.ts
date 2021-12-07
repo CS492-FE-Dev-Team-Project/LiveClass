@@ -19,7 +19,7 @@ export default (app: Router) => {
         })
       );
 
-      res.json({ translated });
+      res.json({ translated, status: 200 });
     } catch (e) {
       Logger.error(e);
     }
