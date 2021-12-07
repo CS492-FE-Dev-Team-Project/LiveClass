@@ -10,7 +10,7 @@ import { Lecture, Member, TabSegment, TabType, UserTabEntry } from '../types';
 import { useSocket } from '../context/socket';
 import { ClipboardButton } from '../components/common/Button';
 // 🐛 나중에 lecture grid로 대체
-import ClassCard from '../components/lobbyPage/classCard';
+import LectureCarousel from '../components/lecturecarousel/lecturecarousel';
 
 const ClassPage = () => {
   const { classUuid, memberType } = useParams();
@@ -82,35 +82,18 @@ const ClassPage = () => {
       isClosable: true
     });
   };
-
-  const content =
-    connected &&
-    lectureList &&
-    lectureList.map(
-      ({ id: lectureId, lectureDate, lectureName, LiveStatus }) => (
-        <Link
-          to={`/class/${classUuid}/${memberType}/${lectureId}`}
-          key={lectureId}
-        >
-          <ClassCard
-            title={`${lectureName}#${lectureId}`}
-            subTitle={`${LiveStatus ? 'LIVE' : 'NotLive'}-${lectureDate}`}
-            color="white"
-            backgroundColor="black"
-          />
-        </Link>
-      )
-    );
-
   return (
     <>
       <FloatConnectionStatus />
       <Flex>
         <LeftMenu menus={[noticeTabSegment, memberTabSegment]} />
         <Box w="8px" h="100vh" />
-        <Box w="100%" h="100vh">
-          {/* 상현님이 구현해주실 classPage lecture grid 이곳에 - Issue #99 */}
-          {content}
+        <Box w="100%" h="100vh" bgColor="gray.100">
+          <LectureCarousel
+            classUuid={classUuid}
+            memberType={memberType}
+            lectureList={lectureList}
+          />
           {memberType === 'instructor' && (
             <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
               <Button>Create new lecture</Button>
