@@ -74,6 +74,7 @@ export enum TabType {
 interface BaseTabEntry {
   tabName: string;
   type: TabType;
+  onClickHandler?: (...args: any[]) => void;
 }
 
 export interface UserTabEntry extends BaseTabEntry {

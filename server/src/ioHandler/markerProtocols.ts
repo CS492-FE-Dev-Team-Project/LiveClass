@@ -48,6 +48,7 @@ const OnDeleteMarker =
     socket.emit('DeleteMarker', payload);
   };
 
+// Create new marker text message
 const OnMarkerTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
   async (request: string) => {
@@ -62,11 +63,23 @@ const OnMarkerTextMessage =
     const markerTextMessageEntity = new MarkerTextMessageEntity();
     markerTextMessageEntity.marker = await marker.getEntity();
     markerTextMessageEntity.message = message;
-    const savedMessage = await markerTextMessageEntity.save();
+    markerTextMessageEntity.user = socket.request.user!;
+    const savedMessageEntity = await markerTextMessageEntity.save();
+    marker.addTextMessage(savedMessageEntity, user!.id);
 
-    marker.addTextMessage(savedMessage, user!.id);
+    const savedMessage = {
+      messageId: savedMessageEntity.id,
+      dateStr: new Date(savedMessageEntity.createdAt).toISOString(),
+      text: savedMessageEntity.message,
+      senderName: savedMessageEntity.user.userName, // ⚡️ creator of this message - user relation 필요
+      senderId: savedMessageEntity.user.id // ⚡️ creator of this message - user relation 필요
+    };
 
-    const payload = { savedMessage, status: 200 };
+    const payload = {
+      markerId,
+      savedMessage,
+      status: 200
+    };
     socket.to(lecture.getSocketRoomName()).emit('MarkerTextMessage', payload);
     socket.emit('MarkerTextMessage', payload);
   };
@@ -74,10 +87,20 @@ const OnMarkerTextMessage =
 const OnGetMarkerMessages =
   (socket: CustomSocket) => async (request: string) => {
     const { markerId } = JSON.parse(request);
-    const textMessages = await MarkerTextMessageEntity.find({
-      where: { marker: { id: markerId } }
+    const textMessageEntities = await MarkerTextMessageEntity.find({
+      where: { marker: { id: markerId } },
+      relations: ['marker', 'user']
     });
-    socket.emit('MarkerMessages', { textMessages, status: 200 });
+
+    const textMessages = textMessageEntities.map(msgEntity => ({
+      messageId: msgEntity.id,
+      dateStr: new Date(msgEntity.createdAt).toISOString(),
+      text: msgEntity.message,
+      senderName: msgEntity.user.userName, // ⚡️ creator of this message - user relation 필요
+      senderId: msgEntity.user.id // ⚡️ creator of this message - user relation 필요
+    }));
+
+    socket.emit('GetMarkerMessages', { textMessages, status: 200 });
   };
 
 const OnGetMarkers =

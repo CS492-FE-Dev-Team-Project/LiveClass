@@ -1,9 +1,11 @@
 import ClassEntity from '../entity/classEntity';
+import ClassMemberEntity from '../entity/classMemberEntity';
 import { classUuid } from '../types';
 import Member from './member';
 
 import LectureEntity from '../entity/lectureEntity';
 import Lecture from './lecture';
+import Logger from '../loader/logger';
 
 class Class {
   public readonly uuid: classUuid;
@@ -31,6 +33,19 @@ class Class {
     this.lectures = classEntity.lectures.map(lecture => new Lecture(lecture));
   }
 
+  public checkMemberExists(memberId: number): boolean {
+    const memberFound = this.members.find(({ userId }) => userId === memberId);
+    return !!memberFound;
+  }
+
+  public addMember(newMemberEntity: ClassMemberEntity): Member {
+    const newMember: Member = new Member(newMemberEntity);
+    newMember.setConnectStatus(true);
+    this.members.push(newMember);
+
+    return newMember;
+  }
+
   public getMembers(): Member[] {
     return this.members;
   }
@@ -45,10 +60,12 @@ class Class {
 
   public exitUser(userId: number): boolean {
     const member = this.getMemberById(userId);
-
+    Logger.info(`User ${member.userName} Exit Class ${this.title}`);
     if (!member) {
       return false;
     }
+    this.lectures.forEach(lecture => lecture.exitParticipant(userId));
+
     member?.setConnectStatus(false);
 
     return true;
@@ -76,8 +93,9 @@ class Class {
     return this.lectures;
   }
 
-  public getLectureById(lectureId: number): Lecture {
-    const lecture = this.lectures.find(({ id }) => id === lectureId);
+  public getLectureById(lecIdStr: string): Lecture {
+    const lecId = parseInt(lecIdStr, 10);
+    const lecture = this.lectures.find(({ id }) => id === lecId);
     if (!lecture) {
       throw new Error('No Such Lecture');
     }
@@ -90,10 +108,6 @@ class Class {
 
     return newLecture;
   }
-
-  // public joinLecture(lectureId: number): Lecture | undefined {
-  //   return this.availableLectures.find(({ id }) => id === lectureId);
-  // }
 }
 
 export default Class;

@@ -4,6 +4,7 @@ import Logger from '../loader/logger';
 import { CustomSocket } from '../types';
 import ChatProtocols from './chatProtocols';
 import ClassProtocols from './classProtocols';
+import LectureProtocols from './lectureProtocols';
 import YoutubeProtocols from './youtubeProtocols';
 import MarkerProtocols from './markerProtocols';
 
@@ -14,7 +15,10 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
 
     socket.onAny((eventName, ...args) => {
       Logger.debug(
-        `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`
+        `${user?.userName}: ${eventName}\n data: ${JSON.stringify(args)}`.slice(
+          0,
+          500
+        )
       );
     });
 
@@ -56,7 +60,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     );
 
     // In Class API
-    // lecture related
     socket.on(
       'GetLectures',
       ClassProtocols.OnGetLectures(socket, classManager)
@@ -66,12 +69,23 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       ClassProtocols.OnCreateLecture(socket, classManager)
     );
     socket.on(
-      'JoinLecture',
-      ClassProtocols.OnJoinLecture(socket, classManager)
-    );
-    socket.on(
       'GetClassMembers',
       ClassProtocols.OnGetClassMembers(socket, classManager)
+    );
+
+    // In Lecture API
+    // related to various inside-lecture activites
+    socket.on(
+      'JoinLecture',
+      LectureProtocols.OnJoinLecture(socket, classManager)
+    );
+    socket.on(
+      'SetLectureLiveStatus',
+      LectureProtocols.OnSetLectureLiveStatus(socket, classManager)
+    );
+    socket.on(
+      'SelectVideo',
+      LectureProtocols.OnSelectVideo(socket, classManager)
     );
 
     // Marker Protocols
@@ -89,5 +103,21 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     );
     socket.on('GetMarkerMessages', MarkerProtocols.OnGetMarkerMessages(socket));
     socket.on('GetMarkers', MarkerProtocols.OnGetMarkers(socket, classManager));
+
+    // Audio Protocols
+    socket.on(
+      'LiveChatAudioMessage',
+      ChatProtocols.OnLiveChatAudioMessage(socket, classManager)
+    );
+
+    // Lecture Protocols
+    socket.on(
+      'GetActiveLectureMember',
+      LectureProtocols.GetActiveLectureMember(socket, classManager)
+    );
+    socket.on(
+      'JoinLecture',
+      LectureProtocols.OnJoinLecture(socket, classManager)
+    );
   });
 };

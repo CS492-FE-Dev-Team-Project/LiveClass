@@ -1,5 +1,5 @@
 import ClassManager from '../data/classManager';
-import { CustomSocket } from '../types';
+import { CustomSocket, LiveChatAudioMessageInterface } from '../types';
 
 const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
@@ -35,4 +35,22 @@ const OnTimeMarkerClicked =
     // Listening on 'client/src/components/chat.tsx'
   };
 
-export default { OnLiveChatTextMessage, OnTimeMarkerClicked };
+const OnLiveChatAudioMessage =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: LiveChatAudioMessageInterface) => {
+    const { classUuid, lectureId, arrayBuffer } = request;
+
+    const cls = await classManager.getOrCreateClass(classUuid);
+    const lecture = cls.getLectureById(lectureId);
+
+    socket.to(lecture.getSocketRoomName()).emit('LiveChatAudioMessage', {
+      senderId: socket.request.user?.id,
+      arrayBuffer
+    });
+  };
+
+export default {
+  OnLiveChatTextMessage,
+  OnTimeMarkerClicked,
+  OnLiveChatAudioMessage
+};

@@ -7,8 +7,8 @@ type uuid = string;
 export type classUuid = uuid;
 
 export enum Language {
-  KO = 'KO',
-  EN = 'EN'
+  KO = 'ko',
+  EN = 'en'
 }
 
 export interface CustomSocket extends Socket {
@@ -30,4 +30,41 @@ export interface MarkerTextMessageInterface extends MarkerMessageInterface {
 
 export interface MarkerAudioMessageInterface extends MarkerMessageInterface {
   url: string;
+}
+
+export interface InClassRequestInterface {
+  classUuid: string;
+}
+
+export interface InLectureRequestInterface extends InClassRequestInterface {
+  lectureId: string;
+}
+
+export interface LiveChatAudioMessageInterface
+  extends InLectureRequestInterface {
+  arrayBuffer: ArrayBuffer;
+}
+
+export interface TranslateRequestInterface {
+  translateArray: string[];
+  target: Language;
+}
+
+export interface PapagoTranslateResponse {
+  message: {
+    '@type': string;
+    '@service': string;
+    '@version': string;
+    result: {
+      srcLangType: Language;
+      tarLangType: Language;
+      translatedText: string;
+      engineType: string;
+      pivot: any;
+    };
+  };
+}
+
+export interface PapagoLanguageDetectionResponse {
+  langCode: Language;
 }

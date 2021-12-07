@@ -2,6 +2,7 @@ import { Router } from 'express';
 import auth from './authRoute';
 import meRoute from './meRoute';
 import lobbyRoute from './lobbyRoute';
+import translateRoute from './translateRoute';
 
 export default () => {
   const route = Router();
@@ -10,6 +11,7 @@ export default () => {
   auth(route);
   meRoute(route);
   lobbyRoute(route);
+  translateRoute(route);
 
   return route;
 };
