@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 import MarkerEntity from './markerEntity';
+import UserEntity from './userEntity';
 
 @Entity()
 export default class MarkerTextMessageEntity extends BaseEntity {
@@ -22,4 +23,7 @@ export default class MarkerTextMessageEntity extends BaseEntity {
 
   @ManyToOne(() => MarkerEntity, marker => marker.textMessages)
   marker: MarkerEntity;
+
+  @ManyToOne(() => UserEntity, user => user.markerMessages)
+  user: UserEntity;
 }
