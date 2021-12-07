@@ -1,10 +1,13 @@
 import ClassManager from '../data/classManager';
-import { CustomSocket, LiveChatAudioMessageInterface } from '../types';
+import {
+  CustomSocket,
+  LiveChatAudioMessageInterface,
+  LiveChatTextMessageRequest
+} from '../types';
 
 const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
-    const { classUuid, text, lectureId } = JSON.parse(request);
+  async ({ classUuid, text, lectureId }: LiveChatTextMessageRequest) => {
     const cls = await classManager.getOrCreateClass(classUuid);
     const lecture = cls.getLectureById(lectureId);
     const { userName, id } = socket.request.user!;
