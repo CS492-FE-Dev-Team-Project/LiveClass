@@ -84,7 +84,11 @@ const ClassPage = () => {
         <LeftMenu menus={[noticeTabSegment, memberTabSegment]} />
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh" bgColor="gray.100">
-          <LectureCarousel lectureList={lectureList} />
+          <LectureCarousel
+            classUuid={classUuid}
+            memberType={memberType}
+            lectureList={lectureList}
+          />
           {memberType === 'instructor' && (
             <Link to={`/class/${classUuid}/${memberType}/createLecture`}>
               <Button>Create new lecture</Button>

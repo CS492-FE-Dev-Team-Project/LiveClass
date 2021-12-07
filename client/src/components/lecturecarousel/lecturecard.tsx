@@ -23,7 +23,7 @@ const breakpoints = createBreakpoints({
 });
 const theme = extendTheme({ breakpoints });
 
-const LectureCard = ({ lectureNum, youtubeID, isLive, date }: any) => {
+const LectureCard = ({ lectureNum, youtubeID, isLive, date, to, key }: any) => {
   return (
     <Box
       w="100%"
@@ -83,8 +83,8 @@ const LectureCard = ({ lectureNum, youtubeID, isLive, date }: any) => {
                 base: '12px',
                 md: '20px',
                 lg: '26px',
-                xl: '36px',
-                '2xl': '50px'
+                xl: '30px',
+                '2xl': '42px'
               }}
               fontFamily="body"
             >
@@ -92,23 +92,25 @@ const LectureCard = ({ lectureNum, youtubeID, isLive, date }: any) => {
             </Heading>
           </Box>
           <Spacer />
-          <Button
-            w="80%"
-            h="40px"
-            bg="green.400"
-            color="white"
-            fontSize="15px"
-            rounded="xl"
-            boxShadow="0 5px 20px 0px rgb(72 187 120 / 43%)"
-            _hover={{
-              bg: 'green.500'
-            }}
-            _focus={{
-              bg: 'green.500'
-            }}
-          >
-            Go To Lecture
-          </Button>
+          <Link to={to} key={key}>
+            <Button
+              w="100%"
+              h="40px"
+              bg="green.400"
+              color="white"
+              fontSize="15px"
+              rounded="xl"
+              boxShadow="0 5px 20px 0px rgb(72 187 120 / 43%)"
+              _hover={{
+                bg: 'green.500'
+              }}
+              _focus={{
+                bg: 'green.500'
+              }}
+            >
+              Go To Lecture
+            </Button>
+          </Link>
           <Box h="30px" />
         </Flex>
       </Flex>

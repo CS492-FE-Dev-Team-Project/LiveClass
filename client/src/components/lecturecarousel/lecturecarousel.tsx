@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import 'swiper/swiper.scss';
@@ -11,7 +12,7 @@ import LectureCard from './lecturecard';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
-const LectureCarousel = ({ lectureList }: any) => {
+const LectureCarousel = ({ classUuid, memberType, lectureList }: any) => {
   const pagination = {
     clickable: true,
     renderBullet: (index: any, className: any) => {
@@ -28,28 +29,20 @@ const LectureCarousel = ({ lectureList }: any) => {
         navigation
         pagination={pagination}
       >
-        <SwiperSlide>
-          <LectureCard
-            lectureNum={1}
-            youtubeID="4-u7kewhpDU"
-            date="2021-01-01"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <LectureCard
-            lectureNum={2}
-            youtubeID="4-u7kewhpDU"
-            date="2021-01-02"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <LectureCard
-            lectureNum={3}
-            youtubeID="4-u7kewhpDU"
-            date="2021-01-03"
-            isLive
-          />
-        </SwiperSlide>
+        {lectureList.map(
+          ({ id: lectureId, lectureDate, lectureName, LiveStatus }: any) => (
+            <SwiperSlide>
+              <LectureCard
+                lectureNum={lectureId}
+                youtubeID="4-u7kewhpDU"
+                date={lectureDate.slice(0, 10)}
+                to={`/class/${classUuid}/${memberType}/${lectureId}`}
+                key={lectureId}
+                isLive={LiveStatus}
+              />
+            </SwiperSlide>
+          )
+        )}
       </Swiper>
     </>
   );
