@@ -87,21 +87,6 @@ const OnGetClassMembers =
     socket.emit('GetClassMembers', { members, status: 200 });
   };
 
-const OnSetLectureLiveStatus =
-  (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
-    const { classUuid, lectureId, status } = JSON.parse(request);
-    const cls: Class = await classManager.getOrCreateClass(classUuid);
-
-    const lecture: Lecture = cls.getLectureById(lectureId);
-    const liveStatus = lecture.setLiveStatus(status);
-
-    socket
-      .to(lecture.getSocketRoomName())
-      .emit('SetLectureLiveStatus', { liveStatus, status: 200 });
-    socket.emit('SetLectureLiveStatus', { liveStatus, status: 200 });
-  };
-
 export default {
   OnJoinClass,
   OnGetLectures,

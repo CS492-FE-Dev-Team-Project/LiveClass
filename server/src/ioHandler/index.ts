@@ -4,6 +4,7 @@ import Logger from '../loader/logger';
 import { CustomSocket } from '../types';
 import ChatProtocols from './chatProtocols';
 import ClassProtocols from './classProtocols';
+import LectureProtocols from './lectureProtocols';
 import YoutubeProtocols from './youtubeProtocols';
 import MarkerProtocols from './markerProtocols';
 import LectureProtocols from './lectureProtocols';
@@ -72,9 +73,20 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'GetClassMembers',
       ClassProtocols.OnGetClassMembers(socket, classManager)
     );
+
+    // In Lecture API
+    // related to various inside-lecture activites
+    socket.on(
+      'JoinLecture',
+      LectureProtocols.OnJoinLecture(socket, classManager)
+    );
     socket.on(
       'SetLectureLiveStatus',
-      ClassProtocols.OnSetLectureLiveStatus(socket, classManager)
+      LectureProtocols.OnSetLectureLiveStatus(socket, classManager)
+    );
+    socket.on(
+      'SelectVideo',
+      LectureProtocols.OnSelectVideo(socket, classManager)
     );
 
     // Marker Protocols

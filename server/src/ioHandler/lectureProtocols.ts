@@ -60,4 +60,38 @@ const GetActiveLectureMember =
     });
   };
 
-export default { GetActiveLectureMember, OnJoinLecture, OnExitLecture };
+const OnSetLectureLiveStatus =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { classUuid, lectureId, status } = JSON.parse(request);
+    const cls: Class = await classManager.getOrCreateClass(classUuid);
+
+    const lecture: Lecture = cls.getLectureById(lectureId);
+    const liveStatus = lecture.setLiveStatus(status);
+
+    socket
+      .to(lecture.getSocketRoomName())
+      .emit('SetLectureLiveStatus', { liveStatus, status: 200 });
+    socket.emit('SetLectureLiveStatus', { liveStatus, status: 200 });
+  };
+
+const OnSelectVideo =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async (request: string) => {
+    const { classUuid, lectureId, selectedVideoIdx } = JSON.parse(request);
+    console.log(classUuid, lectureId, selectedVideoIdx);
+    const cls: Class = await classManager.getOrCreateClass(classUuid);
+    const lecture: Lecture = cls.getLectureById(lectureId);
+
+    socket
+      .to(lecture.getSocketRoomName())
+      .emit('SelectVideo', { selectedVideoIdx, status: 200 });
+  };
+
+export default {
+  GetActiveLectureMember,
+  OnJoinLecture,
+  OnExitLecture,
+  OnSetLectureLiveStatus,
+  OnSelectVideo
+};
