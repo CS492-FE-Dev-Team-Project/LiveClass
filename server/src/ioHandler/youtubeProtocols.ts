@@ -1,5 +1,5 @@
 import ClassManager from '../data/classManager';
-import { CustomSocket } from '../types';
+import { CustomSocket, SelectVideoRequest } from '../types';
 
 const OnInstructorTimeChange =
   (socket: CustomSocket, classManager: ClassManager) =>
@@ -24,4 +24,17 @@ const OnInstructorPlayPause =
       .emit(isPlay ? 'InstructorPlay' : 'InstructorPause');
   };
 
-export default { OnInstructorPlayPause, OnInstructorTimeChange };
+const OnSelectVideo =
+  (socket: CustomSocket, classManager: ClassManager) =>
+  async ({ lectureId, classUuid, selectedVideoIdx }: SelectVideoRequest) => {
+    const cls = await classManager.getOrCreateClass(classUuid);
+    const lecture = cls.getLectureById(lectureId);
+
+    lecture.setVideoIdx(selectedVideoIdx);
+
+    socket
+      .to(lecture.getSocketRoomName())
+      .emit('SelectVideo', { selectedVideoIdx, status: 200 });
+  };
+
+export default { OnInstructorPlayPause, OnInstructorTimeChange, OnSelectVideo };
