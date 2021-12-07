@@ -25,8 +25,12 @@ const LecturePage = () => {
   const { classUuid, memberType, lectureId } = useParams();
   const { socket, connected } = useSocket();
   const [lecture, setLecture] = useState<Lecture>();
-  const [isLive, setIsLive] = useState<boolean>(false);
-  const { selectedVidIdx, setSelectedVidIdx } = useContext(LectureContext);
+  const { isLive, setIsLive, selectedVidIdx, setSelectedVidIdx } =
+    useContext(LectureContext);
+
+  const EMPTY_HANDLER = () => {
+    // Do nothing
+  };
 
   const [videoArr, setVideoArr] = useState<VideoTabEntry[]>([]);
   const videoTabSegment: TabSegment = {
@@ -46,6 +50,7 @@ const LecturePage = () => {
     tabTitle: 'Lecture room',
     tabContents: noticeArr
   };
+
   useEffect(() => {
     if (memberType === MemberType.INSTRUCTOR) {
       const payload = JSON.stringify({
@@ -67,9 +72,7 @@ const LecturePage = () => {
         tabName: isLive ? '🔴 On-Live' : '⚫ Off-Live',
         type: TabType.NOTICE,
         message: 'notifyLive',
-        onClickHandler: () => {
-          // Do nothing here
-        }
+        onClickHandler: EMPTY_HANDLER
       };
       setNoticeArr([...defaultNoticeTabEntries, notifyLiveButton]);
     }
@@ -89,8 +92,15 @@ const LecturePage = () => {
           videoIdx: idx,
           link: element.snippet.resourceId.videoId,
           onClickHandler: () => {
-            console.log(idx);
-            setSelectedVidIdx(idx);
+            // only the instructor gets to choose video on LIVE
+            socket?.emit(
+              'SelectVideo',
+              JSON.stringify({
+                classUuid,
+                lectureId,
+                selectedVideoIdx: idx
+              })
+            );
           }
         });
       });
@@ -141,6 +151,14 @@ const LecturePage = () => {
         setIsLive(liveStatus);
       }
     });
+
+    // instructor selected video among playlist
+    socket?.on('SelectVideo', response => {
+      const { selectedVideoIdx, status } = response;
+      if (status === 200) {
+        setSelectedVidIdx(selectedVideoIdx);
+      }
+    });
   }, [connected]);
 
   // TODO - Take care of playlist
@@ -168,7 +186,7 @@ const LecturePage = () => {
             }
             width="100%"
             height="100%"
-            isControled={isLive && memberType === MemberType.STUDENT}
+            isControled={memberType === MemberType.STUDENT && isLive}
           />
         </Box>
         <Chat classUuid={classUuid!} lectureId={parsedLectureId} hasHeader />

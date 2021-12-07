@@ -1,39 +1,38 @@
 import React, { useContext } from 'react';
+import { useParams } from 'react-router';
 import { Box } from '@chakra-ui/react';
 
-import {
-  TabEntry,
-  TabType,
-  UserTabEntry,
-  VideoTabEntry,
-  NoticeTabEntry
-} from '../../types';
+import { MemberType, TabType } from '../../types';
 
 import LectureContext from '../../context/lecture/lectureContext';
 
 const LeftMenuButton = ({ entry }: any) => {
-  const { selectedVidIdx } = useContext(LectureContext);
+  const { classUuid, memberType, lectureId } = useParams();
+  const { isLive, selectedVidIdx, setSelectedVidIdx } =
+    useContext(LectureContext);
 
   let shouldHighlight = false;
   if (entry.type === TabType.VIDEO)
     shouldHighlight = entry.videoIdx === selectedVidIdx;
 
   const eventHandler = () => {
-    if (entry.onClickHandler) entry.onClickHandler();
-    else {
-      switch (entry.type) {
-        case TabType.USER:
-          alert(entry.userId);
-          break;
-        case TabType.VIDEO:
-          alert(entry.videoIdx);
-          break;
-        case TabType.NOTICE:
-          alert(entry.message);
-          break;
-        default:
-          break;
-      }
+    switch (entry.type) {
+      case TabType.USER:
+        alert(entry.userId);
+        break;
+      case TabType.VIDEO:
+        if (memberType === MemberType.STUDENT && isLive) return;
+        setSelectedVidIdx(entry.videoIdx);
+        if (memberType === MemberType.INSTRUCTOR && isLive) {
+          entry.onClickHandler(); // socket?.emit('SelectVideo', ...) - control others' video
+        }
+        break;
+      case TabType.NOTICE:
+        if (entry.onClickHandler) entry.onClickHandler();
+        else alert(entry.message);
+        break;
+      default:
+        break;
     }
   };
 

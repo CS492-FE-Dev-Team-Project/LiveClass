@@ -96,5 +96,3 @@ export interface TabSegment {
   tabTitle: string;
   tabContents: TabEntry[];
 }
-
-/* Lecture context */
