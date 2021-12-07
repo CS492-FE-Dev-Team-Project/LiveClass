@@ -106,10 +106,12 @@ const OnGetMarkerMessages =
 const OnGetMarkers =
   (socket: CustomSocket, classManager: ClassManager) =>
   async (request: any) => {
-    const { classUuid, lectureId } = request;
+    const { classUuid, lectureId, videoIndex: clientIdx } = request;
     const cls = await classManager.getOrCreateClass(classUuid);
     const lecture = cls.getLectureById(lectureId);
-    const markers = await lecture.getMarkers();
+    const markers = (await lecture.getMarkers()).filter(
+      ({ videoIndex }) => clientIdx === videoIndex
+    );
     socket.emit('GetMarkers', {
       markers,
       status: 200
