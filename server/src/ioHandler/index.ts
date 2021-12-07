@@ -7,7 +7,6 @@ import ClassProtocols from './classProtocols';
 import LectureProtocols from './lectureProtocols';
 import YoutubeProtocols from './youtubeProtocols';
 import MarkerProtocols from './markerProtocols';
-import LectureProtocols from './lectureProtocols';
 
 export default (io: SocketIOServer, classManager: ClassManager) => {
   io.on('connection', (socket: CustomSocket) => {

@@ -37,7 +37,7 @@ export interface InClassRequestInterface {
 }
 
 export interface InLectureRequestInterface extends InClassRequestInterface {
-  lectureId: number;
+  lectureId: string;
 }
 
 export interface LiveChatAudioMessageInterface
