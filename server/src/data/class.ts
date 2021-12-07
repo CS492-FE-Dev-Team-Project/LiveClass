@@ -1,4 +1,5 @@
 import ClassEntity from '../entity/classEntity';
+import ClassMemberEntity from '../entity/classMemberEntity';
 import { classUuid } from '../types';
 import Member from './member';
 
@@ -30,6 +31,19 @@ class Class {
     this.subtitle = subtitle;
     this.members = classEntity.members.map(clsMember => new Member(clsMember));
     this.lectures = classEntity.lectures.map(lecture => new Lecture(lecture));
+  }
+
+  public checkMemberExists(memberId: number): boolean {
+    const memberFound = this.members.find(({ userId }) => userId === memberId);
+    return !!memberFound;
+  }
+
+  public addMember(newMemberEntity: ClassMemberEntity): Member {
+    const newMember: Member = new Member(newMemberEntity);
+    newMember.setConnectStatus(true);
+    this.members.push(newMember);
+
+    return newMember;
   }
 
   public getMembers(): Member[] {
@@ -79,8 +93,9 @@ class Class {
     return this.lectures;
   }
 
-  public getLectureById(lectureId: number): Lecture {
-    const lecture = this.lectures.find(({ id }) => id === lectureId);
+  public getLectureById(lecIdStr: string): Lecture {
+    const lecId = parseInt(lecIdStr, 10);
+    const lecture = this.lectures.find(({ id }) => id === lecId);
     if (!lecture) {
       throw new Error('No Such Lecture');
     }

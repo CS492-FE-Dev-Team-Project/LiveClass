@@ -39,6 +39,11 @@
   display: none;
 }
 
+/* Disable all mouse pointer events for participants (students) */
+.student#youtube-wrapper.live .video-container {
+  pointer-events: none;
+}
+
 /* cover shows up */
 #youtube-wrapper.coverVideo .video-cover {
   display: block;
@@ -49,9 +54,12 @@
   */
 }
 
-/* Disable all mouse pointer events for participants (students) */
-.student#youtube-wrapper .video-container {
-  pointer-events: none;
+/* Create marker buttons */
+.create-timeline-marker {
+  position: absolute;
+  top: 10px;
+  left: 40%;
+  top: 8px;
 }
 
 /* Timeline component */
@@ -72,30 +80,18 @@
   transition: all 0.4s;
 }
 
-.video-timeline-components .create-timeline-marker {
-  position: absolute;
-  top: 10px;
-  left: 45%;
-  top: 8px;
-}
-
 /* Timeline component design */
 .timeline-marker {
   position: absolute; /* timeline component should be placed inside youtube-wrapper with pos:relative*/
-  bottom: 45px; /* Right above YouTube iframe progress bar */
+  bottom: 70px; /* Right above YouTube iframe progress bar */
 
   width: 15px;
   height: 15px;
 
-  background-color: blue; /* change accordingly */
   z-index: 2; /* above video, below cover */
 }
 
-.student#youtube-wrapper .timeline-marker {
-  bottom: 10px; /* match with 'bottom' of chakra-UI <Progress /> */
-}
-
 /* For test */
-.timeline-marker:hover {
-  background-color: red;
+.timeline-marker:hover #FlagSVGStroke {
+  stroke: white;
 }

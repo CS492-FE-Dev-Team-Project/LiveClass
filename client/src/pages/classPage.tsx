@@ -3,7 +3,7 @@ import { Box, Flex, Button, useClipboard, useToast } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import LeftMenu from '../components/leftmenu/leftmenu';
-import noticeTabSegment from '../data/leftmenuData';
+import defaultNoticeTabEntries from '../data/leftmenuData';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
 import { Lecture, Member, TabSegment, TabType, UserTabEntry } from '../types';
@@ -19,6 +19,11 @@ const ClassPage = () => {
 
   const { hasCopied, onCopy } = useClipboard(classUuid!);
   const toast = useToast();
+
+  const noticeTabSegment: TabSegment = {
+    tabTitle: 'Classroom',
+    tabContents: defaultNoticeTabEntries
+  };
 
   const [memberArr, setMemberArr] = useState<UserTabEntry[]>([]);
   const memberTabSegment: TabSegment = {

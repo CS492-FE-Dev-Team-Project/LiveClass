@@ -78,6 +78,7 @@ const Chat = ({
       (markerId: number, markerType: MarkerType) => {
         // 🐛 (API) Fetch timeMarker thread messages
         currentMarkerId.current = markerId;
+        setChatStatus({ chatMode: ChatMode.Marker, markerType });
       }
     );
 
@@ -137,6 +138,21 @@ const Chat = ({
     }
   };
 
+  const colorPick = () => {
+    switch (chatStatus.chatMode) {
+      case ChatMode.Live:
+        return 'gray.50';
+      case ChatMode.Marker:
+        return chatStatus.markerType === MarkerType.QUESTION
+          ? '#FF4A3E'
+          : '#3D9AFC';
+      case ChatMode.Individual:
+        return '#298977';
+      default:
+        throw new Error('Invalid MarkerType');
+    }
+  };
+
   return (
     <Flex
       w="auto"
@@ -147,7 +163,7 @@ const Chat = ({
     >
       {hasHeader && (
         <Header
-          backgroundColor="gray.200"
+          backgroundColor={colorPick()}
           color="black"
           headingSize="md"
           headingText={header}

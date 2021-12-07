@@ -34,8 +34,9 @@ const YouTubePlayer = ({
   videoId,
   videoIndex,
   width = '100%',
-  height = '100%'
-}: userInfo) => {
+  height = '100%',
+  isControled
+}: userInfo & { isControled?: boolean }) => {
   const { socket, connected } = useSocket();
   const [video, setVideo] = useState<any>(null); // youtube player - Q. type?
 
@@ -61,6 +62,10 @@ const YouTubePlayer = ({
   }, 2000);
   */
 
+  // Cover youtube component before any video is selected
+  if (videoId === 'NULL') cover();
+  else uncover();
+
   // Initialize
   const onReady = (evt: any) => {
     setVideo(evt.target);
@@ -71,7 +76,7 @@ const YouTubePlayer = ({
   useEffect(() => {
     // If not instructor, sync video time, play, and pause
     if (connected && !!video) {
-      if (memberType === MemberType.STUDENT) {
+      if (isControled) {
         socket?.on('InstructorTimeChange', (newtime: number) => {
           video?.seekTo(newtime);
         });
@@ -90,7 +95,18 @@ const YouTubePlayer = ({
         }
       });
     }
+
+    return () => {
+      clearInterval(intervalID.current as NodeJS.Timeout);
+      socket?.off('InstructorTimeChange');
+      socket?.off('InstructorPlay');
+      socket?.off('InstructorPause');
+      socket?.off('GetMarkers');
+    };
   }, [connected, video]);
+
+  if (isControled) videoWrapper.current?.classList.add('live');
+  else videoWrapper.current?.classList.remove('live');
 
   // (For progress bar time) Set new setInterval on play
   const onPlay = (evt: any) => {
@@ -105,7 +121,7 @@ const YouTubePlayer = ({
 
   // Take care of sync logic here
   const onStateChange = (evt: any) => {
-    if (memberType === MemberType.STUDENT) return;
+    if (isControled) return;
 
     const player = evt.target;
 
@@ -149,10 +165,8 @@ const YouTubePlayer = ({
     width: width.toString(),
     playerVars: {
       autoplay: 0 as const,
-      controls:
-        memberType === MemberType.INSTRUCTOR ? (1 as const) : (0 as const),
-      disablekb:
-        memberType === MemberType.INSTRUCTOR ? (0 as const) : (1 as const),
+      controls: isControled ? (0 as const) : (1 as const),
+      disablekb: isControled ? (1 as const) : (0 as const),
       rel: 0 as const
     }
   };
@@ -164,8 +178,6 @@ const YouTubePlayer = ({
     backgroundImage: `url(${imgURL})`,
     backgroundSize: '100% 100%'
   };
-
-  console.log('Youtube Rerendered');
 
   return (
     <div
@@ -183,17 +195,15 @@ const YouTubePlayer = ({
         videoTimelineWrapper.current?.classList.remove('showTimeline');
       }}
     >
+      <CreateMarkerButtons onClick={createTimeMarker} />
       {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
       <div className="video-timeline-components" ref={videoTimelineWrapper}>
-        <CreateMarkerButtons onClick={createTimeMarker} />
         {markers.map(({ id, markerType, time }) => {
           if (videoDuration.current === 0) return <div />;
 
           // edge cases for time - outside [0, videoDuration]
           const currentTime =
             time > videoDuration.current ? videoDuration.current - 5 : time;
-
-          console.log('CurrentTime', currentTime);
 
           return (
             <TimeMarker
@@ -204,11 +214,11 @@ const YouTubePlayer = ({
             />
           );
         })}
-        {memberType === MemberType.STUDENT ? (
+        {isControled ? (
           <Progress
             colorScheme="red"
             position="absolute"
-            bottom="5px"
+            bottom="35px"
             height="5px"
             width="100%"
             value={

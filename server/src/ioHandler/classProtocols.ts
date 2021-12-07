@@ -6,6 +6,7 @@ import ClassManager from '../data/classManager';
 import Logger from '../loader/logger';
 import { CustomSocket } from '../types';
 import ClassEntity from '../entity/classEntity';
+import ClassMemberEntity from '../entity/classMemberEntity';
 
 const OnJoinClass =
   (socket: CustomSocket, classManager: ClassManager) =>
@@ -13,7 +14,25 @@ const OnJoinClass =
     const { classUuid } = JSON.parse(request);
     const { user } = socket.request;
     const cls = await classManager.getOrCreateClass(classUuid);
-    cls.getMemberById(user!.id).setConnectStatus(true);
+
+    // Revisiting the class
+    if (cls.checkMemberExists(user!.id)) {
+      cls.getMemberById(user!.id).setConnectStatus(true);
+    }
+    // New to class
+    else {
+      const newMemberEntity: ClassMemberEntity | undefined =
+        await ClassMemberEntity.findOne({
+          where: {
+            member: { id: user!.id },
+            class: { uuid: classUuid }
+          },
+          relations: ['member', 'class']
+        });
+      if (!newMemberEntity)
+        throw new Error('Invalid user! Not properly joined the class');
+      cls.addMember(newMemberEntity);
+    }
 
     const clsRoomName = cls.getSocketRoomName();
     socket.join(clsRoomName);
