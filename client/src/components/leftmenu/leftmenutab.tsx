@@ -14,6 +14,8 @@ const LeftMenuTab = ({ tabTitle, tabContents }: TabSegment) => {
           fontSize="18px"
           ml="2"
           mt="2"
+          overflow="hidden"
+          whiteSpace="nowrap"
         >
           {tabTitle}
         </Box>

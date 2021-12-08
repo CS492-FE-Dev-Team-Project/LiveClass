@@ -13,10 +13,10 @@ import { Link } from 'react-router-dom';
 import AddClassModal from '../components/lobbyPage/classAddModal';
 import LobbyContent from '../components/lobbyPage/lobbyContent';
 import ClassCard from '../components/lobbyPage/classCard';
-import Header from '../components/common/Header';
 import useClasses from '../hooks/useClasses';
 import { MemberType } from '../types';
 import LogoAsset from '../assets/logo2.svg';
+import LobbyBanner from '../components/lobbyPage/banner';
 
 const LobbyPage = () => {
   const col = useBreakpointValue({
@@ -36,9 +36,8 @@ const LobbyPage = () => {
       <Box h="80px" w="100%" bgColor="black">
         <Image src={LogoAsset} alt="liveclass" h="80px" pl="8px" />
       </Box>
-
+      <LobbyBanner />
       <br />
-
       <Heading size="lg" pl="30px">
         Teaching Lectures
       </Heading>

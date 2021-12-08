@@ -50,6 +50,8 @@ const LeftMenuButton = ({ entry }: any) => {
       bg="white"
       borderColor={shouldHighlight ? '#FF4A3E' : 'white'}
       color="black"
+      overflow="hidden"
+      whiteSpace="nowrap"
       _hover={{ bg: '#ebedf0' }}
       _active={{
         bg: '#dddfe2',
@@ -61,8 +63,6 @@ const LeftMenuButton = ({ entry }: any) => {
           '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
       }}
       onClick={eventHandler}
-      overflow="scroll"
-      whiteSpace="nowrap"
       style={{ scrollbarWidth: 'none' }}
     >
       {entry.tabName}
