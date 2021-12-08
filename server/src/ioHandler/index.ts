@@ -65,10 +65,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'GetClassMembers',
       ClassProtocols.OnGetClassMembers(socket, classManager)
     );
-    socket.on(
-      'SetLanguage',
-      ClassProtocols.OnSetLanguage(socket, classManager)
-    );
 
     // Marker Protocols
     socket.on(
