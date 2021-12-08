@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { CircleIcon } from './common/icons';
 import { useSocket } from '../context/socket';
@@ -112,6 +112,8 @@ const AudioRecorder = () => {
     }
   }, [audioUrl]);
 
+  useEffect(onSubmitAudioFile, [audioUrl]);
+
   return (
     <>
       <IconButton
@@ -119,9 +121,6 @@ const AudioRecorder = () => {
         icon={<CircleIcon style={{ color: onRec ? 'black' : 'red' }} />}
         onClick={onRec ? onRecAudio : offRecAudio}
       />
-      <button type="button" onClick={onSubmitAudioFile}>
-        Send Audio Message
-      </button>
     </>
   );
 };

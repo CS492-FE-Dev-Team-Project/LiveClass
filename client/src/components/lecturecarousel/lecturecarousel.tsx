@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
   Navigation,
@@ -16,6 +15,7 @@ import 'swiper/components/scrollbar/scrollbar.scss';
 import './carousel.css';
 
 import LectureCard from './lecturecard';
+import { Lecture } from '../../types';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Mousewheel, Keyboard]);
 
@@ -26,6 +26,7 @@ const LectureCarousel = ({ classUuid, memberType, lectureList }: any) => {
       return `<span class="${className}">${index + 1}</span>`;
     }
   };
+
   return (
     <>
       <Swiper
@@ -39,11 +40,17 @@ const LectureCarousel = ({ classUuid, memberType, lectureList }: any) => {
         pagination={pagination}
       >
         {lectureList.map(
-          ({ id: lectureId, lectureDate, lectureName, LiveStatus }: any) => (
+          ({
+            id: lectureId,
+            lectureDate,
+            lectureName,
+            LiveStatus,
+            playlist
+          }: Lecture) => (
             <SwiperSlide>
               <LectureCard
                 lectureNum={lectureId}
-                youtubeID="4-u7kewhpDU"
+                youtubePlayList={playlist}
                 date={lectureDate.slice(0, 10)}
                 to={`/class/${classUuid}/${memberType}/${lectureId}`}
                 key={lectureId}

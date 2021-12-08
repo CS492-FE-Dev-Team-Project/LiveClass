@@ -191,6 +191,8 @@ const YouTubePlayer = ({
     backgroundSize: '100% 100%'
   };
 
+  videoTimelineWrapper.current?.classList.add('showTimeline');
+
   return (
     <div
       className={memberType === MemberType.INSTRUCTOR ? 'teacher' : 'student'}
@@ -200,12 +202,12 @@ const YouTubePlayer = ({
         width,
         height
       }}
-      onMouseEnter={() => {
-        videoTimelineWrapper.current?.classList.add('showTimeline');
-      }}
-      onMouseLeave={() => {
-        videoTimelineWrapper.current?.classList.remove('showTimeline');
-      }}
+      // onMouseEnter={() => {
+      //   videoTimelineWrapper.current?.classList.add('showTimeline');
+      // }}
+      // onMouseLeave={() => {
+      //   videoTimelineWrapper.current?.classList.remove('showTimeline');
+      // }}
     >
       <CreateMarkerButtons onClick={createTimeMarker} />
       {/* 3 Overlay components on top of video player - timeline marker, create marker buttons, and progress bar */}
