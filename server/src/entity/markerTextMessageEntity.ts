@@ -19,7 +19,10 @@ export default class MarkerTextMessageEntity extends BaseEntity {
   createdAt: Date;
 
   @Column('text')
-  message: string;
+  ko: string;
+
+  @Column('text')
+  en: string;
 
   @ManyToOne(() => MarkerEntity, marker => marker.textMessages)
   marker: MarkerEntity;
