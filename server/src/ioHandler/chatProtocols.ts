@@ -7,7 +7,9 @@ import {
 
 const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async ({ classUuid, text, lectureId }: LiveChatTextMessageRequest) => {
+  async (request: string) => {
+    const { classUuid, lectureId, text }: LiveChatTextMessageRequest =
+      JSON.parse(request);
     const cls = await classManager.getOrCreateClass(classUuid);
     const lecture = cls.getLectureById(lectureId);
     const { userName, id } = socket.request.user!;
