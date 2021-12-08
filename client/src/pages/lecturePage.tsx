@@ -120,6 +120,10 @@ const LecturePage = () => {
 
         setMemberArr(arr => [...arr, newUser]);
         const payload = { classUuid, lectureId: parsedLectureId };
+        setIsLive(lec.LiveStatus);
+        if (lec.LiveStatus) {
+          setSelectedVidIdx(lec.videoIdx);
+        }
         socket?.emit('GetActiveLectureMember', payload);
       }
     });
