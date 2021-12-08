@@ -36,12 +36,10 @@ const LeftMenuButton = ({ entry }: any) => {
     }
   };
 
-  const MAX_TITLE_LEN = 12;
-
   return (
     <Box
       as="button"
-      height="28px"
+      height="30px"
       lineHeight="1.1"
       transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
       border="1px"
@@ -63,8 +61,11 @@ const LeftMenuButton = ({ entry }: any) => {
           '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
       }}
       onClick={eventHandler}
+      overflow="scroll"
+      whiteSpace="nowrap"
+      style={{ scrollbarWidth: 'none' }}
     >
-      {entry.tabName.slice(0, MAX_TITLE_LEN)}
+      {entry.tabName}
     </Box>
   );
 };

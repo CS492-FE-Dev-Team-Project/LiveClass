@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IconButton, Textarea, Flex } from '@chakra-ui/react';
-import { ChatIcon, TimeIcon } from '@chakra-ui/icons';
+import { ChatIcon } from '@chakra-ui/icons';
 import AudioRecorder from './audioRecorder';
 
 const ChatInput = ({ sendMessage }: any) => {
@@ -36,12 +36,7 @@ const ChatInput = ({ sendMessage }: any) => {
         }}
       />
       <Flex justifyContent="right">
-        <IconButton
-          size="md"
-          icon={<TimeIcon />}
-          aria-label="Timeline"
-          m={0.5}
-        />
+        <AudioRecorder />
         <IconButton
           onClick={evt => {
             sendMessage(message);
@@ -52,7 +47,6 @@ const ChatInput = ({ sendMessage }: any) => {
           aria-label="Send Message"
           m={0.5}
         />
-        <AudioRecorder />
       </Flex>
     </Flex>
   );
