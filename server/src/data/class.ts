@@ -16,9 +16,6 @@ class Class {
 
   private members: Member[] = [];
 
-  private chatMassages: { studentId: number; time: Date; message: string }[] =
-    [];
-
   private LiveStatus: boolean = false;
 
   // Lecture related variable
@@ -69,10 +66,6 @@ class Class {
     member?.setConnectStatus(false);
 
     return true;
-  }
-
-  public getMessages(offset: number, length: number) {
-    return this.chatMassages.slice(offset, offset + length);
   }
 
   public getSocketRoomName() {
