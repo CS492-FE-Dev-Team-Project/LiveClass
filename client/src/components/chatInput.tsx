@@ -37,12 +37,6 @@ const ChatInput = ({ sendMessage }: any) => {
       />
       <Flex justifyContent="right">
         <IconButton
-          size="md"
-          icon={<TimeIcon />}
-          aria-label="Timeline"
-          m={0.5}
-        />
-        <IconButton
           onClick={evt => {
             sendMessage(message);
             setMessage(''); // clear message after send
