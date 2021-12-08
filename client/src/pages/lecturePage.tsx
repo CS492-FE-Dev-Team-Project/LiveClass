@@ -59,15 +59,27 @@ const LecturePage = () => {
         lectureId: parsedLectureId,
         status: !isLive
       });
+
+      const memberTypeEntry = {
+        tabName: 'Instructor 👨‍🏫',
+        type: TabType.NOTICE,
+        message: 'Member Type'
+      };
+
       const toggleLiveButton: NoticeTabEntry = {
-        tabName: `${isLive ? '⚫ Off' : '🔴 Go'} Live`,
+        tabName: `${isLive ? '⚫ Stop' : '🔴 Start'} Live`,
         type: TabType.NOTICE,
         message: 'toggleLive',
         onClickHandler: () => {
           socket?.emit('SetLectureLiveStatus', payload);
         }
       };
-      setNoticeArr([...defaultNoticeTabEntries, toggleLiveButton]);
+
+      setNoticeArr([
+        ...defaultNoticeTabEntries,
+        memberTypeEntry,
+        toggleLiveButton
+      ]);
     } else {
       const notifyLiveButton: NoticeTabEntry = {
         tabName: isLive ? '🔴 On-Live' : '⚫ Off-Live',
@@ -75,7 +87,16 @@ const LecturePage = () => {
         message: 'notifyLive',
         onClickHandler: EMPTY_HANDLER
       };
-      setNoticeArr([...defaultNoticeTabEntries, notifyLiveButton]);
+      const memberTypeEntry = {
+        tabName: 'Student 👨‍🎓',
+        type: TabType.NOTICE,
+        message: 'Member Type'
+      };
+      setNoticeArr([
+        ...defaultNoticeTabEntries,
+        memberTypeEntry,
+        notifyLiveButton
+      ]);
     }
   }, [isLive]);
 
@@ -166,8 +187,6 @@ const LecturePage = () => {
   // TODO - Take care of playlist
   // 1. Get lecture list and construct 'menus' for leftmenu
   // 2. Use lectureDate and lectureName somehow?
-
-  console.log(isLive, memberType, isLive && memberType === MemberType.STUDENT);
 
   return (
     <>

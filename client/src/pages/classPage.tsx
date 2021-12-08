@@ -9,6 +9,7 @@ import FloatConnectionStatus from '../components/floatConnectionStatus';
 import {
   Lecture,
   Member,
+  MemberType,
   MenuContext,
   TabSegment,
   TabType,
@@ -27,9 +28,16 @@ const ClassPage = () => {
   const { hasCopied, onCopy } = useClipboard(classUuid!);
   const toast = useToast();
 
+  const memberTypeEntry = {
+    tabName:
+      memberType === MemberType.INSTRUCTOR ? 'Instructor 👨‍🏫' : 'Student 👨‍🎓',
+    type: TabType.NOTICE,
+    message: 'Member Type'
+  };
+
   const noticeTabSegment: TabSegment = {
     tabTitle: 'Classroom',
-    tabContents: defaultNoticeTabEntries
+    tabContents: [...defaultNoticeTabEntries, memberTypeEntry]
   };
 
   const [memberArr, setMemberArr] = useState<UserTabEntry[]>([]);
