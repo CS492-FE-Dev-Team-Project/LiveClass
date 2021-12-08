@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -13,6 +13,7 @@ import {
   extendTheme
 } from '@chakra-ui/react';
 import { createBreakpoints } from '@chakra-ui/theme-tools';
+import { getPlayListItems } from '../common/playlist';
 
 const breakpoints = createBreakpoints({
   sm: '320px',
@@ -23,7 +24,22 @@ const breakpoints = createBreakpoints({
 });
 const theme = extendTheme({ breakpoints });
 
-const LectureCard = ({ lectureNum, youtubeID, isLive, date, to, key }: any) => {
+const LectureCard = ({
+  lectureNum,
+  youtubePlayList,
+  isLive,
+  date,
+  to,
+  key
+}: any) => {
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+
+  useEffect(() => {
+    getPlayListItems(youtubePlayList).then(v => {
+      setThumbnailUrl(v.items[0].snippet.thumbnails.standard.url);
+    });
+  }, []);
+
   return (
     <Box
       w="100%"
@@ -36,11 +52,7 @@ const LectureCard = ({ lectureNum, youtubeID, isLive, date, to, key }: any) => {
     >
       <Flex h="100%" flexDirection="column">
         <AspectRatio ratio={16 / 9}>
-          <Image
-            src={`https://img.youtube.com/vi/${youtubeID}/hqdefault.jpg`}
-            fit="cover"
-            h="40%"
-          />
+          <Image src={thumbnailUrl} fit="cover" h="40%" />
         </AspectRatio>
         <Flex
           h="100%"
