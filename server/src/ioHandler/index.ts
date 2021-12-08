@@ -119,5 +119,9 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'JoinLecture',
       LectureProtocols.OnJoinLecture(socket, classManager)
     );
+    socket.on(
+      'ExitLecture',
+      LectureProtocols.OnExitLecture(socket, classManager)
+    );
   });
 };
