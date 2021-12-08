@@ -44,7 +44,10 @@ export interface MessageResponse {
 }
 
 export interface TextMessageResponse extends MessageResponse {
-  text: string;
+  text: {
+    ko: { result: string; status: number };
+    en: { result: string; status: number };
+  };
 }
 
 export interface AudioMessageResponse extends MessageResponse {
@@ -60,8 +63,8 @@ export interface Marker {
 }
 
 export enum LanguageType {
-  EN,
-  KO
+  EN = 'en',
+  KO = 'ko'
 }
 
 // LeftMenu tabs

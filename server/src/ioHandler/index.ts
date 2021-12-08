@@ -33,18 +33,6 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       }
     });
 
-    socket.on('JoinClass', ClassProtocols.OnJoinClass(socket, classManager));
-    socket.on(
-      'LiveChatTextMessage',
-      ChatProtocols.OnLiveChatTextMessage(socket, classManager)
-    );
-    // client/components/timeMarker.tsx
-    socket.on(
-      'TimeMarkerClicked',
-      // ChatProtocols.OnTimeMarkerClicked(socket, classManager)
-      ChatProtocols.OnTimeMarkerClicked(socket)
-    );
-
     // client/components/youtube.tsx
     socket.on(
       'InstructorTimeChange',
@@ -64,6 +52,7 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     );
 
     // In Class API
+    socket.on('JoinClass', ClassProtocols.OnJoinClass(socket, classManager));
     socket.on(
       'GetLectures',
       ClassProtocols.OnGetLectures(socket, classManager)
@@ -76,16 +65,9 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'GetClassMembers',
       ClassProtocols.OnGetClassMembers(socket, classManager)
     );
-
-    // In Lecture API
-    // related to various inside-lecture activites
     socket.on(
-      'JoinLecture',
-      LectureProtocols.OnJoinLecture(socket, classManager)
-    );
-    socket.on(
-      'SetLectureLiveStatus',
-      LectureProtocols.OnSetLectureLiveStatus(socket, classManager)
+      'SetLanguage',
+      ClassProtocols.OnSetLanguage(socket, classManager)
     );
 
     // Marker Protocols
@@ -109,6 +91,16 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
       'LiveChatAudioMessage',
       ChatProtocols.OnLiveChatAudioMessage(socket, classManager)
     );
+    socket.on(
+      'LiveChatTextMessage',
+      ChatProtocols.OnLiveChatTextMessage(socket, classManager)
+    );
+    // client/components/timeMarker.tsx
+    socket.on(
+      'TimeMarkerClicked',
+      // ChatProtocols.OnTimeMarkerClicked(socket, classManager)
+      ChatProtocols.OnTimeMarkerClicked(socket)
+    );
 
     // Lecture Protocols
     socket.on(
@@ -122,6 +114,10 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     socket.on(
       'ExitLecture',
       LectureProtocols.OnExitLecture(socket, classManager)
+    );
+    socket.on(
+      'SetLectureLiveStatus',
+      LectureProtocols.OnSetLectureLiveStatus(socket, classManager)
     );
   });
 };

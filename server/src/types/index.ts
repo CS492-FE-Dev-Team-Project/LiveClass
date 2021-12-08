@@ -15,6 +15,22 @@ export interface CustomSocket extends Socket {
   request: IncomingMessage & { user?: Express.User };
 }
 
+export interface Message {
+  dateStr: string;
+  text: {
+    ko: {
+      result: string;
+      status: number;
+    };
+    en: {
+      result: string;
+      status: number;
+    };
+  };
+  senderName: string;
+  senderId: number;
+}
+
 export enum MarkerType {
   QUESTION = 'Question',
   DISCUSSION = 'Discussion'
@@ -48,6 +64,10 @@ export interface LiveChatTextMessageRequest extends InLectureRequestInterface {
   text: string;
 }
 
+export interface SetLanguageRequest extends InClassRequestInterface {
+  language: Language;
+}
+
 export interface LiveChatAudioMessageInterface
   extends InLectureRequestInterface {
   arrayBuffer: ArrayBuffer;
@@ -74,5 +94,5 @@ export interface PapagoTranslateResponse {
 }
 
 export interface PapagoLanguageDetectionResponse {
-  langCode: Language;
+  langCode: Language | string;
 }

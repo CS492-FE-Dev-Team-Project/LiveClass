@@ -1,6 +1,7 @@
 import LectureEntity from '../entity/lectureEntity';
 import MarkerEntity from '../entity/markerEntity';
 import Logger from '../loader/logger';
+import { Message } from '../types';
 // import { classUuid } from '../types';
 import Marker from './marker';
 import Member from './member';
@@ -17,6 +18,8 @@ class Lecture {
   private participants: Member[] = [];
 
   private markers: Marker[] = [];
+
+  private messages: Message[] = [];
 
   private LiveStatus: boolean = false; // Live를 lecture 쪽에서(도) 설정해주는게 맞을 듯 - 어느 lecture가 현재 live인지
 
@@ -126,6 +129,14 @@ class Lecture {
 
   public setVideoIdx(idx: number) {
     this.videoIdx = idx;
+  }
+
+  public getMessages() {
+    return this.messages;
+  }
+
+  public addMessage(message: Message) {
+    this.messages.push(message);
   }
 }
 

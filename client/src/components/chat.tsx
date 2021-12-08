@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { CloseButton, Flex } from '@chakra-ui/react';
+import axios from 'axios';
 
 import ChatMessage from './chatMessage';
 import ChatInput from './chatInput';
 import Header from './common/Header';
 
-import { MarkerType, TextMessageResponse } from '../types';
+import { LanguageType, MarkerType, TextMessageResponse } from '../types';
 
 import { useSocket } from '../context/socket';
 import useMe from '../hooks/useMe';
+import langContext from '../context/language/languageContext';
 
 enum ChatMode {
   Marker = 'Marker',
@@ -34,7 +36,16 @@ interface ChatProps {
 interface Message {
   messageId: number;
   userName: string;
-  message: string;
+  message: {
+    ko: {
+      result: string;
+      status: number;
+    };
+    en: {
+      result: string;
+      status: number;
+    };
+  };
   time: string;
   isMy: boolean;
 }
@@ -69,6 +80,7 @@ const Chat = ({
     }
   };
   const header = pickHeader(chatStatus.current);
+  const { language } = useContext(langContext);
 
   // @args {MarkerTextMessageEntity} message - message response from the server
   const createNewMessageObj = (messageResponse: any): Message => {
@@ -213,7 +225,11 @@ const Chat = ({
           <ChatMessage
             key={messageId}
             userName={userName}
-            message={message}
+            message={
+              language === LanguageType.KO
+                ? message.ko.result
+                : message.en.result
+            }
             time={time}
             isMy={isMy}
           />

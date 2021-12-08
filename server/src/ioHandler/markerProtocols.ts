@@ -1,8 +1,14 @@
 import ClassManager from '../data/classManager';
 import MarkerEntity from '../entity/markerEntity';
 import MarkerTextMessageEntity from '../entity/markerTextMessageEntity';
+import { detectLanguage, translate } from '../externalAPI/PapagoAPI';
 import Logger from '../loader/logger';
-import { CustomSocket, MarkerTextMessageInterface } from '../types';
+import {
+  CustomSocket,
+  Language,
+  MarkerTextMessageInterface,
+  Message
+} from '../types';
 
 const OnCreateMarker =
   (socket: CustomSocket, classManager: ClassManager) =>
@@ -64,21 +70,34 @@ const OnMarkerTextMessage =
       const lecture = cls.getLectureById(lectureId);
       const { user } = socket.request;
 
-      const { markerId, message }: MarkerTextMessageInterface =
+      const { markerId, message: text }: MarkerTextMessageInterface =
         markerTextMessage;
+
+      const ko = await detectLanguage(text).then(({ src, canTranslate }) =>
+        canTranslate
+          ? translate(src, Language.KO, text)
+          : { result: text, status: 200 }
+      );
+      const en = await detectLanguage(text).then(({ src, canTranslate }) =>
+        canTranslate
+          ? translate(src, Language.EN, text)
+          : { result: text, status: 200 }
+      );
+
       const marker = await lecture.getMarker(markerId);
 
       const markerTextMessageEntity = new MarkerTextMessageEntity();
       markerTextMessageEntity.marker = await marker.getEntity();
-      markerTextMessageEntity.message = message;
+      markerTextMessageEntity.ko = ko.result;
+      markerTextMessageEntity.en = en.result;
       markerTextMessageEntity.user = socket.request.user!;
       const savedMessageEntity = await markerTextMessageEntity.save();
       marker.addTextMessage(savedMessageEntity, user!.id);
 
-      const savedMessage = {
+      const savedMessage: Message & { messageId: number } = {
         messageId: savedMessageEntity.id,
         dateStr: new Date(savedMessageEntity.createdAt).toISOString(),
-        text: savedMessageEntity.message,
+        text: { ko, en },
         senderName: savedMessageEntity.user.userName, // ⚡️ creator of this message - user relation 필요
         senderId: savedMessageEntity.user.id // ⚡️ creator of this message - user relation 필요
       };
@@ -108,7 +127,10 @@ const OnGetMarkerMessages =
       const textMessages = textMessageEntities.map(msgEntity => ({
         messageId: msgEntity.id,
         dateStr: new Date(msgEntity.createdAt).toISOString(),
-        text: msgEntity.message,
+        text: {
+          ko: { result: msgEntity.ko, status: 200 },
+          en: { result: msgEntity.en, status: 200 }
+        },
         senderName: msgEntity.user.userName, // ⚡️ creator of this message - user relation 필요
         senderId: msgEntity.user.id // ⚡️ creator of this message - user relation 필요
       }));
