@@ -96,3 +96,8 @@ export interface TabSegment {
   tabTitle: string;
   tabContents: TabEntry[];
 }
+
+export enum MenuContext {
+  Lecture,
+  Class
+}

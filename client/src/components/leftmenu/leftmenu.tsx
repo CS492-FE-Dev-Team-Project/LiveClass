@@ -22,14 +22,15 @@ import {
   Spacer
 } from '@chakra-ui/react';
 
-import { useNavigate } from 'react-router-dom';
-import { LanguageType, TabSegment } from '../../types';
+import { useNavigate, useParams } from 'react-router-dom';
+import { LanguageType, MenuContext, TabSegment } from '../../types';
 import LeftMenuTab from './leftmenutab';
-import Header from '../common/Header';
 import LangContext from '../../context/language/languageContext';
+import { useSocket } from '../../context/socket';
 
 interface LeftMenuProps {
   menus: TabSegment[];
+  memuContext: MenuContext;
 }
 
 const GlobeIcon = createIcon({
@@ -46,8 +47,10 @@ const GlobeIcon = createIcon({
   )
 });
 
-const LeftMenu = ({ menus }: LeftMenuProps) => {
+const LeftMenu = ({ menus, memuContext }: LeftMenuProps) => {
   const { language, setLanguage } = useContext(LangContext);
+  const { socket } = useSocket();
+  const { classUuid, lectureId } = useParams();
   const navigate = useNavigate();
 
   return (
@@ -85,7 +88,19 @@ const LeftMenu = ({ menus }: LeftMenuProps) => {
             <PopoverContent w={180}>
               <PopoverArrow />
               <PopoverBody>
-                <Button colorScheme="red" w={150} onClick={() => navigate(-1)}>
+                <Button
+                  colorScheme="red"
+                  w={150}
+                  onClick={() => {
+                    navigate(-1);
+                    if (memuContext === MenuContext.Lecture) {
+                      socket?.emit('ExitLecture', {
+                        classUuid,
+                        lectureId: parseInt(lectureId!, 10)
+                      });
+                    }
+                  }}
+                >
                   Quit room
                 </Button>
               </PopoverBody>
