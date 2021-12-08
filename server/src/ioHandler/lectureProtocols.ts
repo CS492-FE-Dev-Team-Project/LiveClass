@@ -88,6 +88,9 @@ const OnSetLectureLiveStatus =
         .to(lecture.getSocketRoomName())
         .emit('SetLectureLiveStatus', { liveStatus, status: 200 });
       socket.emit('SetLectureLiveStatus', { liveStatus, status: 200 });
+      socket
+        .to(cls.getSocketRoomName())
+        .emit('GetLectures', { lectures: cls.getLectures(), status: 200 });
     } catch (e) {
       Logger.error(e);
       socket.emit('SetLectureLiveStatus', { message: e, status: 400 });
