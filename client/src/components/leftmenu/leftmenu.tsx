@@ -101,7 +101,7 @@ const LeftMenu = ({ menus, memuContext }: LeftMenuProps) => {
                     }
                   }}
                 >
-                  Quit room
+                  Quit
                 </Button>
               </PopoverBody>
             </PopoverContent>
