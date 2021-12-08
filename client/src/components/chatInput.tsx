@@ -1,10 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IconButton, Textarea, Flex } from '@chakra-ui/react';
 import { ChatIcon, TimeIcon } from '@chakra-ui/icons';
 import AudioRecorder from './audioRecorder';
 
 const ChatInput = ({ sendMessage }: any) => {
   const [message, setMessage] = useState('');
+
+  // init - set keyboard keydown
+  useEffect(() => {
+    document.addEventListener('keydown', keydownEvents);
+    return () => document.removeEventListener('keydown', keydownEvents);
+  });
+
+  const keydownEvents = (evt: any) => {
+    if (!evt.shiftKey && (evt.code === 'Enter' || evt.code === 'NumpadEnter')) {
+      evt.preventDefault();
+      sendMessage(message);
+      setMessage(''); // clear message after send
+    }
+  };
 
   return (
     <Flex p="8px 6px" w="full" backgroundColor="white" flexDir="column">
