@@ -1,9 +1,12 @@
 import ClassManager from '../data/classManager';
+import { detectLanguage, translate } from '../externalAPI/PapagoAPI';
 import Logger from '../loader/logger';
 import {
   CustomSocket,
+  Language,
   LiveChatAudioMessageInterface,
-  LiveChatTextMessageRequest
+  LiveChatTextMessageRequest,
+  Message
 } from '../types';
 
 const OnLiveChatTextMessage =
@@ -16,12 +19,25 @@ const OnLiveChatTextMessage =
       const lecture = cls.getLectureById(lectureId);
       const { userName, id } = socket.request.user!;
 
-      const message = {
+      const ko = await detectLanguage(text).then(({ src, canTranslate }) =>
+        canTranslate
+          ? translate(src, Language.KO, text)
+          : { result: text, status: 200 }
+      );
+      const en = await detectLanguage(text).then(({ src, canTranslate }) =>
+        canTranslate
+          ? translate(src, Language.EN, text)
+          : { result: text, status: 200 }
+      );
+
+      const message: Message = {
         dateStr: new Date().toISOString(),
-        text,
+        text: { ko, en },
         senderName: userName,
         senderId: id
       };
+      lecture.addMessage(message);
+
       socket.emit('LiveChatTextMessage', {
         message,
         status: 200
