@@ -18,7 +18,7 @@ const LeftMenuButton = ({ entry }: any) => {
   const eventHandler = () => {
     switch (entry.type) {
       case TabType.USER:
-        alert(entry.userId);
+        // alert(entry.userId);
         break;
       case TabType.VIDEO:
         if (memberType === MemberType.STUDENT && isLive) return;
@@ -29,7 +29,7 @@ const LeftMenuButton = ({ entry }: any) => {
         break;
       case TabType.NOTICE:
         if (entry.onClickHandler) entry.onClickHandler();
-        else alert(entry.message);
+        // else alert(entry.message);
         break;
       default:
         break;

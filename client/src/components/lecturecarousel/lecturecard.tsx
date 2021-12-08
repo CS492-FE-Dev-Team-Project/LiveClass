@@ -30,7 +30,8 @@ const LectureCard = ({
   isLive,
   date,
   to,
-  key
+  key,
+  lectureName
 }: any) => {
   const [thumbnailUrl, setThumbnailUrl] = useState('');
 
@@ -100,7 +101,7 @@ const LectureCard = ({
               }}
               fontFamily="body"
             >
-              {`Lecture ${lectureNum}`}
+              {lectureName}
             </Heading>
           </Box>
           <Spacer />
