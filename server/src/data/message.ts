@@ -22,18 +22,22 @@ class BaseMarkerMessage {
 }
 
 class MarkerTextMessage extends BaseMarkerMessage {
-  public readonly message: string;
+  public readonly ko: string;
+
+  public readonly en: string;
 
   public readonly markerId: number;
 
   constructor(textMessage: MarkerTextMessageEntity, senderId: number) {
     const {
       createdAt,
-      message,
+      ko,
+      en,
       marker: { id }
     } = textMessage;
     super(createdAt, senderId, MessageType.TEXT);
-    this.message = message;
+    this.ko = ko;
+    this.en = en;
     this.markerId = id;
   }
 }
