@@ -15,7 +15,8 @@ import {
   TabType,
   UserTabEntry,
   VideoTabEntry,
-  NoticeTabEntry
+  NoticeTabEntry,
+  MenuContext
 } from '../types';
 import { useSocket } from '../context/socket';
 import { getPlayListItems } from '../components/common/playlist';
@@ -120,6 +121,10 @@ const LecturePage = () => {
 
         setMemberArr(arr => [...arr, newUser]);
         const payload = { classUuid, lectureId: parsedLectureId };
+        setIsLive(lec.LiveStatus);
+        if (lec.LiveStatus) {
+          setSelectedVidIdx(lec.videoIdx);
+        }
         socket?.emit('GetActiveLectureMember', payload);
       }
     });
@@ -170,6 +175,7 @@ const LecturePage = () => {
       <Flex>
         <LeftMenu
           menus={[noticeTabSegment, videoTabSegment, memberTabSegment]}
+          memuContext={MenuContext.Lecture}
         />
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh">

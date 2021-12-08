@@ -1,6 +1,7 @@
 import Class from '../data/class';
 import ClassManager from '../data/classManager';
 import Lecture from '../data/lecture';
+import { MemberType } from '../entity/classMemberEntity';
 import Logger from '../loader/logger';
 import { CustomSocket, InLectureRequestInterface } from '../types';
 
@@ -46,12 +47,25 @@ const OnExitLecture =
       const cls = await classManager.getOrCreateClass(classUuid);
       const lecture = cls.getLectureById(lectureId);
 
-      const member = lecture.exitParticipant(socket.request.user?.id!);
+      const exitMember = lecture.exitParticipant(socket.request.user?.id!);
 
+      if (
+        exitMember?.memberType === MemberType.INSTRUCTOR &&
+        lecture.isLive()
+      ) {
+        lecture.setLiveStatus(false);
+        socket.to(lecture.getSocketRoomName()).emit('SetLectureLiveStatus', {
+          liveStatus: lecture.isLive(),
+          status: 200
+        });
+      }
       socket.to(lecture.getSocketRoomName()).emit('GetActiveLectureMember', {
-        member,
+        members: lecture.getParticipants(),
         status: 200
       });
+      socket
+        .to(cls.getSocketRoomName())
+        .emit('GetLectures', { lectures: cls.getLectures(), status: 200 });
     } catch (e) {
       Logger.error(e);
     }

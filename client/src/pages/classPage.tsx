@@ -6,7 +6,14 @@ import LeftMenu from '../components/leftmenu/leftmenu';
 import defaultNoticeTabEntries from '../data/leftmenuData';
 import Chat from '../components/chat';
 import FloatConnectionStatus from '../components/floatConnectionStatus';
-import { Lecture, Member, TabSegment, TabType, UserTabEntry } from '../types';
+import {
+  Lecture,
+  Member,
+  MenuContext,
+  TabSegment,
+  TabType,
+  UserTabEntry
+} from '../types';
 import { useSocket } from '../context/socket';
 import { ClipboardButton } from '../components/common/Button';
 // 🐛 나중에 lecture grid로 대체
@@ -86,7 +93,10 @@ const ClassPage = () => {
     <>
       <FloatConnectionStatus />
       <Flex>
-        <LeftMenu menus={[noticeTabSegment, memberTabSegment]} />
+        <LeftMenu
+          menus={[noticeTabSegment, memberTabSegment]}
+          memuContext={MenuContext.Class}
+        />
         <Box w="8px" h="100vh" />
         <Box w="100%" h="100vh" bgColor="gray.100">
           <LectureCarousel
