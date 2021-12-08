@@ -78,6 +78,9 @@ class Lecture {
 
   public setLiveStatus(liveStatus: boolean) {
     this.LiveStatus = liveStatus;
+    if (liveStatus === false) {
+      this.videoIdx = 0;
+    }
     return this.LiveStatus;
   }
 
