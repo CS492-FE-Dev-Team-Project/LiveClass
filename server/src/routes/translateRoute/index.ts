@@ -12,10 +12,14 @@ export default (app: Router) => {
     try {
       const { translateArray, target }: TranslateRequestInterface = req.body;
 
+      Logger.info(JSON.stringify(req.body, null, 2));
+
       const translated = await Promise.all(
         translateArray.map(async (text: string) => {
-          const { src } = await detectLanguage(text);
-          return translate(src, target, text);
+          const { src, canTranslate } = await detectLanguage(text);
+          return canTranslate
+            ? translate(src, target, text)
+            : { text, status: 200 };
         })
       );
 
