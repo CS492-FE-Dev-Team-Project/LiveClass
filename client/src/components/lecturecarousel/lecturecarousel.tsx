@@ -55,6 +55,7 @@ const LectureCarousel = ({ classUuid, memberType, lectureList }: any) => {
                 to={`/class/${classUuid}/${memberType}/${lectureId}`}
                 key={lectureId}
                 isLive={LiveStatus}
+                lectureName={lectureName}
               />
             </SwiperSlide>
           )
