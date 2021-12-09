@@ -43,7 +43,7 @@ const TimeMarker = ({
 
   // Click handler - Send click event through Socket, to Chat component
   const onClickEvt = () => {
-    const payload = JSON.stringify({ markerId: id, markerType });
+    const payload = { markerId: id, markerType };
 
     // send 'markerId' of clicked marker to Chat component
     socket?.emit('TimeMarkerClicked', payload);

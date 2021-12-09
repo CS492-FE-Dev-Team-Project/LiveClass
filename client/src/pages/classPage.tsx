@@ -47,10 +47,10 @@ const ClassPage = () => {
   };
 
   useEffect(() => {
-    const payload = JSON.stringify({ classUuid });
+    const payload = { classUuid };
 
     // Initialize
-    socket?.on('JoinClass', () => {
+    socket?.on('JoinClass', ({ instructor }) => {
       socket?.emit('GetClassMembers', payload);
       socket?.emit('GetLectures', payload);
     });
