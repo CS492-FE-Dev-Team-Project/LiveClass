@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "./static/css/main.cabb2d6a.chunk.css",
+    "main.js": "./static/js/main.bc586b14.chunk.js",
+    "main.js.map": "./static/js/main.bc586b14.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.eb6d94a5.js",
+    "runtime-main.js.map": "./static/js/runtime-main.eb6d94a5.js.map",
+    "static/css/2.0304937a.chunk.css": "./static/css/2.0304937a.chunk.css",
+    "static/js/2.56adf9b6.chunk.js": "./static/js/2.56adf9b6.chunk.js",
+    "static/js/2.56adf9b6.chunk.js.map": "./static/js/2.56adf9b6.chunk.js.map",
+    "static/js/3.f15a93ee.chunk.js": "./static/js/3.f15a93ee.chunk.js",
+    "static/js/3.f15a93ee.chunk.js.map": "./static/js/3.f15a93ee.chunk.js.map",
+    "index.html": "./index.html",
+    "service-worker.js": "./service-worker.js",
+    "service-worker.js.map": "./service-worker.js.map",
+    "static/css/2.0304937a.chunk.css.map": "./static/css/2.0304937a.chunk.css.map",
+    "static/css/main.cabb2d6a.chunk.css.map": "./static/css/main.cabb2d6a.chunk.css.map",
+    "static/js/2.56adf9b6.chunk.js.LICENSE.txt": "./static/js/2.56adf9b6.chunk.js.LICENSE.txt",
+    "static/media/logo1.23d60d6d.svg": "./static/media/logo1.23d60d6d.svg",
+    "static/media/logo2.7da65d47.svg": "./static/media/logo2.7da65d47.svg",
+    "static/media/naver_login_eng.69b5671c.png": "./static/media/naver_login_eng.69b5671c.png",
+    "static/media/slick-theme.css": "./static/media/slick.c94f7671.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.eb6d94a5.js",
+    "static/css/2.0304937a.chunk.css",
+    "static/js/2.56adf9b6.chunk.js",
+    "static/css/main.cabb2d6a.chunk.css",
+    "static/js/main.bc586b14.chunk.js"
+  ]
+}
