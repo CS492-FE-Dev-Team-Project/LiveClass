@@ -27,7 +27,7 @@
 - 준비된 YouTube Playlist를 이용하여 영상들로 구성된 강의를 생성 가능
 - 강의자의 YouTube 영상 재생 상황이 학생들의 영상과 공유됨
 - 영상 재생 중 Time Marker를 이용하여 해당 시간에 질문과 토론을 생성 가능
-- Walkie-Talkie 기능으로 실시간 음성 전달과 대화가 가능
+- Walkie-Talkie 기능으로 실시간 음성 전달과 대화가 가능 (*Wailkie Talkie 기능은 `navigator.mediaDevices` api의 [브라우저의 보안 정책](https://developer.mozilla.org/ko/docs/Web/API/MediaDevices/getUserMedia) 때문에 아래의 링크에서는 사용이 불가능합니다. 테스트를 원하신다면 localhost에서 테스트해 보실 수 있습니다.)
 
 ### ➡️ [**LiveClass를 써보고 싶으면 클릭하세요!!**](http://ec2-3-38-83-97.ap-northeast-2.compute.amazonaws.com/)
 
