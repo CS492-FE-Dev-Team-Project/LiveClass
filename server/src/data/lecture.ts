@@ -1,3 +1,4 @@
+import { MemberType } from '../entity/classMemberEntity';
 import LectureEntity from '../entity/lectureEntity';
 import MarkerEntity from '../entity/markerEntity';
 import Logger from '../loader/logger';
@@ -110,6 +111,9 @@ class Lecture {
       this.participants = this.participants.filter(
         ({ userId }) => id !== userId
       );
+      if (member.memberType === MemberType.INSTRUCTOR) {
+        this.setLiveStatus(false);
+      }
     }
     return member;
   }
