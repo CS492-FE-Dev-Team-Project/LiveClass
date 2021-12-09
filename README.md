@@ -29,6 +29,10 @@
 - 영상 재생 중 Time Marker를 이용하여 해당 시간에 질문과 토론을 생성 가능
 - Walkie-Talkie 기능으로 실시간 음성 전달과 대화가 가능
 
+## 📋 LiveClass 사용법
+
+wip
+
 ## 🖥 개발 환경
 시작 전 다음의 개발 환경들을 설치해주세요.
 - [**NodeJS**](https://nodejs.org/en/) 16.13.1 LTS
