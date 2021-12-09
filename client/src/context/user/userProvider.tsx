@@ -10,9 +10,12 @@ const UserProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
   useEffect(() => {
     if (status === UserLoadStatus.LOADING) {
-      fetch('http://localhost:5000/api/me', {
-        method: 'GET'
-      })
+      fetch(
+        'http://ec2-3-38-83-97.ap-northeast-2.compute.amazonaws.com/api/me',
+        {
+          method: 'GET'
+        }
+      )
         .then(r => r.json())
         .then(r => {
           if (r.status === 401) {

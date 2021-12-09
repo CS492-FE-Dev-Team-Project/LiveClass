@@ -53,11 +53,14 @@ const AddClassModal = ({ isOpen, onClose, addClass }: AddClassModalProps) => {
   };
 
   const handleJoin = () => {
-    fetch('http://localhost:5000/api/lobby/class', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ uuid: joinClassUUID })
-    })
+    fetch(
+      'http://ec2-3-38-83-97.ap-northeast-2.compute.amazonaws.com/api/lobby/class',
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uuid: joinClassUUID })
+      }
+    )
       .then(r => r.json())
       .then(j => {
         if (j.status === 200) {
@@ -74,11 +77,14 @@ const AddClassModal = ({ isOpen, onClose, addClass }: AddClassModalProps) => {
   };
 
   const handleCreate = () => {
-    fetch('http://localhost:5000/api/lobby/class', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, subtitle })
-    })
+    fetch(
+      'http://ec2-3-38-83-97.ap-northeast-2.compute.amazonaws.com/api/lobby/class',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, subtitle })
+      }
+    )
       .then(r => r.json())
       .then(j => {
         if (j.status === 200) {

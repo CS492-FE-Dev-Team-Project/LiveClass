@@ -8,9 +8,12 @@ const useClasses = () => {
 
   useEffect(() => {
     if (status === UserLoadStatus.LOADED) {
-      fetch('http://localhost:5000/api/lobby/classes', {
-        method: 'GET'
-      })
+      fetch(
+        'http://ec2-3-38-83-97.ap-northeast-2.compute.amazonaws.com/api/lobby/classes',
+        {
+          method: 'GET'
+        }
+      )
         .then(r => r.json())
         .then(j => {
           setClasses(j.classes);
