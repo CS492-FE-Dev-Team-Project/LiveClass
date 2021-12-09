@@ -23,13 +23,17 @@ export default (io: SocketIOServer, classManager: ClassManager) => {
     });
 
     socket.on('disconnect', () => {
-      socket.disconnect();
-      if (user) {
-        Logger.info(`User ${user.userName} Disconnected`);
-        const cls = classManager.findUserClass(user.id);
-        if (cls) {
-          cls.exitUser(user.id);
+      try {
+        socket.disconnect();
+        if (user) {
+          Logger.info(`User ${user.userName} Disconnected`);
+          const cls = classManager.findUserClass(user.id);
+          if (cls) {
+            cls.exitUser(user.id);
+          }
         }
+      } catch (e) {
+        Logger.error(e);
       }
     });
 
