@@ -190,7 +190,7 @@ const LecturePage = () => {
 
   return (
     <>
-      <FloatConnectionStatus />
+      {/* <FloatConnectionStatus /> */}
       <Flex>
         <LeftMenu
           menus={[noticeTabSegment, videoTabSegment, memberTabSegment]}
