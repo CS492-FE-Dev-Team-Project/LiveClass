@@ -1,5 +1,5 @@
 import ClassEntity from '../entity/classEntity';
-import ClassMemberEntity from '../entity/classMemberEntity';
+import ClassMemberEntity, { MemberType } from '../entity/classMemberEntity';
 import { classUuid } from '../types';
 import Member from './member';
 
@@ -99,6 +99,24 @@ class Class {
     this.lectures.push(newLecture);
 
     return newLecture;
+  }
+
+  public getInstructor() {
+    const instructor = this.members.find(
+      ({ memberType }) => memberType === MemberType.INSTRUCTOR
+    );
+    if (!instructor) {
+      throw new Error('No Instructor');
+    }
+    return instructor;
+  }
+
+  public async getEntity() {
+    const classEntity = await ClassEntity.findOne(this.uuid);
+    if (!classEntity) {
+      throw new Error('No Class Entity');
+    }
+    return classEntity;
   }
 }
 
