@@ -3,7 +3,11 @@ import ClassManager from '../data/classManager';
 import Lecture from '../data/lecture';
 import { MemberType } from '../entity/classMemberEntity';
 import Logger from '../loader/logger';
-import { CustomSocket, InLectureRequestInterface } from '../types';
+import {
+  CustomSocket,
+  InLectureRequestInterface,
+  SetLectureLiveStatusRequest
+} from '../types';
 
 const OnJoinLecture =
   (socket: CustomSocket, classManager: ClassManager) =>
@@ -48,6 +52,7 @@ const OnExitLecture =
       const lecture = cls.getLectureById(lectureId);
 
       const exitMember = lecture.exitParticipant(socket.request.user?.id!);
+      socket.leave(lecture.getSocketRoomName());
 
       if (
         exitMember?.memberType === MemberType.INSTRUCTOR &&
@@ -90,9 +95,8 @@ const GetActiveLectureMember =
 
 const OnSetLectureLiveStatus =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({ classUuid, lectureId, status }: SetLectureLiveStatusRequest) => {
     try {
-      const { classUuid, lectureId, status } = JSON.parse(request);
       const cls: Class = await classManager.getOrCreateClass(classUuid);
 
       const lecture: Lecture = cls.getLectureById(lectureId);

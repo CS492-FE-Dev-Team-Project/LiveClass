@@ -4,21 +4,22 @@ import MarkerTextMessageEntity from '../entity/markerTextMessageEntity';
 import { detectLanguage, translate } from '../externalAPI/PapagoAPI';
 import Logger from '../loader/logger';
 import {
+  CreateMarkerRequest,
   CustomSocket,
   Language,
   MarkerTextMessageInterface,
+  MarkerTextMessageRequest,
   Message
 } from '../types';
 
 const OnCreateMarker =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({
+    classUuid,
+    lectureId,
+    marker: { markerType, videoIndex, time }
+  }: CreateMarkerRequest) => {
     try {
-      const {
-        classUuid,
-        lectureId,
-        marker: { markerType, videoIndex, time }
-      } = JSON.parse(request);
       const cls = await classManager.getOrCreateClass(classUuid);
       const lecture = cls.getLectureById(lectureId);
 
@@ -63,9 +64,12 @@ const OnDeleteMarker =
 // Create new marker text message
 const OnMarkerTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({
+    classUuid,
+    lectureId,
+    markerTextMessage
+  }: MarkerTextMessageRequest) => {
     try {
-      const { classUuid, lectureId, markerTextMessage } = JSON.parse(request);
       const cls = await classManager.getOrCreateClass(classUuid);
       const lecture = cls.getLectureById(lectureId);
       const { user } = socket.request;
@@ -116,9 +120,9 @@ const OnMarkerTextMessage =
   };
 
 const OnGetMarkerMessages =
-  (socket: CustomSocket) => async (request: string) => {
+  (socket: CustomSocket) =>
+  async ({ markerId }: { markerId: number }) => {
     try {
-      const { markerId } = JSON.parse(request);
       const textMessageEntities = await MarkerTextMessageEntity.find({
         where: { marker: { id: markerId } },
         relations: ['marker', 'user']

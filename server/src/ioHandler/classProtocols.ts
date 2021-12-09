@@ -4,15 +4,17 @@ import Lecture from '../data/lecture';
 import Class from '../data/class';
 import ClassManager from '../data/classManager';
 import Logger from '../loader/logger';
-import { CustomSocket } from '../types';
-import ClassEntity from '../entity/classEntity';
+import {
+  CreateLectureRequest,
+  CustomSocket,
+  InClassRequestInterface
+} from '../types';
 import ClassMemberEntity from '../entity/classMemberEntity';
 
 const OnJoinClass =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({ classUuid }: InClassRequestInterface) => {
     try {
-      const { classUuid } = JSON.parse(request);
       const { user } = socket.request;
       const cls = await classManager.getOrCreateClass(classUuid);
 
@@ -39,7 +41,9 @@ const OnJoinClass =
       socket.join(clsRoomName);
       Logger.info(`A User Joined to ${clsRoomName}`);
 
-      socket.emit('JoinClass', { classUuid, status: 200 });
+      const instructor = cls.getInstructor();
+
+      socket.emit('JoinClass', { classUuid, instructor, status: 200 });
     } catch (e) {
       Logger.error(e);
       socket.emit('JoinClass', { message: e, status: 400 });
@@ -48,9 +52,8 @@ const OnJoinClass =
 
 const OnGetLectures =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({ classUuid }: InClassRequestInterface) => {
     try {
-      const { classUuid } = JSON.parse(request);
       const cls: Class = await classManager.getOrCreateClass(classUuid);
 
       const lectures: Lecture[] = cls.getLectures();
@@ -63,17 +66,20 @@ const OnGetLectures =
 
 const OnCreateLecture =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({
+    classUuid,
+    lectureDate,
+    lectureName,
+    playlist
+  }: CreateLectureRequest) => {
     try {
-      const { classUuid, lectureDate, lectureName, playlist } =
-        JSON.parse(request);
       const cls: Class = await classManager.getOrCreateClass(classUuid);
 
       const newLectureEntity: LectureEntity = new LectureEntity();
       newLectureEntity.lectureDate = lectureDate;
       newLectureEntity.lectureName = lectureName;
       newLectureEntity.playlist = playlist;
-      newLectureEntity.class = await ClassEntity.findOne(classUuid); // 🐛 FIXME!: Do it without querying DB
+      newLectureEntity.class = await cls.getEntity(); // 🐛 FIXME!: Do it without querying DB
 
       const savedLectureEntity = await newLectureEntity.save();
 
@@ -94,9 +100,8 @@ const OnCreateLecture =
 
 const OnGetClassMembers =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({ classUuid }: InClassRequestInterface) => {
     try {
-      const { classUuid } = JSON.parse(request);
       const cls: Class = await classManager.getOrCreateClass(classUuid);
 
       const members: Member[] = cls.getMembers();
