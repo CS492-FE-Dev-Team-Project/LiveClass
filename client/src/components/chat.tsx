@@ -211,7 +211,9 @@ const Chat = ({
           headingText={header}
           p="5px 15px"
         >
-          <CloseButton marginLeft="auto" size="md" onClick={backToLiveChat} />
+          {chatStatus.current.chatMode !== ChatMode.Live && (
+            <CloseButton marginLeft="auto" size="md" onClick={backToLiveChat} />
+          )}
         </Header>
       )}
       <Flex w="280px" overflowY="auto" pb={3} pt={3} flexDir="column" h="full">
