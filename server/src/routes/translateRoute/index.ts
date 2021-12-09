@@ -19,7 +19,7 @@ export default (app: Router) => {
           const { src, canTranslate } = await detectLanguage(text);
           return canTranslate
             ? translate(src, target, text)
-            : { text, status: 200 };
+            : { result: text, status: 200 };
         })
       );
 

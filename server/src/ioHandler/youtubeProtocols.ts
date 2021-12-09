@@ -1,12 +1,19 @@
 import ClassManager from '../data/classManager';
 import Logger from '../loader/logger';
-import { CustomSocket, SelectVideoRequest } from '../types';
+import {
+  CustomSocket,
+  InLectureRequestInterface,
+  SelectVideoRequest
+} from '../types';
 
 const OnInstructorTimeChange =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({
+    classUuid,
+    lectureId,
+    newtime
+  }: InLectureRequestInterface & { newtime: number }) => {
     try {
-      const { classUuid, lectureId, newtime } = JSON.parse(request);
       const cls = await classManager.getOrCreateClass(classUuid);
       const lecture = cls.getLectureById(lectureId);
 
@@ -21,9 +28,9 @@ const OnInstructorTimeChange =
 
 const OnInstructorPlayPause =
   (socket: CustomSocket, isPlay: boolean, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({ classUuid, lectureId }: InLectureRequestInterface) => {
+    Logger.debug(lectureId);
     try {
-      const { classUuid, lectureId } = JSON.parse(request); // argument request: string
       const cls = await classManager.getOrCreateClass(classUuid);
       const lecture = cls.getLectureById(lectureId);
       socket

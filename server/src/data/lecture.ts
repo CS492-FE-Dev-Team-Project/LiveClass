@@ -2,7 +2,6 @@ import LectureEntity from '../entity/lectureEntity';
 import MarkerEntity from '../entity/markerEntity';
 import Logger from '../loader/logger';
 import { Message } from '../types';
-// import { classUuid } from '../types';
 import Marker from './marker';
 import Member from './member';
 

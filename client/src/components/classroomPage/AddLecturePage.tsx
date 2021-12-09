@@ -77,12 +77,12 @@ const AddLecturePage = () => {
   const onChangeCreate = () => {
     // setLecturequizlist(Lecturequizlist.filter((item: any) => item.mark !== 0));
 
-    const payload = JSON.stringify({
+    const payload = {
       classUuid,
       lectureDate,
       lectureName: lectureTitle,
       playlist: lecturePlaylist
-    });
+    };
     socket?.emit('CreateLecture', payload);
     navigate(-1);
 

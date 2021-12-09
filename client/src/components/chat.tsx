@@ -110,7 +110,7 @@ const Chat = ({
       (markerId: number, markerType: MarkerType) => {
         currentMarkerId.current = markerId;
         chatStatus.current = { chatMode: ChatMode.Marker, markerType };
-        socket?.emit('GetMarkerMessages', JSON.stringify({ markerId }));
+        socket?.emit('GetMarkerMessages', { markerId });
       }
     );
 
@@ -157,27 +157,21 @@ const Chat = ({
     // Create and send message
     switch (chatStatus.current.chatMode) {
       case ChatMode.Live:
-        socket?.emit(
-          'LiveChatTextMessage',
-          JSON.stringify({
-            classUuid,
-            lectureId,
-            text
-          })
-        );
+        socket?.emit('LiveChatTextMessage', {
+          classUuid,
+          lectureId,
+          text
+        });
         break;
       case ChatMode.Marker:
-        socket?.emit(
-          'MarkerTextMessage',
-          JSON.stringify({
-            classUuid,
-            lectureId,
-            markerTextMessage: {
-              markerId: currentMarkerId.current,
-              message: text
-            }
-          })
-        );
+        socket?.emit('MarkerTextMessage', {
+          classUuid,
+          lectureId,
+          markerTextMessage: {
+            markerId: currentMarkerId.current,
+            message: text
+          }
+        });
         break;
       case ChatMode.Individual:
         break;

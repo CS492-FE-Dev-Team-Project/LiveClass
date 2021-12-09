@@ -54,11 +54,11 @@ const LecturePage = () => {
 
   useEffect(() => {
     if (memberType === MemberType.INSTRUCTOR) {
-      const payload = JSON.stringify({
+      const payload = {
         classUuid,
         lectureId: parsedLectureId,
         status: !isLive
-      });
+      };
 
       const memberTypeEntry = {
         tabName: 'Instructor 👨‍🏫',

@@ -93,6 +93,30 @@ export interface PapagoTranslateResponse {
   };
 }
 
+export interface CreateLectureRequest extends InClassRequestInterface {
+  lectureDate: Date;
+  lectureName: string;
+  playlist: string;
+}
+
+export interface SetLectureLiveStatusRequest extends InLectureRequestInterface {
+  status: boolean;
+}
+
 export interface PapagoLanguageDetectionResponse {
   langCode: Language | string;
+}
+
+export interface MarkerRequest {
+  markerType: MarkerType;
+  videoIndex: number;
+  time: number;
+}
+
+export interface CreateMarkerRequest extends InLectureRequestInterface {
+  marker: MarkerRequest;
+}
+
+export interface MarkerTextMessageRequest extends InLectureRequestInterface {
+  markerTextMessage: MarkerTextMessageInterface;
 }

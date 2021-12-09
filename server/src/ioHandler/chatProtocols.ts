@@ -6,15 +6,14 @@ import {
   Language,
   LiveChatAudioMessageInterface,
   LiveChatTextMessageRequest,
+  MarkerType,
   Message
 } from '../types';
 
 const OnLiveChatTextMessage =
   (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({ classUuid, lectureId, text }: LiveChatTextMessageRequest) => {
     try {
-      const { classUuid, lectureId, text }: LiveChatTextMessageRequest =
-        JSON.parse(request);
       const cls = await classManager.getOrCreateClass(classUuid);
       const lecture = cls.getLectureById(lectureId);
       const { userName, id } = socket.request.user!;
@@ -55,9 +54,14 @@ const OnLiveChatTextMessage =
 const OnTimeMarkerClicked =
   (socket: CustomSocket) =>
   // (socket: CustomSocket, classManager: ClassManager) =>
-  async (request: string) => {
+  async ({
+    markerId,
+    markerType
+  }: {
+    markerId: number;
+    markerType: MarkerType;
+  }) => {
     try {
-      const { markerId, markerType } = JSON.parse(request);
       // const cls = await classManager.getOrCreateClass(classUuid);
       socket.emit('TimeMarkerClicked', markerId, markerType);
     } catch (e) {

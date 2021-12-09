@@ -134,11 +134,11 @@ const YouTubePlayer = ({
 
     const player = evt.target;
 
-    const JO = JSON.stringify({
+    const JO = {
       classUuid,
       lectureId,
       newtime: player.getCurrentTime()
-    });
+    };
 
     // When instructor changes video time : (onStateChange evt) pause-buffer-play
     // For now, detect 'buffer' as a cue of video time change
@@ -168,7 +168,7 @@ const YouTubePlayer = ({
         videoIndex
       }
     };
-    socket?.emit('CreateMarker', JSON.stringify(payload));
+    socket?.emit('CreateMarker', payload);
   };
 
   // Options for 'react-youtube' library component
