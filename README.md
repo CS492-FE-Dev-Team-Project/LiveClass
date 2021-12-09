@@ -29,6 +29,10 @@
 - 영상 재생 중 Time Marker를 이용하여 해당 시간에 질문과 토론을 생성 가능
 - Walkie-Talkie 기능으로 실시간 음성 전달과 대화가 가능
 
+### ➡️ [**LiveClass를 써보고 싶으면 클릭하세요!!**](http://ec2-3-38-83-97.ap-northeast-2.compute.amazonaws.com/)
+
+현재 LiveClass는 테스터 계정으로만 이용할 수 있습니다. 사용하기를 원하신다면, **ysrheee@kaist.ac.kr**으로 연락해주세요!
+
 ## 📋 LiveClass 사용법
 
 wip
