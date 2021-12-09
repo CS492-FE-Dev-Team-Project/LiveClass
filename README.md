@@ -53,5 +53,7 @@ $ yarn build:run
 ```
 4️⃣ [http://localhost:5000](http://localhost:5000)으로 접속
 
+### For more detailed information about the local settings, go to [Wiki:How to run](https://github.com/CS492-FE-Dev-Team-Project/FE-Dev-Client/wiki/How-to-run)
+
 --------
 **2021 KAIST Fall Semester** &middot; CS492(C) - FrontEnd Development
