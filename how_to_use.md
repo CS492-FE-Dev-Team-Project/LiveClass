@@ -30,9 +30,9 @@ LiveClass를 처음 사용하는 신규 사용자를 위한 가이드 문서입�
 
 ## 1. 메인 화면 - 로비 페이지 (Lobby Page)
 
-### 로그인 
+### 1-1. 로그인 
 
-처음 페이지에 들어가면, 네이버 로그인 연동을 통해 LiveClass를   
+네이버 로그인을 통해 LiveClass를 사용하실 수 있습니다.  
 * 사용할 네이버 계정을 사전에 등록해야하므로, LiveClass 사용을 희망하시는 분들께 테스터 계정을 지급해드리고 있습니다.   
 * ysrheee@kaist.ac.kr 로 연락주세요
 
@@ -40,7 +40,7 @@ LiveClass를 처음 사용하는 신규 사용자를 위한 가이드 문서입�
 
 <br>
 
-### 새 강의실(Classroom) 생성 혹은 기존 강의실 입장
+### 1-2. 새 강의실(Classroom) 생성 혹은 기존 강의실 입장
 
 사용자는 자유롭게 새로운 강의실을 생성하거나 기존 강의실에 입장할 수 있습니다.  
 로비 페이지 우측 하단의 '초록색 +' 버튼을 클릭해주세요.  
@@ -50,10 +50,10 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 
 <br>
 
-#### 새 강의실 생성
+#### 1-2-1. 새 강의실 생성
 
 강의실 이름(Class Title), 강의실 부제목(Class Subtitle) 입력 후 'Save'를 클릭하면 새로운 강의실이 생성됩니다.  
-생성한 강의실은 **Teaching Lectures**에 표시되며, 강의실을 생성한 유저는 해당 강의실을 제어할 수 있는 **Instructor** 등급을 부여받습니다.
+생성한 강의실은 **Teaching Lectures**에 표시되며, 강의실을 생성한 유저는 해당 강의실을 제어할 수 있는 `Instructor`등급을 부여받습니다.
 
 ![image](https://user-images.githubusercontent.com/39735858/145498814-2c89bb57-e31f-4bf4-b803-39a3cb8ff247.png)
 
@@ -64,7 +64,7 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 
 <br>
 
-#### 기존 강의실 입장
+#### 1-2-2. 기존 강의실 입장
 
 모든 강의실은 고유의 ID를 가지고 있으며, 사용자는 강의실ID를 통해 해당 강의실에 입장할 수 있습니다.  
 
@@ -79,14 +79,17 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 ![image](https://user-images.githubusercontent.com/39735858/145508283-09c84123-b89a-4830-ba95-4bcc36f6cbad.png)
 
 
-#### 강의실로 들어가기
+### 1-3. 강의실로 들어가기
 
 성공적으로 강의실을 생성/입장했으면, 로비 페이지에 표시된 강의실 카드를 클릭해서 해당 강의실로 들어갈 수 있습니다.
 
 ![image](https://user-images.githubusercontent.com/39735858/145509521-56946904-0229-406c-a8eb-f03bc4bb9baa.png)
 
+<br>
 
+---
 
+<br>
 <br>
 <br>
 
@@ -98,7 +101,7 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 
 <br>
 
-### (Instructor) 새 수업(Lecture) 생성
+### 2-1. (Instructor) 새 수업(Lecture) 생성
 
 수업을 진행하기 위해선, Instructor에 해당하는 유저가 새 **수업(Lecture)** 을 생성해야 합니다.  
 강의실 화면에서 'Create new lecture' 버튼을 클릭합니다.
@@ -112,14 +115,19 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 
 ![image](https://user-images.githubusercontent.com/39735858/145513060-247510af-d703-41b7-a263-5f332266473d.png)
 
+<br>
 
 
-### 수업에 입장
+### 2-2. 수업에 입장
 생성한 수업은 다음과 같이 카드 형태로 강의실에 표시됩니다.  
 스크롤, 키보드 방향키, 화살표 클릭으로 Lecture 카드 사이를 이동할 수 있습니다.  
 원하는 수업의 'Go To Lecture' 버튼을 누르면 해당 수업 화면으로 입장합니다.
 
 ![image](https://user-images.githubusercontent.com/39735858/145513223-52b53b19-f7db-4818-b40b-8b0576732d41.png)
+
+<br>
+
+---
 
 <br>
 <br>
@@ -129,33 +137,36 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 
 
 ① 강의실/수업에서 나의 등급을 나타냅니다.  
-Instructor와 Student로 나뉘어지며, Instructor만 수업의 Live 상태를 제어할 수 있습니다.
-Instructor의 경우엔, 'Start Live/Stop Live' 버튼이 나타나고, Student의 경우엔 'On-Live/Off-Live'의 Live 상태 표시등이 나타납니다. 
-② 수업 생성 시 입력한 playlist의 영상들 입니다. 자유롭게 영상을 바꿔가며 시청할 수 있습니다.  
+`Instructor`와 `Student`로 나뉘어지며, Instructor만 수업의 Live 상태를 제어할 수 있습니다.  
+Instructor의 경우엔, 'Start Live/Stop Live' 버튼이 나타나고, Student의 경우엔 'On-Live/Off-Live'의 Live 상태 표시등이 나타납니다.  
+② 수업 생성 시 입력한 playlist의 영상들. 자유롭게 영상을 바꿔가며 시청할 수 있습니다.  
 ③ 현재 수업에 참여중인 유저의 **실시간 목록**  
 ④ 2에서 선택한 영상을 재생하는 화면  
-⑤ ⭐️ 영상의 특정 구간에 북마크를 남겨서 다른 사용자들과 질문을 주고받거나 토론할 수 있는 기능입니다.  
+⑤ 영상의 특정 구간에 북마크를 남겨서 다른 사용자들과 질문을 주고받거나 토론할 수 있는 기능
 ⑥ 실시간 채팅  
 ⑦ 음성 메시지 기능  
 
+<br>
 
 ### 3-1. Live 상태를 통한 비디오 제어
-Instructor는 왼쪽 메뉴의 'Start Live/Stop Live' 버튼을 통해 수업의 Live상태를 변경할 수 있습니다. 
+Instructor는 왼쪽 메뉴의 'Start Live/Stop Live' 버튼을 통해 수업의 Live상태를 변경할 수 있습니다.   
 수업에 참여중인 다른 모든 유저가 영향을 받게 됩니다.  
 
 ![image](https://user-images.githubusercontent.com/39735858/145514757-a90ba7b9-9197-40bc-9ab7-75f6c7deb224.png)
 
+<br>
 
 ⭐️ On-Live 상태에선 Instructor만이 유투브 영상 기능 및 playlist내 다른 영상으로의 변경을 제어합니다.  
 
 1. Instructor가 유투브 영상을 재생(Play)/멈춤(Pause)/시간을 바꾸는 경우(Time change), 수업에 접속한 다른 모든 Student는 해당 제어를 따르게 됩니다.
 
-https://user-images.githubusercontent.com/39735858/145524122-3f462c94-8217-418d-9404-e2e260eb832f.mp4
+https://user-images.githubusercontent.com/39735858/145527215-a6cacb1d-2fe3-4188-ae27-b0470842ad99.mp4
 
 
 2. Instructor가 재생할 영상을 변경하는 경우, 마찬가지로 다른 모든 Student의 재생 영상도 똑같이 변경됩니다.
 
-https://user-images.githubusercontent.com/39735858/145524379-b46526e0-5f50-4c5b-b27c-5568429df7e0.mp4
+https://user-images.githubusercontent.com/39735858/145527077-59b72eda-b87c-4966-9f5a-eb5e8d28c6ed.mp4
+
 
 
 <br>
