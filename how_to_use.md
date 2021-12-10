@@ -3,6 +3,28 @@ LiveClass를 처음 사용하는 신규 사용자를 위한 가이드 문서입�
 서비스의 각 화면마다 어떤 기능이 있고, 기능을 어떻게 사용하는지 설명합니다.
 
 <br>
+
+---
+목차 (Table of Content)
+- [How to use](#how-to-use)
+  * [1. 메인 화면 - 로비 페이지 (Lobby Page)](#1-----------------lobby-page-)
+    + [로그인](#---)
+    + [새 강의실(Classroom) 생성 혹은 기존 강의실 입장](#------classroom-----------------)
+      - [새 강의실 생성](#--------)
+      - [기존 강의실 입장](#---------)
+      - [강의실로 들어가기](#---------)
+  * [2. 강의실 (Classroom Page)](#2------classroom-page-)
+    + [(Instructor) 새 수업(Lecture) 생성](#-instructor-------lecture----)
+    + [수업에 입장](#------)
+  * [3. 수업 화면 (Lecture Page)](#3--------lecture-page-)
+    + [3-1. Live 상태를 통한 비디오 제어](#3-1-live--------------)
+    + [3-2. 실시간 채팅 (Live Chat)](#3-2---------live-chat-)
+    + [3-3. 북마크(Marker) 생성 및 토론방 (Question/Discussion Chat)](#3-3-----marker------------question-discussion-chat-)
+    + [3-4. 음성 메시지 무전 기능 (Walkie-talkie)](#3-4---------------walkie-talkie-)
+    + [3-5. 실시간 채팅 번역 기능](#3-5-------------)
+
+---
+<br>
 <br>
 
 
@@ -117,7 +139,7 @@ Instructor의 경우엔, 'Start Live/Stop Live' 버튼이 나타나고, Student�
 ⑦ 음성 메시지 기능  
 
 
-### ⭐️ Live 상태
+### 3-1. Live 상태를 통한 비디오 제어
 Instructor는 왼쪽 메뉴의 'Start Live/Stop Live' 버튼을 통해 수업의 Live상태를 변경할 수 있습니다. 
 수업에 참여중인 다른 모든 유저가 영향을 받게 됩니다.  
 
@@ -128,26 +150,64 @@ Instructor는 왼쪽 메뉴의 'Start Live/Stop Live' 버튼을 통해 수업의
 
 1. Instructor가 유투브 영상을 재생(Play)/멈춤(Pause)/시간을 바꾸는 경우(Time change), 수업에 접속한 다른 모든 Student는 해당 제어를 따르게 됩니다.
 
+https://user-images.githubusercontent.com/39735858/145524122-3f462c94-8217-418d-9404-e2e260eb832f.mp4
+
 
 2. Instructor가 재생할 영상을 변경하는 경우, 마찬가지로 다른 모든 Student의 재생 영상도 똑같이 변경됩니다.
 
+https://user-images.githubusercontent.com/39735858/145524379-b46526e0-5f50-4c5b-b27c-5568429df7e0.mp4
 
-### ⭐️ 북마크(Marker) 생성
+
+<br>
+
+### 3-2. 실시간 채팅 (Live Chat)
+오른쪽 채팅창을 통해, 현재 수업에 접속중인 유저들과 실시간 채팅을 할 수 있습니다.  
+실시간 채팅의 내용은 저장되지 않습니다.  
+
+![image](https://user-images.githubusercontent.com/39735858/145525820-73914187-6757-48d8-b191-e54dab79bb06.png)
+
+
+<br>
+
+### 3-3. 북마크(Marker) 생성 및 토론방 (Question/Discussion Chat)
 모든 유저는 영상의 특정 시간대에 영상 상단의 'Question' 혹은 'Discussion' 버튼을 눌러 북마크를 생성할 수 있습니다.  
 북마크를 클릭할 시, 채팅창이 북마크 토론창으로 바뀌며, 다른 유저들과 영상에 대한 질문 혹은 토론이 가능합니다.  
+
+![image](https://user-images.githubusercontent.com/39735858/145524779-db58b8dc-6880-43b1-9e05-f9339e09f0b3.png)
 
 
 
 북마크 토론창은 실시간 채팅방과는 별개로, 메시지가 모두 저장됩니다.  
 추후 북마크를 다시 클릭하면, 채팅 내용을 다시 볼 수 있습니다.   
 
+![image](https://user-images.githubusercontent.com/39735858/145525218-4aef1fde-455f-4943-b8bd-cb4d9b446aeb.png)
+
+<br>
+
+### 3-4. 음성 메시지 무전 기능 (Walkie-talkie)
+
+채팅창 하단의 '음성 메시지 무전 기능'을 이용해서 수업 참가자들에게 음성 메시지를 보낼 수 있습니다.  
+
+![image](https://user-images.githubusercontent.com/39735858/145526002-f59fda14-0d02-46da-a122-745574bc5342.png)
+
+사용 예시 비디오
+
+https://user-images.githubusercontent.com/39735858/145525874-37295bde-b51e-4635-a9b3-764e5d924888.mp4
 
 
-### 실시간 채팅 번역 기능
-Naver Papago API를 활용해서, 채팅 메시지를 특정 언어로 번역하는 기능입니다.
+
+<br>
+
+### 3-5. 실시간 채팅 번역 기능
+Naver Papago API를 활용해서, 채팅 메시지를 특정 언어로 번역하는 기능입니다.  
+왼쪽 메뉴 하단의 '언어 변경' 버튼을 통해 원하는 언어를 선택하면, 채팅창 메시지들이 해당 언어로 번역됩니다.  
+
+![image](https://user-images.githubusercontent.com/39735858/145526118-e1dc1030-ce87-4612-9f9c-0e19dba9ab43.png)
 
 
-왼쪽 메뉴 하단의 '언어 변경' 버튼을 통해 원하는 언어를 선택하면, 채팅창 메시지들이 해당 언어로 번역됩니다.
+사용 예시 비디오 
+
+https://user-images.githubusercontent.com/39735858/145525837-6518ca8e-8186-4bdf-b218-ead6c2456b69.mp4
 
 
 
