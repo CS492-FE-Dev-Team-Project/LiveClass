@@ -99,3 +99,56 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 
 ![image](https://user-images.githubusercontent.com/39735858/145513223-52b53b19-f7db-4818-b40b-8b0576732d41.png)
 
+<br>
+<br>
+
+## 3. 수업 화면 (Lecture Page)
+![image](https://user-images.githubusercontent.com/39735858/145513848-9a47c57e-91fc-4754-8d5e-2eb2574f8cbc.png)
+
+
+① 강의실/수업에서 나의 등급을 나타냅니다.  
+Instructor와 Student로 나뉘어지며, Instructor만 수업의 Live 상태를 제어할 수 있습니다.
+Instructor의 경우엔, 'Start Live/Stop Live' 버튼이 나타나고, Student의 경우엔 'On-Live/Off-Live'의 Live 상태 표시등이 나타납니다. 
+② 수업 생성 시 입력한 playlist의 영상들 입니다. 자유롭게 영상을 바꿔가며 시청할 수 있습니다.  
+③ 현재 수업에 참여중인 유저의 **실시간 목록**  
+④ 2에서 선택한 영상을 재생하는 화면  
+⑤ ⭐️ 영상의 특정 구간에 북마크를 남겨서 다른 사용자들과 질문을 주고받거나 토론할 수 있는 기능입니다.  
+⑥ 실시간 채팅  
+⑦ 음성 메시지 기능  
+
+
+### ⭐️ Live 상태
+Instructor는 왼쪽 메뉴의 'Start Live/Stop Live' 버튼을 통해 수업의 Live상태를 변경할 수 있습니다. 
+수업에 참여중인 다른 모든 유저가 영향을 받게 됩니다.  
+
+![image](https://user-images.githubusercontent.com/39735858/145514757-a90ba7b9-9197-40bc-9ab7-75f6c7deb224.png)
+
+
+⭐️ On-Live 상태에선 Instructor만이 유투브 영상 기능 및 playlist내 다른 영상으로의 변경을 제어합니다.  
+
+1. Instructor가 유투브 영상을 재생(Play)/멈춤(Pause)/시간을 바꾸는 경우(Time change), 수업에 접속한 다른 모든 Student는 해당 제어를 따르게 됩니다.
+
+
+2. Instructor가 재생할 영상을 변경하는 경우, 마찬가지로 다른 모든 Student의 재생 영상도 똑같이 변경됩니다.
+
+
+### ⭐️ 북마크(Marker) 생성
+모든 유저는 영상의 특정 시간대에 영상 상단의 'Question' 혹은 'Discussion' 버튼을 눌러 북마크를 생성할 수 있습니다.  
+북마크를 클릭할 시, 채팅창이 북마크 토론창으로 바뀌며, 다른 유저들과 영상에 대한 질문 혹은 토론이 가능합니다.  
+
+
+
+북마크 토론창은 실시간 채팅방과는 별개로, 메시지가 모두 저장됩니다.  
+추후 북마크를 다시 클릭하면, 채팅 내용을 다시 볼 수 있습니다.   
+
+
+
+### 실시간 채팅 번역 기능
+Naver Papago API를 활용해서, 채팅 메시지를 특정 언어로 번역하는 기능입니다.
+
+
+왼쪽 메뉴 하단의 '언어 변경' 버튼을 통해 원하는 언어를 선택하면, 채팅창 메시지들이 해당 언어로 번역됩니다.
+
+
+
+
