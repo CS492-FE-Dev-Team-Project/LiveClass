@@ -69,3 +69,33 @@ Join은 '기존 강의실 입장', Create는 '새 강의실 생성'입니다.
 <br>
 
 ## 2. 강의실 (Classroom Page)
+
+강의실 화면은 다음과 같습니다. 
+
+![image](https://user-images.githubusercontent.com/39735858/145511010-2cd30877-b685-46a7-955b-d8c2085da784.png)
+
+<br>
+
+### (Instructor) 새 수업(Lecture) 생성
+
+수업을 진행하기 위해선, Instructor에 해당하는 유저가 새 **수업(Lecture)** 을 생성해야 합니다.  
+강의실 화면에서 'Create new lecture' 버튼을 클릭합니다.
+
+![image](https://user-images.githubusercontent.com/39735858/145511624-292fcea1-59dd-4ec0-99e1-fd4a26fd2c44.png)
+
+<br>
+
+수업 제목(Title), 공지사항(Notice), 수업 시간(Time)을 지정할 수 있습니다.  
+⭐️ 각 수업은 유투브 재생목록(YouTube playlist) ID를 받아서, 해당 재생목록의 영상을 재생합니다. 
+
+![image](https://user-images.githubusercontent.com/39735858/145513060-247510af-d703-41b7-a263-5f332266473d.png)
+
+
+
+### 수업에 입장
+생성한 수업은 다음과 같이 카드 형태로 강의실에 표시됩니다.  
+스크롤, 키보드 방향키, 화살표 클릭으로 Lecture 카드 사이를 이동할 수 있습니다.  
+원하는 수업의 'Go To Lecture' 버튼을 누르면 해당 수업 화면으로 입장합니다.
+
+![image](https://user-images.githubusercontent.com/39735858/145513223-52b53b19-f7db-4818-b40b-8b0576732d41.png)
+
